@@ -1,5 +1,84 @@
 # Changelog
 
+## Homepage now shows only the Champion — 2026-07-02
+
+`index.html`'s finale section previously rendered the full podium (Champion, Runner-Up, 2nd
+Runner-Up, Finalist). Changed to show only the Champion — the other placements are still fully
+available via the "View Full Results" link to `leaderboard.html`. Also fixed the section
+heading, which still read "Meet the Champions" (plural) after this change.
+
+## Optional Cloudinary storage with automatic local-disk fallback — 2026-07-02
+
+Uploads (contestant photos/videos, event media, sponsor logos, team profile photos, the
+sponsorship proposal PDF) previously always wrote straight to local disk via
+`multer.diskStorage`. On hosts that rebuild a fresh container on every deploy (Render, Railway,
+Heroku), those files never survived a redeploy — there was no way to opt into durable storage
+without a code change.
+
+- **`lib/upload.js`** rewritten: all Multer configs switched to `multer.memoryStorage()`;
+  buffered files are now validated and routed to Cloudinary (if the Superuser has configured
+  credentials) or local disk (unchanged fallback) via a new `persistFile()` / `persistUploads()`
+  pair. `removeFile()` handles cleanup for both storage backends, including rolling back any
+  sibling file already persisted earlier in the same request if a later one fails validation
+  (e.g. registration's photo+video pair).
+- **Real content validation added** (`detectRealType()`, hand-rolled — no new dependency): the
+  previous check only inspected the `Content-Type` the upload request *claimed*, which is
+  client-supplied and trivially spoofed outside a browser. Files are now also checked against
+  their actual magic-byte signature before being persisted anywhere; a mismatch is rejected
+  with `400` regardless of what the request claimed. See SECURITY.md.
+- **`lib/integrations.js`** extended with `getCloudinaryConfig()`, following the exact existing
+  pattern used for SMTP/WhatsApp (DB-first with `.env` fallback, 60-second cache, invalidated
+  on save).
+- **New Superuser dashboard section, "Media Storage"** (`routes/integrations.routes.js`:
+  `PUT /api/integrations/cloudinary`, `POST /api/integrations/test/cloudinary`) — separate from
+  "Notification Channels" (an earlier pass had incorrectly grouped it there, since it reused the
+  same backend credential-caching module; moved out once flagged, since storage and
+  notifications aren't the same concern to an admin browsing the sidebar). Nothing is required
+  to keep using local disk — Cloudinary is entirely opt-in and the fallback is automatic.
+- **`db/schema.sql`**: added `cloudinary_cloud_name` / `cloudinary_api_key` /
+  `cloudinary_api_secret` to `settings` (both the fresh-install `CREATE TABLE` and the
+  idempotent migration path for existing databases).
+- Wired into all 7 routes that handle uploads: `contestants`, `media`, `performances`,
+  `event-photos`, `sponsors`, `team-profiles`, `settings` (proposal PDF).
+
+## Sponsors page impact stats wired to real data — 2026-07-02
+
+The "Our reach" stats on `sponsors.html` (Audience Reach, Registered Contestants, Counties
+Represented, Votes Cast, Media Mentions) were a mix of two live values and three numbers
+hardcoded directly into the HTML that never changed. Registered Contestants and Votes Cast were
+already live; the other three are now too:
+
+- **Counties Represented** now reads from the existing `GET /api/stats` endpoint (already used
+  by `about.html`'s impact section) instead of a fixed `15`.
+- **Audience Reach** and **Media Mentions** have no natural in-app data source (no analytics or
+  press-mention tracking exists), so they're now admin-editable settings
+  (`settings.audience_reach` / `settings.media_mentions`, defaulting to the previous hardcoded
+  values) instead of hardcoded HTML — editable from Superuser → Site Settings.
+
+## Category deactivation incorrectly appeared as deletion — 2026-07-02
+
+The Superuser dashboard's category management table loaded from the **public**
+`GET /api/categories` endpoint, which only returns `active = TRUE` rows (correct for the
+public registration form, which is what that endpoint is actually for). The admin table used
+the same call, so deactivating a category made it vanish from the admin's own management view
+too — indistinguishable from deletion, and with no way to reactivate it since the row (and its
+toggle button) was gone. Backend behavior was already correct (`PATCH` only ever flips `active`;
+`DELETE` is a separate, distinct action). Added `GET /api/categories/all` (Superuser /
+`manage_categories` only, returns every category regardless of `active`) and pointed the admin
+table at it instead.
+
+## Fresh-install schema bug: forward reference to a not-yet-created table — 2026-07-02
+
+`db/schema.sql`'s `CREATE TABLE contestants` ran before `CREATE TABLE rounds`, but
+`contestants.waitlist_round_id` had an inline `REFERENCES rounds(id) ON DELETE SET NULL` —
+a forward reference that fails with `relation "rounds" does not exist` on any fresh,
+empty-database install (`node db/init.js` against a brand-new Postgres instance, e.g. a new
+Render deployment). The file already had a correctly-ordered fix for this exact column later in
+the same file (`ALTER TABLE contestants ADD COLUMN IF NOT EXISTS waitlist_round_id ... REFERENCES
+rounds(id) ...`, added after `rounds` exists) — the inline column definition in the original
+`CREATE TABLE` just needed the redundant/premature `REFERENCES` clause removed, since the later
+`ALTER TABLE` already adds the constraint correctly once `rounds` exists.
+
 ## Competition model change: overall, not per-category — 2026-07-01 (later same day)
 
 The competition previously treated each talent category (Dancing, Singing, Rapping, Comedy,

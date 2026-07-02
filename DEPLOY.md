@@ -162,7 +162,7 @@ Certbot modifies the Nginx config to redirect HTTP → HTTPS automatically.
 
 ### 9. Configure Upload Storage
 
-By default uploads go to `~/ltq-uploads/`. For a VPS deployment, set an explicit path:
+By default uploads go to local disk at `~/ltq-uploads/`. For a VPS deployment, set an explicit path:
 
 ```env
 UPLOAD_DIR=/var/data/ltq-uploads
@@ -172,6 +172,22 @@ UPLOAD_DIR=/var/data/ltq-uploads
 sudo mkdir -p /var/data/ltq-uploads
 sudo chown $(whoami):$(whoami) /var/data/ltq-uploads
 ```
+
+**Recommended for any host with an ephemeral filesystem** (Render, Railway, Heroku, or any
+platform that rebuilds a fresh container on every deploy instead of updating a persistent
+server): configure Cloudinary instead. Local files on those platforms don't survive a redeploy;
+Cloudinary storage does, regardless of where the app itself runs. Sign up free at
+cloudinary.com, then either:
+
+- Log in as Superuser → **Media Storage** → enter Cloud name / API key / API secret → Save →
+  Test connection, or
+- Set `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET` as environment
+  variables (equivalent, useful for automated/scripted deploys)
+
+Once configured, new uploads go to Cloudinary automatically — no code change or redeploy
+needed, and nothing breaks if you leave it unset (it just keeps using local disk). A true VPS
+(persistent disk, not ephemeral) doesn't strictly need this, but it's still a good idea for
+CDN delivery and to avoid managing upload-directory backups yourself.
 
 ---
 
@@ -211,6 +227,11 @@ Suitable for staging or early demos. Render provides managed PostgreSQL and free
 > **Note:** Render's free tier sleeps after 15 minutes of inactivity (cold starts take
 > 20–50 seconds). Use a paid tier for a live public competition.
 
+> **Important:** Render rebuilds a fresh container on every deploy — anything written to local
+> disk (uploaded photos/videos) does **not** persist across deploys. Configure Cloudinary
+> (Superuser → **Media Storage**, or the `CLOUDINARY_*` env vars above) before accepting real
+> uploads on Render. See "Configure Upload Storage" above.
+
 ---
 
 ## Option C — Railway.app
@@ -248,6 +269,9 @@ in code.
 - [ ] Superuser → **Site Settings** → set contact phone, email, and social media links
 - [ ] Superuser → **Site Settings** → set Maximum group members (default: 6)
 - [ ] Superuser → **Notification Channels** → configure SMTP for email sending
+- [ ] Superuser → **Media Storage** → configure Cloudinary if deploying to a host with an
+      ephemeral filesystem (Render, Railway, Heroku, etc.) — otherwise uploaded files won't
+      survive a redeploy. Safe to skip on a true VPS with a persistent disk.
 - [ ] Superuser → **Seasons** → confirm the current season is marked active
 - [ ] Superuser → **Categories** → verify all 6 categories are active
 - [ ] Superuser → **Scoring Criteria** → verify audition and live performance criteria are configured
@@ -335,3 +359,6 @@ Also back up the upload directory periodically:
 | `WHATSAPP_PHONE_ID` | No | — | Meta phone number ID |
 | `WHATSAPP_TEMPLATE` | No | `ltq_notification` | WhatsApp message template name |
 | `WHATSAPP_TEMPLATE_LANG` | No | `en` | WhatsApp template language code |
+| `CLOUDINARY_CLOUD_NAME` | No | — | Cloudinary cloud name — enables cloud storage for uploads when set (alternative to configuring it in the Superuser dashboard) |
+| `CLOUDINARY_API_KEY` | No | — | Cloudinary API key |
+| `CLOUDINARY_API_SECRET` | No | — | Cloudinary API secret |

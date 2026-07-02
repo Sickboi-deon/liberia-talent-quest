@@ -16,9 +16,10 @@ and real-time SSE push.
 | Auth | JWT (HttpOnly cookie `ltq_session`, 7-day TTL) |
 | Frontend | Plain HTML / CSS / JavaScript (no build step) |
 | Real-time | Server-Sent Events (SSE) — leaderboard live updates |
-| File uploads | Multer — stored outside the web root in `~/ltq-uploads/` |
+| File uploads | Multer (in-memory) → Cloudinary if configured, else local disk outside the web root in `~/ltq-uploads/` |
 | Email | Nodemailer (SMTP, configurable via Superuser dashboard or `.env`) |
 | WhatsApp | Meta Cloud API (optional, configurable via Superuser dashboard or `.env`) |
+| Media storage | Cloudinary (optional, configurable via Superuser dashboard or `.env`) — falls back to local disk automatically when unset |
 
 ---
 
@@ -186,7 +187,7 @@ once their status makes them visible in that context.
 
 | Page | Purpose |
 |---|---|
-| `index.html` | Homepage — countdown, stats, category strip, announcements |
+| `index.html` | Homepage — countdown, stats, category strip, announcements; shows only the season Champion once the finale is triggered (Runner-Up/2nd Runner-Up/Finalist are on the leaderboard, not the homepage) |
 | `register.html` | Public registration form — solo or group, photo + optional video upload |
 | `vote.html` | Public voting (requires a purchased voting code) |
 | `leaderboard.html` | Live leaderboard — one overall ranking; category tabs filter the view but always show true overall rank; Grand Final view when finale is triggered |
@@ -255,9 +256,12 @@ ltq-app/
 │   ├── db.js                          pg Pool wrapper + getClient()
 │   ├── email.js                       Nodemailer + HTML email templates
 │   ├── events.js                      SSE subscribe/emit (leaderboard real-time)
-│   ├── integrations.js                Credential loader (DB → .env fallback, 60-s cache)
+│   ├── integrations.js                Credential loader (DB → .env fallback, 60-s cache) —
+│   │                                   email, WhatsApp, and Cloudinary
 │   ├── seasons.js                     getCurrentSeasonId(), getPreviousSeason()
-│   ├── upload.js                      Multer storage configs (photos/videos/documents)
+│   ├── upload.js                      Multer configs (memory storage) + magic-byte content
+│   │                                   validation + persistFile()/removeFile() — saves to
+│   │                                   Cloudinary if configured, else local disk
 │   ├── validate.js                    Phone/email/county/gender/DOB validators
 │   ├── audit.js                       logAction() — writes to audit_log table
 │   ├── contestant-accounts.js         ensureContestantAccount() — locked users row on solo qualification
@@ -282,7 +286,7 @@ ltq-app/
 │   ├── settings.routes.js             Site settings (Superuser only)
 │   ├── media.routes.js                Contestant media uploads (Media Coordinator / Superuser)
 │   ├── notifications.routes.js        Bulk / individual notifications (Superuser / Comms Manager)
-│   ├── integrations.routes.js         SMTP + WhatsApp credential management (Superuser)
+│   ├── integrations.routes.js         SMTP + WhatsApp + Cloudinary credential management (Superuser)
 │   ├── seasons.routes.js              Season CRUD (Superuser)
 │   ├── team-profiles.routes.js        Team bios (Superuser / Admin / Content Manager)
 │   ├── event-photos.routes.js         Event photo/video uploads (Media Coordinator / Superuser)
@@ -310,12 +314,24 @@ Credentials are cached for 60 seconds so they update without a server restart.
 
 ## File Uploads
 
-All uploaded files (contestant photos, audition videos, event photos, documents) are stored
-**outside the web root** in `~/ltq-uploads/` (or `UPLOAD_DIR` env var). They are served via
-Express static middleware at `/uploads/`.
+All uploads (contestant photos, audition videos, event photos, documents) are received into
+memory via Multer, then routed to one of two storage backends:
+
+- **Cloudinary** — used automatically once the Superuser configures credentials under
+  **Media Storage** in the dashboard (or via `CLOUDINARY_*` env vars). Recommended for any
+  deployment on a host with an ephemeral/rebuilt filesystem (Render, Railway, Heroku, etc.),
+  since local files there don't survive a redeploy.
+- **Local disk** (default/fallback) — stored **outside the web root** in `~/ltq-uploads/` (or
+  `UPLOAD_DIR` env var), served via Express static middleware at `/uploads/`. Used automatically
+  whenever Cloudinary isn't configured — nothing breaks if you never set it up.
+
+Both paths share the same validation, done in `lib/upload.js`:
 
 - Filenames are randomly generated (timestamp + random suffix) — no user-supplied filenames are preserved.
-- MIME type is validated server-side via Multer `fileFilter` — extension spoofing is not possible.
+- The claimed MIME type is checked server-side via Multer `fileFilter` first, then the actual
+  file bytes are inspected against a magic-byte signature check (`detectRealType()`) before the
+  file is persisted anywhere — a renamed/relabeled file that lies about its `Content-Type` is
+  rejected even if it passes the initial claim-based filter.
 - `X-Content-Type-Options: nosniff` is set on all `/uploads/` responses.
 
 ---

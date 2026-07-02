@@ -56,10 +56,13 @@ The Superuser has full control over everything — settings, seasons, competitio
 3. **Site Settings → Competition** — configure scoring thresholds and registration settings
 4. **Site Settings → Maximum group members** — set the max number of members per group entry (default: 6, range: 2–50)
 5. **Seasons** — verify the current season is marked active (or create a new one)
-6. **Categories** — verify all 6 categories are active: Dancing, Singing, Rapping, Comedy, Creative Arts, Spoken Words
+6. **Categories** — verify all 6 categories are active: Dancing, Singing, Rapping, Comedy, Creative Arts, Spoken Words. Deactivating a category only hides it from the public registration form — it stays in the management table (marked "No") and can be reactivated any time; it is never deleted.
 7. **Scoring Criteria** — set up audition and live performance scoring criteria
 8. **Notification Channels** — configure SMTP email and/or WhatsApp credentials
-9. **Accounts** — create staff accounts for all team members
+9. **Media Storage** — optional: configure Cloudinary if deploying to a host that rebuilds a
+   fresh server on every deploy (Render, Railway, etc.) — otherwise uploaded photos/videos won't
+   survive a redeploy. Safe to skip entirely; uploads use local disk automatically until you do.
+10. **Accounts** — create staff accounts for all team members
 
 ### Managing Staff Accounts
 
@@ -87,6 +90,8 @@ The Superuser has full control over everything — settings, seasons, competitio
 | Contact phone/email/WhatsApp | Shown on public pages and in email footers |
 | Social media links | Shown as icons in the site footer (10 platforms supported) |
 | Payment instructions | Shown to applicants immediately after registration |
+| Audience reach | "Audience Reach" stat on the public Sponsors page — update manually as your real reach grows |
+| Media mentions | "Media Mentions" stat on the public Sponsors page — update manually |
 
 > Judge weight + Vote weight must sum to 1.0 (e.g. 0.70 + 0.30, or 1.0 + 0.0 for judge-only).
 
@@ -431,6 +436,7 @@ These are workflows experienced by the public visiting the site — not staff.
 
 ### Viewing Results
 
+- `/index.html` — once the finale is triggered, the homepage shows only the season Champion, with a link to the full leaderboard for Runner-Up / 2nd Runner-Up / Finalist
 - `/leaderboard.html` — live vote leaderboard, one overall ranking; category tabs filter the view but always show true overall rank; switches to Final Results view after the finale is triggered
 - `/gallery.html` — photo gallery of contestants and event photos; group contestants show a **Group** badge
 - `/contestant-profile.html?id=...` — public profile for a single contestant; group contestants show a Group Members panel

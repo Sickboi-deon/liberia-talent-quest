@@ -100,18 +100,33 @@ Validation is done in `lib/validate.js` and called before any DB operation.
 
 ## File Uploads
 
-### MIME Type Enforcement
+### Two-Stage Type Validation
 
-- Multer `fileFilter` validates the MIME type before saving the file
-- Allowed types: `image/jpeg`, `image/png`, `image/webp` (photos) and `video/mp4`, `video/quicktime`, `video/webm`, `video/x-msvideo` (videos)
-- File extension is derived from the validated MIME type — **user-supplied filenames are never trusted or preserved**
-- Uploaded filenames are: `{timestamp}-{7-char-random}{.ext}`
+- **Stage 1 — claimed-type filter:** Multer `fileFilter` checks the `Content-Type` the upload
+  request claims before accepting the file at all. Allowed types: `image/jpeg`, `image/png`,
+  `image/webp` (photos) and `video/mp4`, `video/quicktime`, `video/webm`, `video/x-msvideo`
+  (videos). This value is client-supplied and can be spoofed by a non-browser client.
+- **Stage 2 — magic-byte content check:** files are received into memory (`multer.memoryStorage`),
+  and before being persisted anywhere, `detectRealType()` in `lib/upload.js` inspects the
+  actual file bytes (JPEG/PNG/WebP/MP4/MOV/WebM/AVI/PDF signatures) and rejects anything whose
+  real content doesn't match an allowed type for that upload — regardless of what the
+  `Content-Type` header claimed. A disguised file (e.g. a script renamed to `photo.jpg` with a
+  spoofed `image/jpeg` header) is rejected with `400` at this stage.
+- File extension is derived from the **detected** type, not the original filename or the
+  claimed MIME type — **user-supplied filenames are never trusted or preserved**.
+- Uploaded filenames are: `{timestamp}-{7-char-random}{.ext}`.
 
-### Storage Outside Web Root
+### Storage: Cloudinary or Local Disk
 
-- All uploads are stored outside the project directory in `~/ltq-uploads/` (or `UPLOAD_DIR`)
-- Express serves them at `/uploads/` via a static route — they are never executable
-- `X-Content-Type-Options: nosniff` prevents MIME sniffing attacks in older browsers
+- If the Superuser has configured Cloudinary (dashboard → **Media Storage**, or `CLOUDINARY_*`
+  env vars), validated files are streamed there and never touch the server's disk at all.
+- Otherwise, files are written outside the project directory in `~/ltq-uploads/` (or
+  `UPLOAD_DIR`) and served at `/uploads/` via a static route — they are never executable
+  regardless of content, since Express's static middleware only streams bytes.
+- `X-Content-Type-Options: nosniff` prevents MIME sniffing attacks in older browsers.
+- Cloudinary credentials are stored in the `settings` table exactly like SMTP/WhatsApp
+  credentials — the API secret is never returned by any API response, only a `configured`
+  boolean.
 
 ### Size Limits
 
@@ -122,9 +137,12 @@ Validation is done in `lib/validate.js` and called before any DB operation.
 | Event photos | 300 MB |
 | Documents (PDF) | 20 MB |
 
-### Temp File Cleanup
+### Cleanup on Failure
 
-- If a registration or upload request fails at any point after Multer saves files to disk, the route handler calls `cleanupFiles(req)` to delete the orphaned files before returning the error response.
+- If a registration or upload request fails validation at any point, `removeFile()` deletes
+  any files already persisted earlier in that same request (local disk or Cloudinary, whichever
+  applies) before returning the error response — no orphaned files, and no partial state left
+  behind when e.g. a photo succeeds but a paired video in the same submission fails.
 
 ---
 
@@ -164,7 +182,7 @@ their own per-file-type size limits (see File Uploads below).
 
 ## Sensitive Data Handling
 
-- SMTP and WhatsApp credentials are stored in the `settings` table; the public `/api/settings` endpoint **never returns them**
+- SMTP, WhatsApp, and Cloudinary credentials are stored in the `settings` table; the public `/api/settings` endpoint **never returns them** — they are only readable (and masked) via the authenticated `/api/integrations` endpoint
 - Payment fields (`payment_method`, `payment_reference`, `payment_notes`, `payment_verified_by`, `payment_verified_at`) are stripped from Contestant Manager API responses — finance data is Finance Manager territory only
 - JWT tokens contain role, permissions, and display name — no passwords, no payment info, no personal data beyond the user's name
 
@@ -183,7 +201,7 @@ All material actions are written to the `audit_log` table via `lib/audit.js`:
 - Payment verified
 - Content created / deleted (announcements, sponsors, schedule entries, etc.)
 - Site settings updated
-- SMTP / WhatsApp integration credentials updated (the credential values themselves are never logged — only which fields changed)
+- SMTP / WhatsApp / Cloudinary integration credentials updated (the credential values themselves are never logged — only which fields changed)
 
 The audit log is readable by Superuser and Admin from their dashboards. It is append-only —
 there is no delete endpoint for audit entries.
@@ -229,4 +247,4 @@ Verify these before going live:
 - **No CSRF token** on state-changing API calls — mitigated by `SameSite=lax` cookie and the fact that all authenticated endpoints require the HttpOnly cookie. Acceptable for same-origin deployment; evaluate if ever deploying with a separate frontend origin.
 - **CSP allows `unsafe-inline` for scripts/styles** — the frontend is plain HTML with inline theme-init scripts by design (no build step). This is narrower than no CSP at all (script/style *sources* are still restricted to `'self'` plus a small explicit allowlist), but it does not block inline-script-based XSS the way a nonce-based strict CSP would.
 - **Phone numbers are format-checked, not OTP-verified** — a registrant can enter any syntactically valid Liberian phone number.
-- **Video MIME type is browser-reported** — deep content inspection (magic bytes) is not performed. The attack surface is limited because files are stored outside the web root and served with `nosniff`.
+- **Magic-byte detection covers container/signature format only, not deep content safety** — `detectRealType()` confirms a file is genuinely a JPEG/PNG/WebP/MP4/MOV/WebM/AVI/PDF at the byte level (catching disguised/relabeled files), but does not scan for embedded malware, exploit payloads within an otherwise-valid media file, or run antivirus scanning. No files are ever executed server-side regardless (Express's static middleware only streams bytes), which limits the practical impact of this gap.

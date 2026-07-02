@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Head Judge Dashboard — Liberia Talent Quest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("ltq_theme")||"dark");}catch(e){}</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="admin-shell">
+
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-brand"><img src="assets/logo-icon.png" alt="LTQ" /> Liberia Talent Quest</div>
+      <nav class="sidebar-nav" aria-label="Head Judge navigation">
+        <span class="sidebar-section">Head Judge</span>
+        <a href="#sec-auditions"  class="sidebar-sublink">Score Auditions</a>
+        <a href="#sec-allscores"  class="sidebar-sublink">All Scores</a>
+        <a href="#sec-rounds"     class="sidebar-sublink">Score Performances</a>
+        <a href="#sec-preview"    class="sidebar-sublink">Qualification Preview</a>
+        <div class="sidebar-divider"></div>
+        <span class="sidebar-section">Public site</span>
+        <a href="index.html" class="sidebar-link">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Home
+        </a>
+        <a href="leaderboard.html" class="sidebar-link">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="4"/><line x1="12" y1="20" x2="12" y2="10"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+          Leaderboard
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="sidebar-link" id="sidebarLogout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;font-family:var(--font-body);">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Log out
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <button class="topbar-toggle" id="topbarToggle" aria-label="Toggle sidebar">&#9776;</button>
+        <span class="topbar-title">Head Judge</span>
+        <div class="topbar-user">
+          <strong id="topbarName"></strong>
+          <button class="topbar-logout" id="topbarLogout">Log out</button>
+        </div>
+      </header>
+
+      <div class="admin-content">
+
+        <!-- ── SCORE AUDITIONS ── -->
+        <div class="admin-section active" id="sec-auditions">
+          <div class="stat-grid" style="margin-bottom:28px;">
+            <div class="stat-card stat-card--blue">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+              <div class="num" id="statRegistered">—</div>
+              <div class="stat-label">To review</div>
+            </div>
+            <div class="stat-card stat-card--green">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+              <div class="num" id="statScored">—</div>
+              <div class="stat-label">You've scored</div>
+            </div>
+          </div>
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Audition Video Review</h2>
+            <p>Score each registered contestant once. Scores are final after submission.</p>
+          </div>
+          <div id="auditionQueue"><p class="empty-state">Loading…</p></div>
+        </div>
+
+        <!-- ── ALL SCORES ── -->
+        <div class="admin-section" id="sec-allscores">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">All Audition Scores</h2>
+            <p>Full view of every judge's score for each contestant.</p>
+          </div>
+          <div class="table-wrap" style="margin-top:8px;">
+            <table class="app-table">
+              <thead><tr><th>Contestant</th><th>Category</th><th>Judge</th><th>Total</th><th>Comments</th><th>Submitted</th></tr></thead>
+              <tbody id="allScoresBody"><tr><td colspan="6">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── SCORE PERFORMANCES ── -->
+        <div class="admin-section" id="sec-rounds">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Score Live Performances</h2>
+            <p>Select an open round to see submitted performances and score each one.</p>
+          </div>
+          <div class="tabs" id="roundTabs" style="margin-bottom:16px;"></div>
+          <div id="performanceQueue"><p class="empty-state">Select a round above.</p></div>
+        </div>
+
+        <!-- ── QUALIFICATION PREVIEW ── -->
+        <div class="admin-section" id="sec-preview">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Qualification Preview</h2>
+            <p>See how contestants would be classified at current thresholds — no changes are made.</p>
+          </div>
+          <div id="previewList"><p class="empty-state">Loading…</p></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const auth = guardRole(['head_judge', 'superuser']);
+
+    function doLogout() { clearAuth(); window.location.href = 'index.html'; }
+    document.getElementById('sidebarLogout').addEventListener('click', doLogout);
+    document.getElementById('topbarLogout').addEventListener('click', doLogout);
+
+    let auditionCriteria = [];
+    let scoringCriteria  = [];
+    let activeRoundId    = null;
+
+    async function loadCriteria() {
+      [auditionCriteria, scoringCriteria] = await Promise.all([
+        fetch('/api/criteria/audition').then((r) => r.json()),
+        fetch('/api/criteria/performance').then((r) => r.json())
+      ]);
+    }
+
+    // ── Audition Scoring ──────────────────────────────────────────────────
+    async function renderAuditions() {
+      const container = document.getElementById('auditionQueue');
+      container.innerHTML = '<p class="empty-state">Loading…</p>';
+      const [contestants, myScores] = await Promise.all([
+        authFetch('/api/contestants/queue?status=registered').then((r) => r.json()),
+        authFetch('/api/audition-scores/mine').then((r) => r.json())
+      ]);
+      document.getElementById('statRegistered').textContent = contestants.length;
+      document.getElementById('statScored').textContent     = myScores.length;
+
+      if (!contestants.length) { container.innerHTML = '<p class="empty-state">No registered contestants to score yet.</p>'; return; }
+
+      const scoredMap = {};
+      myScores.forEach((s) => { scoredMap[s.contestant_id] = s; });
+
+      container.innerHTML = contestants.map((c) => {
+        const scored = scoredMap[c.id];
+        if (scored) return submittedAuditionHtml(c, scored);
+        return auditionFormHtml(c);
+      }).join('');
+      container.querySelectorAll('[data-submit-audition]').forEach((btn) => btn.addEventListener('click', () => submitAuditionScore(btn.dataset.submitAudition)));
+    }
+
+    function auditionFormHtml(c) {
+      const critFields = auditionCriteria.map((cr) => `
+        <div class="field">
+          <label for="ac-${c.id}-${cr.id}">${escapeHtml(cr.name)} (0–${cr.max_score})</label>
+          <input type="number" id="ac-${c.id}-${cr.id}" min="0" max="${cr.max_score}" value="${Math.floor(cr.max_score * 0.8)}" />
+        </div>
+      `).join('');
+      return `
+        <div class="queue-item" id="aitem-${c.id}">
+          <div class="queue-item-head">
+            ${c.profile_photo_url ? `<img class="queue-photo" src="${c.profile_photo_url}" alt="${escapeHtml(c.full_name)}" />` : ''}
+            <div>
+              <h3>${escapeHtml(c.full_name)}${c.stage_name ? ` <span style="color:var(--gold-bright); font-size:0.85rem;">"${escapeHtml(c.stage_name)}"</span>` : ''}</h3>
+              ${c.competitionId ? `<p style="margin:1px 0 2px;font-size:0.68rem;font-weight:700;letter-spacing:0.07em;color:var(--gold-bright);">${escapeHtml(c.competitionId)}</p>` : ''}
+              <p class="queue-meta">${escapeHtml(c.categoryLabel || '')} · ${escapeHtml(c.county || '')}</p>
+            </div>
+            <span class="badge badge-pending">Awaiting score</span>
+          </div>
+          <p class="queue-talent">${escapeHtml(c.talent_description || c.short_bio || '')}</p>
+          ${c.talent_video_url ? `<a class="btn btn-secondary btn-sm" href="${c.talent_video_url}" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="vertical-align:-1px;margin-right:4px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>Watch audition</a>` : '<em style="color:var(--muted);font-size:0.85rem;">No video uploaded.</em>'}
+          <div class="field-row" style="margin-top:16px;">${critFields}</div>
+          <div class="field">
+            <label for="ac-comments-${c.id}">Comments (optional)</label>
+            <textarea id="ac-comments-${c.id}" placeholder="Internal notes"></textarea>
+          </div>
+          <div id="aialert-${c.id}"></div>
+          <button class="btn btn-primary" data-submit-audition="${c.id}" style="margin-top:8px;">Submit score</button>
+        </div>
+      `;
+    }
+
+    function submittedAuditionHtml(c, score) {
+      const breakdown = auditionCriteria.map((cr) => `${cr.name}: ${score.scores?.[cr.id] ?? '—'}/${cr.max_score}`).join(' · ');
+      return `
+        <div class="queue-item">
+          <div class="queue-item-head">
+            <div><h3>${escapeHtml(c.full_name)}</h3>${c.competitionId ? `<p style="margin:1px 0 2px;font-size:0.68rem;font-weight:700;letter-spacing:0.07em;color:var(--gold-bright);">${escapeHtml(c.competitionId)}</p>` : ''}<p class="queue-meta">${escapeHtml(c.categoryLabel || '')} · ${escapeHtml(c.county || '')}</p></div>
+            <span class="badge badge-approved">Scored · ${score.total_score} pts</span>
+          </div>
+          <p class="queue-talent" style="font-size:0.85rem; color:var(--muted);">${breakdown}${score.comments ? ' — ' + escapeHtml(score.comments) : ''}</p>
+        </div>
+      `;
+    }
+
+    async function submitAuditionScore(contestantId) {
+      const alertEl = document.getElementById(`aialert-${contestantId}`);
+      const btn     = document.querySelector(`[data-submit-audition="${contestantId}"]`);
+      const scores  = {};
+      auditionCriteria.forEach((cr) => { const i = document.getElementById(`ac-${contestantId}-${cr.id}`); if (i) scores[cr.id] = Number(i.value); });
+      const comments = document.getElementById(`ac-comments-${contestantId}`)?.value || '';
+      btn.disabled = true; btn.textContent = 'Submitting…';
+      alertEl.innerHTML = '<div class="alert alert-info">Submitting…</div>';
+      const res  = await authFetch('/api/audition-scores', { method: 'POST', body: JSON.stringify({ contestantId, scores, comments }) });
+      const data = await res.json();
+      if (!res.ok) { alertEl.innerHTML = `<div class="alert alert-error">${data.error}</div>`; btn.disabled = false; btn.textContent = 'Submit score'; }
+      else { alertEl.innerHTML = `<div class="alert alert-success">${data.message}</div>`; setTimeout(renderAuditions, 1200); }
+    }
+
+    // ── All Scores ────────────────────────────────────────────────────────
+    async function renderAllScores() {
+      const tbody = document.getElementById('allScoresBody');
+      tbody.innerHTML = '<tr><td colspan="6">Loading…</td></tr>';
+      const scores = await authFetch('/api/audition-scores').then((r) => r.json());
+      if (!scores.length) { tbody.innerHTML = '<tr><td colspan="6">No scores yet.</td></tr>'; return; }
+      tbody.innerHTML = scores.map((s) => `<tr>
+        <td>${escapeHtml(s.contestantName || '')}</td>
+        <td>${escapeHtml(s.categoryLabel || '—')}</td>
+        <td>${escapeHtml(s.judgeName || '')}</td>
+        <td><strong>${s.total_score}</strong></td>
+        <td style="font-size:0.85rem; color:var(--muted);">${escapeHtml(s.comments || '—')}</td>
+        <td style="font-size:0.8rem;">${new Date(s.submitted_at).toLocaleDateString()}</td>
+      </tr>`).join('');
+    }
+
+    // ── Live Rounds Scoring ───────────────────────────────────────────────
+    async function loadRoundTabs() {
+      const rounds  = await fetch('/api/rounds').then((r) => r.json());
+      const tabsEl  = document.getElementById('roundTabs');
+      const scorable = rounds.filter((r) => ['open','scoring'].includes(r.status));
+      if (!scorable.length) { tabsEl.innerHTML = '<p class="empty-state" style="margin:0;">No rounds currently open for scoring.</p>'; return; }
+      tabsEl.innerHTML = scorable.map((r) => `<button class="tab" data-round-id="${r.id}">${escapeHtml(r.name)} <span class="badge badge-${r.status === 'open' ? 'approved' : 'pending'}" style="font-size:0.7rem;">${r.status}</span></button>`).join('');
+      tabsEl.querySelectorAll('.tab').forEach((tab) => {
+        tab.addEventListener('click', () => {
+          tabsEl.querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
+          tab.classList.add('active');
+          activeRoundId = tab.dataset.roundId;
+          renderPerformances(activeRoundId);
+        });
+      });
+      const firstTab = tabsEl.querySelector('.tab');
+      if (firstTab) { firstTab.classList.add('active'); activeRoundId = firstTab.dataset.roundId; renderPerformances(activeRoundId); }
+    }
+
+    async function renderPerformances(roundId) {
+      const container = document.getElementById('performanceQueue');
+      container.innerHTML = '<p class="empty-state">Loading…</p>';
+      const [performances, myScores] = await Promise.all([
+        authFetch(`/api/performances/round/${roundId}`).then((r) => r.json()),
+        authFetch(`/api/performances/round/${roundId}/my-scores`).then((r) => r.json())
+      ]);
+      if (!performances.length) { container.innerHTML = '<p class="empty-state">No performances submitted for this round yet.</p>'; return; }
+      const scoredMap = {};
+      myScores.forEach((s) => { scoredMap[s.performance_id] = s; });
+      container.innerHTML = performances.map((p) => {
+        const scored = scoredMap[p.id];
+        if (scored) return submittedPerfHtml(p, scored);
+        return perfFormHtml(p);
+      }).join('');
+      container.querySelectorAll('[data-submit-perf]').forEach((btn) => btn.addEventListener('click', () => submitPerfScore(btn.dataset.submitPerf)));
+    }
+
+    function perfFormHtml(p) {
+      const critFields = scoringCriteria.map((cr) => `
+        <div class="field">
+          <label for="pc-${p.id}-${cr.id}">${escapeHtml(cr.name)} (0–${cr.max_score})</label>
+          <input type="number" id="pc-${p.id}-${cr.id}" min="0" max="${cr.max_score}" value="${Math.floor(cr.max_score * 0.8)}" />
+        </div>
+      `).join('');
+      return `
+        <div class="queue-item" id="pitem-${p.id}">
+          <div class="queue-item-head">
+            <div>
+              <h3>${escapeHtml(p.contestantName || '')}</h3>
+              <p class="queue-meta">${escapeHtml(p.categoryLabel || '')}${p.song_name ? ' · ' + escapeHtml(p.song_name) : ''}</p>
+            </div>
+            <span class="badge badge-pending">Awaiting score</span>
+          </div>
+          ${p.description ? `<p class="queue-talent">${escapeHtml(p.description)}</p>` : ''}
+          ${p.performance_video_url ? `<a class="btn btn-secondary btn-sm" href="${p.performance_video_url}" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="vertical-align:-1px;margin-right:4px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>Watch performance</a>` : ''}
+          <div class="field-row" style="margin-top:16px;">${critFields}</div>
+          <div class="field"><label for="pc-comments-${p.id}">Comments (optional)</label><textarea id="pc-comments-${p.id}" placeholder="Notes"></textarea></div>
+          <div id="palert-${p.id}"></div>
+          <button class="btn btn-primary" data-submit-perf="${p.id}" style="margin-top:8px;">Submit score</button>
+        </div>
+      `;
+    }
+
+    function submittedPerfHtml(p, score) {
+      const breakdown = scoringCriteria.map((cr) => `${cr.name}: ${score.scores?.[cr.id] ?? '—'}/${cr.max_score}`).join(' · ');
+      return `
+        <div class="queue-item">
+          <div class="queue-item-head">
+            <div><h3>${escapeHtml(p.contestantName || '')}</h3><p class="queue-meta">${escapeHtml(p.categoryLabel || '')}${p.song_name ? ' · ' + escapeHtml(p.song_name) : ''}</p></div>
+            <span class="badge badge-approved">Scored · ${score.total_score} pts</span>
+          </div>
+          <p class="queue-talent" style="font-size:0.85rem; color:var(--muted);">${breakdown}${score.comments ? ' — ' + escapeHtml(score.comments) : ''}</p>
+        </div>
+      `;
+    }
+
+    async function submitPerfScore(performanceId) {
+      const alertEl = document.getElementById(`palert-${performanceId}`);
+      const btn     = document.querySelector(`[data-submit-perf="${performanceId}"]`);
+      const scores  = {};
+      scoringCriteria.forEach((cr) => { const i = document.getElementById(`pc-${performanceId}-${cr.id}`); if (i) scores[cr.id] = Number(i.value); });
+      const comments = document.getElementById(`pc-comments-${performanceId}`)?.value || '';
+      btn.disabled = true; btn.textContent = 'Submitting…';
+      alertEl.innerHTML = '<div class="alert alert-info">Submitting…</div>';
+      const res  = await authFetch(`/api/performances/${performanceId}/score`, { method: 'POST', body: JSON.stringify({ scores, comments }) });
+      const data = await res.json();
+      if (!res.ok) { alertEl.innerHTML = `<div class="alert alert-error">${data.error}</div>`; btn.disabled = false; btn.textContent = 'Submit score'; }
+      else { alertEl.innerHTML = `<div class="alert alert-success">${data.message}</div>`; setTimeout(() => renderPerformances(activeRoundId), 1200); }
+    }
+
+    // ── Qualification Preview ─────────────────────────────────────────────
+    async function renderPreview() {
+      const el = document.getElementById('previewList');
+      el.innerHTML = '<p class="empty-state">Loading…</p>';
+      const data = await authFetch('/api/qualification/preview').then((r) => r.json());
+      if (!data.contestants?.length) { el.innerHTML = '<p class="empty-state">No contestants with scores yet.</p>'; return; }
+      el.innerHTML = `
+        <p style="color:var(--muted); font-size:0.9rem; margin-bottom:12px;">Qualify threshold: <strong>${data.thresholds?.qualify}</strong> pts · Waitlist: <strong>${data.thresholds?.waitlist}</strong> pts</p>
+        <div class="table-wrap"><table class="app-table"><thead><tr><th>Contestant</th><th>Category</th><th>Avg Score</th><th>Judges</th><th>Projected</th></tr></thead><tbody>
+          ${data.contestants.map((c) => `<tr>
+            <td>${escapeHtml(c.full_name)}</td>
+            <td>${escapeHtml(c.category || '—')}</td>
+            <td><strong>${c.avg_score}</strong></td>
+            <td>${c.score_count}</td>
+            <td><span class="badge badge-${c.projected_status === 'qualified' ? 'approved' : c.projected_status === 'waiting_list' ? 'pending' : 'rejected'}">${c.projected_status.replace(/_/g,' ')}</span></td>
+          </tr>`).join('')}
+        </tbody></table></div>
+      `;
+    }
+
+    // ── Section navigation ─────────────────────────────────────────────────
+    (function() {
+      var panels = document.querySelectorAll('.admin-section');
+      var links  = document.querySelectorAll('.sidebar-sublink');
+      function showSection(id) {
+        panels.forEach(function(p) { p.classList.toggle('active', p.id === id); });
+        links.forEach(function(l) { l.classList.toggle('active', l.getAttribute('href') === '#' + id); });
+      }
+      links.forEach(function(l) {
+        l.addEventListener('click', function(e) {
+          e.preventDefault();
+          var id = l.getAttribute('href').slice(1);
+          showSection(id);
+          if (id === 'sec-allscores') renderAllScores();
+          if (id === 'sec-rounds')    loadRoundTabs();
+          if (id === 'sec-preview')   renderPreview();
+        });
+      });
+      showSection('sec-auditions');
+    })();
+
+    if (auth) {
+      document.getElementById('topbarName').textContent = auth.name;
+      loadCriteria().then(() => renderAuditions());
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "spdemo01",
+    "name": "Legacy Hub Incorporated",
+    "logoUrl": "",
+    "link": "",
+    "tier": "Organizer",
+    "createdAt": "2026-06-23T13:59:35.180Z"
+  },
+  {
+    "id": "spdemo02",
+    "name": "Paynesville City Corporation",
+    "logoUrl": "assets/Partner_1.jpg",
+    "link": "",
+    "tier": "Partner",
+    "createdAt": "2026-06-24T00:00:00.000Z"
+  }
+]

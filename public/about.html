@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="assets/logo-icon.png" />
+  <title>About — Our Story, Judges &amp; Team | Liberia Talent Quest</title>
+  <meta name="description" content="Learn about Liberia Talent Quest — our mission to celebrate Liberian talent, meet our judges and leadership team, and discover key dates for Season Two." />
+  <meta name="keywords" content="about Liberia Talent Quest, LTQ judges, Legacy Hub, talent competition mission Liberia" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://liberiatq.com/about.html" /><!-- TODO: update domain -->
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Liberia Talent Quest" />
+  <meta property="og:title" content="About — Our Story, Judges &amp; Team | Liberia Talent Quest" />
+  <meta property="og:description" content="Meet the team, judges, and leadership behind Liberia Talent Quest Season Two. Organized by Legacy Hub Incorporated." />
+  <meta property="og:image" content="https://liberiatq.com/assets/og-image.png" /><!-- TODO: update domain -->
+  <meta property="og:url" content="https://liberiatq.com/about.html" /><!-- TODO: update domain -->
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="About — Liberia Talent Quest" />
+  <meta name="twitter:description" content="Meet the team, judges, and leadership behind Liberia Talent Quest Season Two." />
+  <meta name="twitter:image" content="https://liberiatq.com/assets/og-image.png" /><!-- TODO: update domain -->
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Legacy Hub Incorporated",
+    "alternateName": "Liberia Talent Quest",
+    "url": "https://liberiatq.com/",
+    "logo": "https://liberiatq.com/assets/logo-full.png",
+    "description": "Legacy Hub Incorporated organises Liberia Talent Quest, the nation's premier youth talent competition.",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+231-77-874-7441",
+      "email": "legacyhubinc@gmail.com",
+      "contactType": "general"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Paynesville",
+      "addressCountry": "LR"
+    },
+    "founder": { "@type": "Person", "name": "Burton Dorley" }
+  }
+  </script>
+
+  <!-- Google Analytics GA4 — replace G-XXXXXXXXXX with your Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.setAttribute("data-theme", localStorage.getItem("ltq_theme") || "dark");}catch(e){}</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="assets/logo-icon.png" alt="Liberia Talent Quest" /> Liberia Talent Quest</a>
+      <button class="nav-toggle" aria-label="Toggle menu">Menu</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="register.html">Register</a></li>
+        <li><a href="vote.html">Vote</a></li>
+        <li><a href="leaderboard.html">Leaderboard</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="about.html" class="active">About</a></li>
+        <li><a href="sponsors.html">Sponsors</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth" id="navAuth"></div>
+    </div>
+  </nav>
+
+  <section class="section" style="border-top:none; padding-top:56px;">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow"><span class="season-label">Season Two</span></span>
+        <h2>About Liberia Talent Quest.</h2>
+        <p style="max-width:none;" id="aboutIntro">Liberia Talent Quest is the nation's premier youth talent competition, organised by Legacy Hub Incorporated, Paynesville, Liberia. Open to Liberian citizens and residents between the ages of 15 and 35, LTQ gives performers the platform to be seen, celebrated, and rewarded on a national stage.</p>
+        <p style="max-width:none; margin-top:12px; color:var(--muted);">Contestants submit a video audition reviewed by a panel of qualified judges. Those who qualify advance through mentorship and into weekly live competition shows, where judge scores and public votes together determine who advances. The season culminates in a grand finale and awards ceremony celebrating Liberia's most outstanding emerging talent.</p>
+      </div>
+
+      <div class="au-section-label" style="margin-top:0;">Leadership</div>
+      <div class="au-exec-grid" id="leadershipGrid"><p class="empty-state">Loading…</p></div>
+
+      <div id="mcSection"></div>
+
+      <div class="au-section-label">Judges Panel</div>
+      <p class="au-section-sub" id="judgesSubtitle">Judges drawn from music, dance, comedy, and media — scoring performances alongside the live audience vote.</p>
+      <div class="au-judges-grid" id="judgesGrid"><p class="empty-state">Loading…</p></div>
+
+      <div class="au-section-label">Impact</div>
+      <div class="au-stats" id="impactStats">
+        <div class="au-stat-card"><div class="au-stat-num" id="statSeasons">—</div><div class="au-stat-label">Seasons Run</div></div>
+        <div class="au-stat-card"><div class="au-stat-num" id="statCategories">—</div><div class="au-stat-label">Talent Categories</div></div>
+        <div class="au-stat-card"><div class="au-stat-num" id="statContestants">—</div><div class="au-stat-label">Contestants</div></div>
+        <div class="au-stat-card"><div class="au-stat-num" id="statVotes">—</div><div class="au-stat-label">Votes Cast</div></div>
+        <div class="au-stat-card"><div class="au-stat-num" id="statCounties">—</div><div class="au-stat-label">Counties Represented</div></div>
+      </div>
+
+      <div class="phase-list" style="margin-bottom:8px; margin-top:64px;">
+        <div class="phase">
+          <span class="phase-tag">Format</span>
+          <div>
+            <h3>Competition Details</h3>
+            <p>Contestants submit a video audition for judge review. Approved contestants advance to mentorship and then weekly live competition shows, where the national audience votes for their favorites alongside the judging panel's scores. The season ends with a grand finale and awards.</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="upcomingDates" style="margin-bottom: 40px;"></div>
+
+      <div class="section-head">
+        <h2 style="font-size:1.5rem;">Rules &amp; Regulations</h2>
+      </div>
+      <div class="phase-list" style="margin-bottom:48px;">
+        <div class="phase"><span class="phase-tag">01</span><div><p>Each contestant may enter only one talent category per season.</p></div></div>
+        <div class="phase"><span class="phase-tag">02</span><div><p>Performances must be original or properly licensed — no use of copyrighted material without permission.</p></div></div>
+        <div class="phase"><span class="phase-tag">03</span><div><p>Audition videos must be a single continuous take, no longer than 60 seconds.</p></div></div>
+        <div class="phase"><span class="phase-tag">04</span><div><p>Decisions made by the judging panel are final.</p></div></div>
+        <div class="phase"><span class="phase-tag">05</span><div><p>Contestants found to have submitted false information may be disqualified at any stage.</p></div></div>
+        <div class="phase"><span class="phase-tag">06</span><div><p>Organizers reserve the right to adjust the schedule, format, or rules as needed.</p></div></div>
+      </div>
+
+      <div class="section-head">
+        <h2 style="font-size:1.5rem;">Eligibility Requirements</h2>
+      </div>
+      <div class="phase-list">
+        <div class="phase"><span class="phase-tag">01</span><div><p>Open to Liberian citizens and residents aged 13 and above.</p></div></div>
+        <div class="phase"><span class="phase-tag">02</span><div><p>Contestants under 18 must have parental or guardian consent on file.</p></div></div>
+        <div class="phase"><span class="phase-tag">03</span><div><p>Each applicant must provide a valid phone number and email address.</p></div></div>
+        <div class="phase"><span class="phase-tag">04</span><div><p>Government-issued ID or birth certificate may be requested to confirm age and identity.</p></div></div>
+        <div class="phase"><span class="phase-tag">05</span><div><p>Season One winners are not eligible to compete in the same category this season.</p></div></div>
+      </div>
+
+      <p class="form-note" style="text-align:left; margin-top:24px;">These rules and eligibility terms are a starting draft for the organizers to review and finalize before launch.</p>
+    </div>
+  </section>
+
+  <footer class="site-footer footer-premium">
+    <div class="footer-glow"></div>
+    <div class="wrap footer-top">
+      <div class="footer-col">
+        <h4>Socials</h4>
+        <div class="footer-social" id="footerSocial"></div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+            <li><a href="vote.html">Vote</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="sponsors.html">Sponsors</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul class="footer-contact-list" id="footerContact">
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Paynesville, Liberia</li>
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span> <a href="tel:+231778747441">+231 77-874-7441</a></li>
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span> <a href="mailto:legacyhubinc@gmail.com">legacyhubinc@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="wrap footer-strip">
+      <span class="footer-strip-label">In partnership with</span>
+      <div class="footer-logos" id="footerLogos"></div>
+    </div>
+
+    <div class="wrap footer-bottom">
+      <span>&copy; <span id="footerYear"></span> Legacy Hub Incorporated &middot; Liberia Talent Quest. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="sponsors.html">Sponsors</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    function initials(name) {
+      return (name || '').split(' ').filter(Boolean).slice(0, 2).map((p) => p[0].toUpperCase()).join('');
+    }
+
+    async function loadTeamProfiles() {
+      try {
+        const profiles = await fetch('/api/team-profiles').then((r) => r.json());
+
+        // Leadership (chairman + ceo)
+        const leaders = profiles.filter((p) => p.roleTag === 'chairman' || p.roleTag === 'ceo');
+        const leadershipGrid = document.getElementById('leadershipGrid');
+        if (leaders.length) {
+          leadershipGrid.innerHTML = leaders.map((p) => `
+            <div class="au-exec-card ${p.roleTag}">
+              <span class="au-exec-tag">${escapeHtml(p.title)}</span>
+              <div class="au-exec-top">
+                ${p.photoUrl
+                  ? `<img class="au-exec-photo" src="${escapeHtml(p.photoUrl)}" alt="${escapeHtml(p.name)}" />`
+                  : `<div class="au-judge-avatar" style="width:72px;height:72px;font-size:1.4rem;">${escapeHtml(initials(p.name))}</div>`}
+                <div>
+                  <div class="au-exec-name">${escapeHtml(p.name)}</div>
+                  <div class="au-exec-role">${escapeHtml(p.title)}</div>
+                </div>
+              </div>
+              ${p.bio   ? `<p class="au-exec-bio">${escapeHtml(p.bio)}</p>`    : ''}
+              ${p.quote ? `<p class="au-exec-quote">"${escapeHtml(p.quote)}"</p>` : ''}
+            </div>
+          `).join('');
+        } else {
+          leadershipGrid.innerHTML = '';
+        }
+
+        // MC
+        const mc = profiles.find((p) => p.roleTag === 'mc');
+        const mcSection = document.getElementById('mcSection');
+        if (mc) {
+          mcSection.innerHTML = `
+            <div class="au-section-label">Master of Ceremony</div>
+            <div class="au-mc">
+              <div class="au-mc-bg"></div>
+              <div class="au-mc-content">
+                ${mc.photoUrl
+                  ? `<img class="au-mc-photo" src="${escapeHtml(mc.photoUrl)}" alt="${escapeHtml(mc.name)}" />`
+                  : `<div class="au-judge-avatar" style="width:100px;height:100px;font-size:2rem;">${escapeHtml(initials(mc.name))}</div>`}
+                <div class="au-mc-text">
+                  <span class="au-mc-tag">Hosting every live show</span>
+                  <h3>${escapeHtml(mc.name)}</h3>
+                  ${mc.bio ? `<p>${escapeHtml(mc.bio)}</p>` : ''}
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          mcSection.innerHTML = '';
+        }
+
+        // Judges
+        const judges = profiles.filter((p) => p.roleTag === 'judge' || p.roleTag === 'head_judge');
+        const judgesGrid = document.getElementById('judgesGrid');
+        const judgesSub  = document.getElementById('judgesSubtitle');
+        if (judges.length) {
+          if (judgesSub) judgesSub.textContent = `${judges.length} judge${judges.length !== 1 ? 's' : ''} drawn from music, dance, comedy, and media — scoring performances alongside the live audience vote.`;
+          judgesGrid.innerHTML = judges.map((p) => `
+            <div class="au-judge-card">
+              ${p.photoUrl
+                ? `<img class="au-judge-photo" src="${escapeHtml(p.photoUrl)}" alt="${escapeHtml(p.name)}" />`
+                : `<div class="au-judge-avatar">${escapeHtml(initials(p.name))}</div>`}
+              <div class="au-judge-name">${escapeHtml(p.name)}</div>
+              <div class="au-judge-role">${escapeHtml(p.title)}</div>
+              ${p.bio ? `<p class="au-judge-bio">${escapeHtml(p.bio)}</p>` : ''}
+            </div>
+          `).join('');
+        } else {
+          judgesGrid.innerHTML = '<p class="empty-state">Judges will be announced soon.</p>';
+        }
+      } catch {
+        document.getElementById('leadershipGrid').innerHTML = '';
+        document.getElementById('judgesGrid').innerHTML = '';
+      }
+    }
+
+    async function loadUpcomingDates() {
+      const container = document.getElementById('upcomingDates');
+      try {
+        const res = await fetch('/api/schedule');
+        const schedule = await res.json();
+        if (!schedule.length) return;
+        container.innerHTML = `
+          <div class="section-head"><h2 style="font-size:1.5rem;">Key Dates</h2></div>
+          <div class="table-wrap">
+            ${schedule.map((e) => `
+              <div class="board-row">
+                <span class="board-rank" style="font-size:0.9rem;">${new Date(e.datetime).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}</span>
+                <div>
+                  <div class="board-name" style="font-size:0.98rem;">${escapeHtml(e.title)}</div>
+                  <div class="board-meta">${escapeHtml(e.location || '')}</div>
+                </div>
+                <div class="board-votes" style="font-size:0.85rem; color:var(--muted);">${new Date(e.datetime).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })}</div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } catch {}
+    }
+
+    async function loadImpactStats() {
+      try {
+        const stats = await fetch('/api/stats').then((r) => r.json());
+        document.getElementById('statContestants').textContent = stats.contestants;
+        document.getElementById('statVotes').textContent       = stats.votes.toLocaleString();
+        document.getElementById('statCounties').textContent    = stats.counties;
+        document.getElementById('statCategories').textContent  = stats.categories;
+        document.getElementById('statSeasons').textContent     = stats.seasons;
+      } catch {}
+    }
+
+    async function loadCategoryIntro() {
+      try {
+        const cats = await fetch('/api/categories').then((r) => r.json());
+        if (!cats.length) return;
+        const names = cats.map((c) => c.name);
+        const list  = names.length > 1
+          ? names.slice(0, -1).join(', ') + ', and ' + names[names.length - 1]
+          : names[0];
+        const el = document.getElementById('aboutIntro');
+        if (el) el.textContent = `Liberia Talent Quest is the nation's premier youth talent competition, organised by Legacy Hub Incorporated, Paynesville, Liberia. Open to Liberian citizens and residents between the ages of 15 and 35, LTQ gives performers across ${list} the platform to be seen, celebrated, and rewarded on a national stage.`;
+      } catch {}
+    }
+
+    initSeasonLabel();
+    loadTeamProfiles();
+    loadUpcomingDates();
+    loadImpactStats();
+    loadCategoryIntro();
+  </script>
+</body>
+</html>

@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Communications Manager — Liberia Talent Quest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("ltq_theme")||"dark");}catch(e){}</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="admin-shell">
+
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-brand"><img src="assets/logo-icon.png" alt="LTQ" /> Liberia Talent Quest</div>
+      <nav class="sidebar-nav" aria-label="Communications Manager navigation">
+        <span class="sidebar-section">Communications</span>
+        <a href="#sec-notifications"  class="sidebar-sublink">Send Notifications</a>
+        <a href="#sec-announcements"  class="sidebar-sublink">Announcements</a>
+        <a href="#sec-schedule"       class="sidebar-sublink">Schedule</a>
+        <a href="#sec-integrations"   class="sidebar-sublink">Notification Channels</a>
+        <div class="sidebar-divider"></div>
+        <span class="sidebar-section">Public site</span>
+        <a href="index.html" class="sidebar-link">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Home
+        </a>
+        <a href="about.html" class="sidebar-link">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          About
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="sidebar-link" id="sidebarLogout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;font-family:var(--font-body);">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Log out
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <button class="topbar-toggle" id="topbarToggle" aria-label="Toggle sidebar">&#9776;</button>
+        <span class="topbar-title">Communications Manager</span>
+        <div class="topbar-user">
+          <strong id="topbarName"></strong>
+          <button class="topbar-logout" id="topbarLogout">Log out</button>
+        </div>
+      </header>
+
+      <div class="admin-content">
+
+        <!-- ── SEND NOTIFICATIONS ── -->
+        <div class="admin-section active" id="sec-notifications">
+          <div class="stat-grid" style="margin-bottom:28px;">
+            <div class="stat-card stat-card--blue">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
+              <div class="num" id="statSent">—</div>
+              <div class="stat-label">Notifications sent (total)</div>
+            </div>
+            <div class="stat-card stat-card--teal">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+              <div class="num" id="statRecent">—</div>
+              <div class="stat-label">Last 7 days</div>
+            </div>
+          </div>
+
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Send Notification</h2>
+            <p>Send Email + WhatsApp notifications to contestant groups or individual contestants. Each send is logged.</p>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 300px; gap:24px; align-items:start; margin-bottom:32px;">
+
+          <div class="form-card">
+            <div id="notifAlert"></div>
+            <form id="notifForm">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                <div class="field">
+                  <label for="notifType">Notification type</label>
+                  <select id="notifType">
+                    <option value="general_update">General update</option>
+                    <option value="audition_schedule">Audition schedule</option>
+                    <option value="qualification_notice">Qualification notice</option>
+                    <option value="rehearsal_notice">Rehearsal notice</option>
+                    <option value="elimination_notice">Elimination notice</option>
+                    <option value="finalist_announcement">Finalist announcement</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="notifRecipients">Recipients</label>
+                  <select id="notifRecipients">
+                    <option value="all">All contestants</option>
+                    <option value="qualified">Qualified</option>
+                    <option value="waiting_list">Waiting list</option>
+                    <option value="registered">Registered (awaiting scoring)</option>
+                    <option value="individual">Individual contestant</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field" id="individualPickerField" style="display:none;">
+                <label for="notifContestant">Select contestant</label>
+                <select id="notifContestant"><option value="">— select —</option></select>
+              </div>
+              <div class="field"><label for="notifSubject">Subject</label><input type="text" id="notifSubject" required placeholder="e.g. Rehearsal Schedule — Round 2" /></div>
+              <div class="field"><label for="notifMessage">Message</label><textarea id="notifMessage" rows="6" required placeholder="Write the full message here…"></textarea></div>
+              <div id="channelStatus" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px;">
+                <span style="font-size:0.8rem;color:var(--muted);margin-right:2px;">Channels:</span>
+                <span class="ch-pill ch-email" style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:0.8rem;font-weight:600;background:rgba(59,130,246,0.12);color:var(--brand-blue,#3b82f6);border:1px solid rgba(59,130,246,0.25);">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+                  Email
+                  <span id="emailStatus" style="font-size:0.72rem;opacity:0.8;">checking…</span>
+                </span>
+                <span class="ch-wa" style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:0.8rem;font-weight:600;background:rgba(20,184,166,0.12);color:var(--teal,#14b8a6);border:1px solid rgba(20,184,166,0.25);">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.58 3.842 1.585 5.4L2 22l4.737-1.55A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10S17.522 2 11.999 2zm0 18a7.96 7.96 0 0 1-4.072-1.115l-.292-.174-3.024.99.919-2.948-.19-.303A7.97 7.97 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-7.999 8z"/></svg>
+                  WhatsApp
+                  <span id="waStatus" style="font-size:0.72rem;opacity:0.8;">checking…</span>
+                </span>
+              </div>
+              <button type="submit" class="btn btn-primary">Send notification</button>
+            </form>
+          </div>
+
+          <!-- Templates panel -->
+          <div>
+            <div class="form-card">
+              <h3 style="font-size:0.95rem; color:var(--gold-bright); margin:0 0 8px;">Message templates</h3>
+              <p style="font-size:0.83rem; color:var(--muted); margin:0 0 12px;">Click a template to auto-fill the form.</p>
+              <div id="templateList" style="display:flex; flex-direction:column; gap:8px;"></div>
+            </div>
+          </div>
+
+          </div><!-- /grid -->
+
+          <!-- History -->
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.2rem; margin:0 0 8px;">Recent notifications</h2>
+          </div>
+          <div id="notifHistory"><p class="empty-state">Loading history…</p></div>
+        </div>
+
+        <!-- ── ANNOUNCEMENTS ── -->
+        <div class="admin-section" id="sec-announcements">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Announcements</h2>
+            <p>Post public announcements visible on the website.</p>
+          </div>
+          <div class="form-card" style="margin-bottom:24px;">
+            <div id="annAlert"></div>
+            <form id="annForm">
+              <div class="field"><label for="annTitle">Title</label><input type="text" id="annTitle" required placeholder="e.g. Registration is now open!" /></div>
+              <div class="field"><label for="annMessage">Message</label><textarea id="annMessage" rows="4" required placeholder="Write your announcement here…"></textarea></div>
+              <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+                <input type="checkbox" id="annSeasonSpecific" style="width:auto; margin:0;" />
+                <label for="annSeasonSpecific" style="margin:0;">Global / all seasons <span style="color:var(--muted); font-size:0.8rem;">(uncheck to tie to current season only)</span></label>
+              </div>
+              <button type="submit" class="btn btn-primary">Post announcement</button>
+            </form>
+          </div>
+          <div id="annList"><p class="empty-state">Loading…</p></div>
+        </div>
+
+        <!-- ── SCHEDULE ── -->
+        <div class="admin-section" id="sec-schedule">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Event Schedule</h2>
+            <p>Add and remove schedule entries shown on the public site.</p>
+          </div>
+          <div class="form-card" style="margin-bottom:24px;">
+            <div id="schedAlert"></div>
+            <form id="schedForm">
+              <div class="field"><label for="schedTitle">Event title</label><input type="text" id="schedTitle" required placeholder="e.g. Live Show — Week 1" /></div>
+              <div class="field-row">
+                <div class="field"><label for="schedDt">Date &amp; time</label><input type="datetime-local" id="schedDt" required /></div>
+                <div class="field"><label for="schedLoc">Location</label><input type="text" id="schedLoc" placeholder="e.g. Unity Conference Center, Monrovia" /></div>
+              </div>
+              <div class="field"><label for="schedNotes">Notes (optional)</label><input type="text" id="schedNotes" placeholder="e.g. Doors open at 5 PM" /></div>
+              <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+                <input type="checkbox" id="schedSeasonSpecific" style="width:auto; margin:0;" />
+                <label for="schedSeasonSpecific" style="margin:0;">Global / all seasons <span style="color:var(--muted); font-size:0.8rem;">(uncheck to tie to current season only)</span></label>
+              </div>
+              <button type="submit" class="btn btn-primary">Add to schedule</button>
+            </form>
+          </div>
+          <div id="schedList"><p class="empty-state">Loading…</p></div>
+        </div>
+
+        <!-- ── NOTIFICATION CHANNELS ── -->
+        <div class="admin-section" id="sec-integrations">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display);font-size:1.5rem;margin:0 0 8px;">Notification Channels</h2>
+            <p>Configure Email and WhatsApp delivery. Credentials are saved in the database — no server files to edit, no restart needed.</p>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:28px;" class="integrations-grid">
+
+            <!-- ── EMAIL CARD ── -->
+            <div class="form-card" style="margin:0;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:rgba(59,130,246,0.12);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue,#3b82f6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+                  </span>
+                  <strong style="font-size:1rem;">Email (Gmail SMTP)</strong>
+                </div>
+                <span id="emailIntegBadge" style="font-size:0.75rem;padding:3px 10px;border-radius:99px;font-weight:600;background:rgba(107,114,128,0.15);color:var(--muted);">checking…</span>
+              </div>
+              <div id="emailIntegAlert" style="margin-bottom:12px;"></div>
+              <form id="emailIntegForm">
+                <div class="field">
+                  <label for="intSmtpUser">Gmail address</label>
+                  <input type="email" id="intSmtpUser" placeholder="yourname@gmail.com" autocomplete="username" />
+                </div>
+                <div class="field">
+                  <label for="intSmtpPass">App password <span style="font-weight:400;color:var(--muted);font-size:0.78rem;">(leave blank to keep existing)</span></label>
+                  <div style="display:flex;gap:8px;">
+                    <input type="password" id="intSmtpPass" placeholder="xxxx xxxx xxxx xxxx" autocomplete="new-password" style="flex:1;" />
+                    <button type="button" class="btn btn-secondary" style="padding:0 12px;font-size:0.8rem;white-space:nowrap;" onclick="toggleVis('intSmtpPass',this)">Show</button>
+                  </div>
+                  <span class="hint">Generate at myaccount.google.com → Security → App passwords</span>
+                </div>
+                <div class="field">
+                  <label for="intSmtpFrom">From address</label>
+                  <input type="text" id="intSmtpFrom" placeholder="Liberia Talent Quest &lt;yourname@gmail.com&gt;" />
+                  <span class="hint">Format: Display Name &lt;email@gmail.com&gt;</span>
+                </div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;">
+                  <button type="submit" class="btn btn-primary" id="saveEmailBtn">Save</button>
+                  <button type="button" class="btn btn-secondary" id="testEmailIntegBtn">Send test email to me</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- ── WHATSAPP CARD ── -->
+            <div class="form-card" style="margin:0;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <span style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:rgba(20,184,166,0.12);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--teal,#14b8a6)" stroke="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.58 3.842 1.585 5.4L2 22l4.737-1.55A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10S17.522 2 11.999 2zm0 18a7.96 7.96 0 0 1-4.072-1.115l-.292-.174-3.024.99.919-2.948-.19-.303A7.97 7.97 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-7.999 8z"/></svg>
+                  </span>
+                  <strong style="font-size:1rem;">WhatsApp (Meta Cloud API)</strong>
+                </div>
+                <span id="waIntegBadge" style="font-size:0.75rem;padding:3px 10px;border-radius:99px;font-weight:600;background:rgba(107,114,128,0.15);color:var(--muted);">checking…</span>
+              </div>
+              <div id="waIntegAlert" style="margin-bottom:12px;"></div>
+              <form id="waIntegForm">
+                <div class="field">
+                  <label for="intWaPhoneId">Phone Number ID</label>
+                  <input type="text" id="intWaPhoneId" placeholder="1234567890123456" />
+                  <span class="hint">From Meta App Dashboard → WhatsApp → API Setup</span>
+                </div>
+                <div class="field">
+                  <label for="intWaToken">Access token <span style="font-weight:400;color:var(--muted);font-size:0.78rem;">(leave blank to keep existing)</span></label>
+                  <div style="display:flex;gap:8px;">
+                    <input type="password" id="intWaToken" placeholder="EAAxxxxxxx…" autocomplete="new-password" style="flex:1;" />
+                    <button type="button" class="btn btn-secondary" style="padding:0 12px;font-size:0.8rem;white-space:nowrap;" onclick="toggleVis('intWaToken',this)">Show</button>
+                  </div>
+                  <span class="hint">Permanent Token from Meta Business Suite</span>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                  <div class="field" style="margin:0;">
+                    <label for="intWaTemplate">Template name</label>
+                    <input type="text" id="intWaTemplate" placeholder="ltq_notification" />
+                  </div>
+                  <div class="field" style="margin:0;">
+                    <label for="intWaLang">Language code</label>
+                    <input type="text" id="intWaLang" placeholder="en" maxlength="10" />
+                  </div>
+                </div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
+                  <button type="submit" class="btn btn-primary" id="saveWaBtn">Save</button>
+                  <button type="button" class="btn btn-secondary" id="testWaIntegBtn">Send test message</button>
+                </div>
+                <div id="testWaPhoneWrap" style="display:none;margin-top:12px;">
+                  <div style="display:flex;gap:8px;">
+                    <input type="tel" id="intTestPhone" placeholder="+231771234567" style="flex:1;" />
+                    <button type="button" class="btn btn-primary" id="testWaSendBtn" style="white-space:nowrap;">Send</button>
+                  </div>
+                  <span class="hint">Phone number must have WhatsApp installed</span>
+                </div>
+              </form>
+            </div>
+          </div><!-- /integrations-grid -->
+
+          <!-- Setup guide -->
+          <details style="background:var(--panel-raised);border:1px solid var(--panel-border);border-radius:12px;padding:0;">
+            <summary style="cursor:pointer;padding:14px 18px;font-weight:600;font-size:0.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+              <span>Setup guide — how to get these credentials</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div style="padding:0 18px 18px;font-size:0.87rem;line-height:1.8;color:var(--muted);">
+              <p style="font-weight:600;color:var(--paper);margin:12px 0 4px;">Email (takes ~2 minutes)</p>
+              <ol style="margin:0;padding-left:20px;">
+                <li>Go to <strong style="color:var(--paper);">myaccount.google.com</strong> → Security → 2-Step Verification → enable it</li>
+                <li>Same page → <strong style="color:var(--paper);">App passwords</strong> → name it "LTQ" → Generate</li>
+                <li>Copy the 16-character password → paste into App password above</li>
+                <li>Gmail address = your Google account email. From = any display name you want.</li>
+              </ol>
+              <p style="font-weight:600;color:var(--paper);margin:16px 0 4px;">WhatsApp (takes a few hours for template approval)</p>
+              <ol style="margin:0;padding-left:20px;">
+                <li>Go to <strong style="color:var(--paper);">developers.facebook.com</strong> → My Apps → Create App → Business</li>
+                <li>Add <strong style="color:var(--paper);">WhatsApp</strong> product to your app</li>
+                <li>App Dashboard → WhatsApp → API Setup → copy <strong style="color:var(--paper);">Phone Number ID</strong></li>
+                <li>Same page → generate a <strong style="color:var(--paper);">Permanent Token</strong> (System User in Meta Business Suite)</li>
+                <li>Meta Business Suite → WhatsApp → Message Templates → Create:
+                  <ul style="margin:4px 0;padding-left:18px;">
+                    <li>Name: <code style="background:rgba(255,255,255,0.07);padding:1px 5px;border-radius:4px;">ltq_notification</code>, Category: <strong style="color:var(--paper);">UTILITY</strong>, Language: English</li>
+                    <li>Body: <code style="background:rgba(255,255,255,0.07);padding:2px 6px;border-radius:4px;font-size:0.82rem;">Hello {{1}},<br><br>{{2}}<br><br>— Liberia Talent Quest</code></li>
+                  </ul>
+                </li>
+                <li>Submit → wait for approval (UTILITY templates usually approved within a few hours)</li>
+              </ol>
+              <p style="margin-top:12px;color:var(--teal,#14b8a6);">Both channels work independently — if WhatsApp isn't configured, emails still go through.</p>
+            </div>
+          </details>
+        </div><!-- /sec-integrations -->
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Announcement Modal -->
+  <div class="modal-overlay" id="editAnnModal">
+    <div class="modal" style="max-width:520px;">
+      <h3>Edit Announcement</h3>
+      <div id="editAnnAlert"></div>
+      <form id="editAnnForm">
+        <input type="hidden" id="editAnnId" />
+        <div class="field"><label>Title</label><input type="text" id="editAnnTitle" required /></div>
+        <div class="field"><label>Message</label><textarea id="editAnnMsg" rows="4" required></textarea></div>
+        <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+          <input type="checkbox" id="editAnnSeasonSpecific" style="width:auto; margin:0;" />
+          <label for="editAnnSeasonSpecific" style="margin:0;">Global / all seasons <span style="color:var(--muted); font-size:0.8rem;">(uncheck to tie to current season only)</span></label>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="closeEditAnnModal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1;">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Schedule Modal -->
+  <div class="modal-overlay" id="editSchedModal">
+    <div class="modal" style="max-width:520px;">
+      <h3>Edit Schedule Entry</h3>
+      <div id="editSchedAlert"></div>
+      <form id="editSchedForm">
+        <input type="hidden" id="editSchedId" />
+        <div class="field"><label>Title</label><input type="text" id="editSchedTitle" required /></div>
+        <div class="field"><label>Date &amp; Time</label><input type="datetime-local" id="editSchedDt" required /></div>
+        <div class="field"><label>Location</label><input type="text" id="editSchedLoc" /></div>
+        <div class="field"><label>Notes</label><input type="text" id="editSchedNotes" /></div>
+        <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+          <input type="checkbox" id="editSchedSeasonSpecific" style="width:auto; margin:0;" />
+          <label for="editSchedSeasonSpecific" style="margin:0;">Global / all seasons <span style="color:var(--muted); font-size:0.8rem;">(uncheck to tie to current season only)</span></label>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="closeEditSchedModal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1;">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const auth = guardRole(['communications_manager', 'superuser', 'admin']);
+
+    // Hide Notification Channels section unless user has configure_notifications permission
+    if (!hasPermission('configure_notifications')) {
+      const intLink = document.querySelector('a[href="#sec-integrations"]');
+      if (intLink) intLink.closest('a').remove();
+      const intSec = document.getElementById('sec-integrations');
+      if (intSec) intSec.remove();
+    }
+
+    function doLogout() { clearAuth(); window.location.href = 'index.html'; }
+    document.getElementById('sidebarLogout').addEventListener('click', doLogout);
+    document.getElementById('topbarLogout').addEventListener('click', doLogout);
+
+    // ── Message templates ─────────────────────────────────────────────────
+    const NOTIF_TEMPLATES = [
+      {
+        type: 'audition_schedule',
+        label: 'Audition schedule',
+        subject: 'Your Audition is Scheduled — Liberia Talent Quest Season Two',
+        message: 'Dear [Contestant Name],\n\nYour audition for Liberia Talent Quest Season Two has been confirmed. Please review the details below carefully:\n\n📍 Venue: [Venue Name & Address]\n📅 Date: [Day, Month Date, Year]\n⏰ Reporting Time: [Time] (please arrive 30 minutes early)\n🎤 Category: [Your Category]\n\nWhat to bring:\n• A valid national ID or passport\n• Any props or materials required for your performance\n• This confirmation message or the reference code above\n\nImportant notes:\n• Late arrivals may forfeit their audition slot\n• You will have [X] minutes to perform\n• Results will be communicated within [X] days\n\nFor any questions, call us on +231 77-874-7441 or reply to this message.\n\nWe look forward to seeing you perform!\n\nWarm regards,\nLiberia Talent Quest Team'
+      },
+      {
+        type: 'audition_schedule',
+        label: 'Audition reminder (day before)',
+        subject: 'Reminder: Your Audition is Tomorrow — Liberia Talent Quest',
+        message: 'Dear [Contestant Name],\n\nThis is a friendly reminder that your audition for Liberia Talent Quest Season Two is TOMORROW.\n\n📍 Venue: [Venue Name]\n⏰ Your slot: [Time]\n\nPlease remember to:\n✅ Arrive at least 30 minutes before your slot\n✅ Bring a valid ID\n✅ Have your performance ready\n\nWe are excited to see you tomorrow. Break a leg!\n\nThe LTQ Team\n+231 77-874-7441'
+      },
+      {
+        type: 'qualification_notice',
+        label: 'Qualification notice',
+        subject: 'Congratulations — You Have Qualified for Liberia Talent Quest Season Two!',
+        message: 'Dear [Contestant Name],\n\nWe are thrilled to inform you that you have officially QUALIFIED for Liberia Talent Quest Season Two!\n\nYour audition impressed our panel of judges and you have earned your place among the best young talents in Liberia. This is a major achievement — be proud.\n\nWHAT HAPPENS NEXT:\n1. You will receive your login credentials by email within 24 hours\n2. Use your dashboard to confirm your participation\n3. Watch for our next message with the rehearsal schedule\n4. Ensure your contact details are up to date\n\nIMPORTANT: Please confirm your participation by replying to this message or calling +231 77-874-7441 within 48 hours.\n\nWelcome to the LTQ Stage!\n\nThe Liberia Talent Quest Team'
+      },
+      {
+        type: 'qualification_notice',
+        label: 'Waiting list notice',
+        subject: 'Your Liberia Talent Quest Application — Waiting List Update',
+        message: 'Dear [Contestant Name],\n\nThank you for auditioning for Liberia Talent Quest Season Two.\n\nAfter reviewing all applications, we are pleased to inform you that your performance has earned you a place on our WAITING LIST. This means:\n\n• Your scores were strong and you are being considered\n• If any qualified contestant is unable to proceed, you will be invited to join the competition\n• You will hear from us within [X] days\n\nPlease keep your phone and email accessible in case we need to reach you quickly.\n\nWe appreciate your talent and your time. Stay ready.\n\nWith respect,\nLiberia Talent Quest Team\n+231 77-874-7441'
+      },
+      {
+        type: 'rehearsal_notice',
+        label: 'Rehearsal notice',
+        subject: 'Rehearsal Schedule — Liberia Talent Quest Season Two',
+        message: 'Dear [Contestant Name],\n\nPlease be informed of the upcoming rehearsal for Liberia Talent Quest Season Two:\n\n📍 Location: [Venue Name & Address]\n📅 Date: [Day, Month Date, Year]\n⏰ Time: [Start Time] — [End Time]\n👔 Dress code: [Casual / Stage costume / Practice wear]\n\nAll qualified contestants are REQUIRED to attend. If you have an emergency or conflict, contact your Contestant Manager immediately.\n\nWhat to bring:\n• Your performance materials (music, props, etc.)\n• A notebook for notes from the director\n• Water and a light snack\n\nThis is your opportunity to get comfortable with the stage before the live show. Take it seriously.\n\nQuestions? Call us: +231 77-874-7441\n\nSee you there,\nThe LTQ Production Team'
+      },
+      {
+        type: 'rehearsal_notice',
+        label: 'Technical run-through notice',
+        subject: 'Technical Run-Through — Liberia Talent Quest [Round Name]',
+        message: 'Dear [Contestant Name],\n\nA technical run-through has been scheduled before the [Round Name] live show.\n\n📍 Venue: [Location]\n📅 Date: [Date]\n⏰ Time: [Time]\n\nDuring this session:\n• Sound check and lighting for each act\n• Stage positioning and movement review\n• Timing confirmation for your performance\n• Final notes from the production team\n\nYour assigned performance slot: [Slot Number/Time]\n\nThis is mandatory. Non-attendance without prior notice will affect your readiness for the live show.\n\nThank you,\nLTQ Production Team'
+      },
+      {
+        type: 'elimination_notice',
+        label: 'Elimination notice',
+        subject: 'Regarding Your Participation — Liberia Talent Quest Season Two',
+        message: 'Dear [Contestant Name],\n\nThank you sincerely for your dedication, courage, and the remarkable performances you delivered throughout your journey in Liberia Talent Quest Season Two.\n\nAfter the combined evaluation of judges\' scores and public votes from the [Round Name] round, we regret to inform you that you have not advanced to the next stage of the competition.\n\nThis decision was not easy. Your talent is real, your presence was felt, and you represented [County] with dignity.\n\nWhat this means:\n• Your profile and performance history remain on record\n• You are welcome to apply again in future seasons\n• We encourage you to keep performing and developing your craft\n\nWe are proud of everything you have contributed to this season. Liberia saw you, and Liberia is proud.\n\nWith deep appreciation,\nThe Liberia Talent Quest Team\n+231 77-874-7441'
+      },
+      {
+        type: 'finalist_announcement',
+        label: 'Finalist announcement',
+        subject: 'YOU ARE A FINALIST — Liberia Talent Quest Grand Finale!',
+        message: 'Dear [Contestant Name],\n\n🎉 CONGRATULATIONS! 🎉\n\nYou have advanced to the GRAND FINALE of Liberia Talent Quest Season Two!\n\nYou are among the top performers in the entire competition. This is an extraordinary achievement and a testament to your hard work, your talent, and the support of everyone who voted for you.\n\nTHE GRAND FINALE:\n📍 Venue: Capitol Building, Monrovia\n📅 Date: Saturday, August 23rd, 2026\n⏰ Show starts: 6:00 PM (arrive by 4:00 PM)\n📺 Live on national television\n\nYour Contestant Manager will be in touch with the final schedule, costume review, and stage briefing.\n\nTell your family. Tell your community. Liberia will be watching.\n\nLet\'s make history together!\n\nWith pride,\nThe Liberia Talent Quest Team'
+      },
+      {
+        type: 'general_update',
+        label: 'General update',
+        subject: 'Important Update — Liberia Talent Quest Season Two',
+        message: 'Dear [Contestant Name],\n\nWe have an important update to share with you regarding Liberia Talent Quest Season Two.\n\n[Write your message here]\n\nIf you have any questions, please contact us at:\n📞 +231 77-874-7441\n📧 legacyhubinc@gmail.com\n\nThank you for your continued commitment to this competition.\n\nWarm regards,\nThe Liberia Talent Quest Team'
+      },
+      {
+        type: 'general_update',
+        label: 'Payment reminder',
+        subject: 'Registration Fee Reminder — Liberia Talent Quest Season Two',
+        message: 'Dear [Contestant Name],\n\nThis is a reminder that your registration fee for Liberia Talent Quest Season Two has not yet been confirmed.\n\nTo secure your place in the competition, please complete your payment as soon as possible using one of the following methods:\n\n💚 Orange Money: [Number]\n💛 MTN Mobile Money: [Number]\n💵 Cash payment: Legacy Hub Office, Paynesville\n\nRegistration fee: [Amount]\nPayment deadline: [Date]\n\nOnce payment is made, please send your proof of payment to +231 77-874-7441 or email legacyhubinc@gmail.com with your full name as reference.\n\nNote: Applications with unpaid fees after the deadline will be cancelled.\n\nThank you,\nLTQ Finance Team'
+      }
+    ];
+
+    function renderTemplates() {
+      const container = document.getElementById('templateList');
+      if (!container) return;
+      container.innerHTML = NOTIF_TEMPLATES.map((t, i) => `
+        <button type="button" class="btn btn-secondary" style="text-align:left;padding:8px 12px;font-size:0.83rem;width:100%;" data-tpl-idx="${i}">${t.label}</button>
+      `).join('');
+      container.querySelectorAll('[data-tpl-idx]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const t = NOTIF_TEMPLATES[Number(btn.dataset.tplIdx)];
+          if (!t) return;
+          document.getElementById('notifType').value    = t.type;
+          document.getElementById('notifSubject').value = t.subject;
+          document.getElementById('notifMessage').value = t.message;
+          document.getElementById('notifSubject').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      });
+    }
+
+    // ── Channel status pills ──────────────────────────────────────────────
+    async function loadChannelStatus() {
+      try {
+        const ch = await fetch('/api/notifications/channels').then((r) => r.json());
+        const emailEl = document.getElementById('emailStatus');
+        const waEl    = document.getElementById('waStatus');
+        if (emailEl) emailEl.textContent = ch.email    ? '✓ active' : '⚠ not configured';
+        if (waEl)    waEl.textContent    = ch.whatsapp ? '✓ active' : '⚠ not configured';
+        const waPill = document.querySelector('.ch-wa');
+        if (waPill && !ch.whatsapp) {
+          waPill.style.opacity = '0.45';
+          waPill.title = 'Add WHATSAPP_TOKEN and WHATSAPP_PHONE_ID to .env to enable WhatsApp delivery';
+        }
+      } catch {}
+    }
+
+    // ── Individual contestant picker visibility ────────────────────────────
+    document.getElementById('notifRecipients').addEventListener('change', function() {
+      document.getElementById('individualPickerField').style.display = this.value === 'individual' ? '' : 'none';
+    });
+
+    async function loadContestantsForNotif() {
+      const all = await authFetch('/api/contestants/queue').then((r) => r.json());
+      const sel = document.getElementById('notifContestant');
+      sel.innerHTML = '<option value="">— select —</option>';
+      all.forEach((c) => {
+        const o = document.createElement('option');
+        o.value = c.id;
+        o.textContent = c.full_name + ' (' + c.status.replace(/_/g,' ') + ')';
+        sel.appendChild(o);
+      });
+    }
+
+    // ── Notification history ──────────────────────────────────────────────
+    function deliveryCell(n) {
+      const emailCount = n.email_sent_count ?? n.sent_count ?? 0;
+      const waCount    = n.wa_sent_count    ?? 0;
+      const parts = [];
+      if (emailCount > 0) parts.push(`<span style="color:var(--brand-blue,#3b82f6);">✉ ${emailCount}</span>`);
+      if (waCount    > 0) parts.push(`<span style="color:var(--teal,#14b8a6);">WA: ${waCount}</span>`);
+      return parts.length ? parts.join(' ') : n.sent_count ?? 0;
+    }
+
+    async function renderNotifHistory() {
+      const el = document.getElementById('notifHistory');
+      const list = await authFetch('/api/notifications').then((r) => r.json());
+      const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+      document.getElementById('statSent').textContent   = list.length;
+      document.getElementById('statRecent').textContent = list.filter((n) => new Date(n.sent_at) > weekAgo).length;
+      if (!list.length) { el.innerHTML = '<p class="empty-state">No notifications sent yet.</p>'; return; }
+      el.innerHTML = `<div class="table-wrap"><table class="app-table"><thead><tr><th>Subject</th><th>Recipients</th><th>Delivered</th><th>By</th><th>Date</th></tr></thead><tbody>
+        ${list.map((n) => `<tr>
+          <td>${escapeHtml(n.subject)}</td>
+          <td>${escapeHtml(n.recipients_type.replace(/_/g,' '))}${n.recipient_name ? ' — ' + escapeHtml(n.recipient_name) : ''}</td>
+          <td>${deliveryCell(n)}</td>
+          <td>${escapeHtml(n.sent_by_name || '?')}</td>
+          <td style="font-size:0.85rem;">${new Date(n.sent_at).toLocaleString()}</td>
+        </tr>`).join('')}
+      </tbody></table></div>`;
+    }
+
+    document.getElementById('notifForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl    = document.getElementById('notifAlert');
+      const btn        = e.target.querySelector('button[type="submit"]');
+      const recipients = document.getElementById('notifRecipients').value;
+      const payload    = {
+        type:         document.getElementById('notifType').value,
+        recipients,
+        contestantId: recipients === 'individual' ? document.getElementById('notifContestant').value : undefined,
+        subject:      document.getElementById('notifSubject').value.trim(),
+        message:      document.getElementById('notifMessage').value.trim(),
+      };
+      alertEl.innerHTML = '<div class="alert alert-info">Sending…</div>';
+      btn.disabled = true;
+      const res  = await authFetch('/api/notifications/send', { method: 'POST', body: JSON.stringify(payload) });
+      const data = await res.json();
+      btn.disabled = false;
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}${data.errors?.length ? '<br><small style="opacity:0.7;">' + data.errors.join('<br>') + '</small>' : ''}</div>`;
+      if (res.ok) { document.getElementById('notifForm').reset(); document.getElementById('individualPickerField').style.display = 'none'; renderNotifHistory(); }
+    });
+
+    // ── Announcements ──────────────────────────────────────────────────────
+    async function renderAnnouncements() {
+      const el = document.getElementById('annList');
+      const list = await fetch('/api/announcements?season=all').then((r) => r.json());
+      if (!list.length) { el.innerHTML = '<p class="empty-state">No announcements yet.</p>'; return; }
+      el.innerHTML = list.map((a) => `
+        <div class="queue-item">
+          <div class="queue-item-head">
+            <div style="flex:1;"><h3>${escapeHtml(a.title)}</h3><p class="queue-meta">${new Date(a.createdAt).toLocaleDateString()} · by ${escapeHtml(a.postedBy || '?')}</p></div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-secondary btn-sm" data-edit-ann="${a.id}" data-ann-title="${escapeHtml(a.title)}" data-ann-msg="${escapeHtml(a.message)}" data-ann-season="${a.seasonId || ''}">Edit</button>
+              <button class="btn btn-danger btn-sm" data-del-ann="${a.id}">Delete</button>
+            </div>
+          </div>
+          <p class="queue-talent">${escapeHtml(a.message)}</p>
+        </div>
+      `).join('');
+      el.querySelectorAll('[data-edit-ann]').forEach((btn) => {
+        btn.addEventListener('click', () => openEditAnn(btn.dataset.editAnn, btn.dataset.annTitle, btn.dataset.annMsg, btn.dataset.annSeason));
+      });
+      el.querySelectorAll('[data-del-ann]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!await ltqConfirm('Are you sure you want to delete this announcement?', { title: 'Delete Announcement', danger: true })) return;
+          const res = await authFetch(`/api/announcements/${btn.dataset.delAnn}`, { method: 'DELETE' });
+          if (res.ok) renderAnnouncements(); else { const d = await res.json(); ltqToast(d.error || 'Could not delete announcement.', 'error'); }
+        });
+      });
+    }
+
+    document.getElementById('annForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('annAlert');
+      const res  = await authFetch('/api/announcements', { method: 'POST', body: JSON.stringify({ title: document.getElementById('annTitle').value.trim(), message: document.getElementById('annMessage').value.trim(), seasonSpecific: document.getElementById('annSeasonSpecific').checked }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { document.getElementById('annForm').reset(); renderAnnouncements(); }
+    });
+
+    // ── Schedule ───────────────────────────────────────────────────────────
+    async function renderSchedule() {
+      const el = document.getElementById('schedList');
+      const entries = await fetch('/api/schedule?season=all').then((r) => r.json());
+      if (!entries.length) { el.innerHTML = '<p class="empty-state">No schedule entries yet.</p>'; return; }
+      el.innerHTML = `<div class="table-wrap"><table class="app-table"><thead><tr><th>Title</th><th>Date &amp; Time</th><th>Location</th><th>Notes</th><th></th></tr></thead><tbody>
+        ${entries.map((e) => `<tr>
+          <td>${escapeHtml(e.title)}</td>
+          <td>${new Date(e.datetime).toLocaleString()}</td>
+          <td>${escapeHtml(e.location || '—')}</td>
+          <td style="font-size:0.85rem; color:var(--muted);">${escapeHtml(e.notes || '—')}</td>
+          <td style="display:flex;gap:6px;">
+            <button class="btn btn-secondary btn-sm"
+              data-edit-sched="${e.id}"
+              data-sched-title="${escapeHtml(e.title)}"
+              data-sched-dt="${e.datetime}"
+              data-sched-loc="${escapeHtml(e.location || '')}"
+              data-sched-notes="${escapeHtml(e.notes || '')}"
+              data-sched-season="${e.seasonId || ''}">Edit</button>
+            <button class="btn btn-danger btn-sm" data-del-sched="${e.id}">Remove</button>
+          </td>
+        </tr>`).join('')}
+      </tbody></table></div>`;
+      el.querySelectorAll('[data-edit-sched]').forEach((btn) => {
+        btn.addEventListener('click', () => openEditSched(btn.dataset.editSched, btn.dataset.schedTitle, btn.dataset.schedDt, btn.dataset.schedLoc, btn.dataset.schedNotes, btn.dataset.schedSeason));
+      });
+      el.querySelectorAll('[data-del-sched]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!await ltqConfirm('Remove this schedule entry?', { title: 'Remove Entry', danger: true })) return;
+          const res = await authFetch(`/api/schedule/${btn.dataset.delSched}`, { method: 'DELETE' });
+          if (res.ok) renderSchedule(); else { const d = await res.json(); ltqToast(d.error || 'Could not remove entry.', 'error'); }
+        });
+      });
+    }
+
+    document.getElementById('schedForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('schedAlert');
+      const res  = await authFetch('/api/schedule', { method: 'POST', body: JSON.stringify({
+        title:          document.getElementById('schedTitle').value.trim(),
+        datetime:       document.getElementById('schedDt').value,
+        location:       document.getElementById('schedLoc').value.trim() || undefined,
+        notes:          document.getElementById('schedNotes').value.trim() || undefined,
+        seasonSpecific: document.getElementById('schedSeasonSpecific').checked,
+      }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { document.getElementById('schedForm').reset(); renderSchedule(); }
+    });
+
+    // ── Integrations ───────────────────────────────────────────────────────────
+    function toggleVis(id, btn) {
+      const el = document.getElementById(id);
+      const show = el.type === 'password';
+      el.type = show ? 'text' : 'password';
+      btn.textContent = show ? 'Hide' : 'Show';
+    }
+
+    function setBadge(elId, configured) {
+      const el = document.getElementById(elId);
+      if (!el) return;
+      if (configured) {
+        el.textContent = '● Active';
+        el.style.background = 'rgba(34,197,94,0.12)';
+        el.style.color = '#22c55e';
+      } else {
+        el.textContent = '○ Not configured';
+        el.style.background = 'rgba(107,114,128,0.15)';
+        el.style.color = 'var(--muted)';
+      }
+    }
+
+    async function loadIntegrations() {
+      const res  = await authFetch('/api/integrations');
+      if (!res.ok) return;
+      const data = await res.json();
+
+      // Email
+      setBadge('emailIntegBadge', data.email.configured);
+      if (data.email.user) document.getElementById('intSmtpUser').value = data.email.user;
+      if (data.email.from) document.getElementById('intSmtpFrom').value = data.email.from;
+      document.getElementById('intSmtpPass').placeholder = data.email.passSet ? '••••••••••••••••' : 'xxxx xxxx xxxx xxxx';
+
+      // WhatsApp
+      setBadge('waIntegBadge', data.whatsapp.configured);
+      if (data.whatsapp.phoneId)  document.getElementById('intWaPhoneId').value  = data.whatsapp.phoneId;
+      if (data.whatsapp.template) document.getElementById('intWaTemplate').value = data.whatsapp.template;
+      if (data.whatsapp.lang)     document.getElementById('intWaLang').value     = data.whatsapp.lang;
+      document.getElementById('intWaToken').placeholder = data.whatsapp.tokenSet ? '••••••••••••' : 'EAAxxxxxxx…';
+
+      // Also refresh the send-notification channel pills
+      loadChannelStatus();
+    }
+
+    document.getElementById('emailIntegForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('emailIntegAlert');
+      const btn     = document.getElementById('saveEmailBtn');
+      btn.disabled = true; btn.textContent = 'Saving…';
+      const res  = await authFetch('/api/integrations/email', { method: 'PUT', body: JSON.stringify({
+        user: document.getElementById('intSmtpUser').value.trim(),
+        pass: document.getElementById('intSmtpPass').value,
+        from: document.getElementById('intSmtpFrom').value.trim(),
+      }) });
+      const data = await res.json();
+      btn.disabled = false; btn.textContent = 'Save';
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { document.getElementById('intSmtpPass').value = ''; loadIntegrations(); }
+    });
+
+    document.getElementById('waIntegForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('waIntegAlert');
+      const btn     = document.getElementById('saveWaBtn');
+      btn.disabled = true; btn.textContent = 'Saving…';
+      const res  = await authFetch('/api/integrations/whatsapp', { method: 'PUT', body: JSON.stringify({
+        phoneId:  document.getElementById('intWaPhoneId').value.trim(),
+        token:    document.getElementById('intWaToken').value,
+        template: document.getElementById('intWaTemplate').value.trim(),
+        lang:     document.getElementById('intWaLang').value.trim(),
+      }) });
+      const data = await res.json();
+      btn.disabled = false; btn.textContent = 'Save';
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { document.getElementById('intWaToken').value = ''; loadIntegrations(); }
+    });
+
+    document.getElementById('testEmailIntegBtn').addEventListener('click', async () => {
+      const alertEl = document.getElementById('emailIntegAlert');
+      alertEl.innerHTML = '<div class="alert alert-info">Sending test email…</div>';
+      const res  = await authFetch('/api/integrations/test/email', { method: 'POST' });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+    });
+
+    document.getElementById('testWaIntegBtn').addEventListener('click', () => {
+      const wrap = document.getElementById('testWaPhoneWrap');
+      wrap.style.display = wrap.style.display === 'none' ? '' : 'none';
+    });
+
+    document.getElementById('testWaSendBtn').addEventListener('click', async () => {
+      const alertEl = document.getElementById('waIntegAlert');
+      const phone   = document.getElementById('intTestPhone').value.trim();
+      alertEl.innerHTML = '<div class="alert alert-info">Sending test message…</div>';
+      const res  = await authFetch('/api/integrations/test/whatsapp', { method: 'POST', body: JSON.stringify({ phone }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+    });
+
+    // ── Section navigation ─────────────────────────────────────────────────
+    (function() {
+      var panels = document.querySelectorAll('.admin-section');
+      var links  = document.querySelectorAll('.sidebar-sublink');
+      function showSection(id) {
+        panels.forEach(function(p) { p.classList.toggle('active', p.id === id); });
+        links.forEach(function(l) { l.classList.toggle('active', l.getAttribute('href') === '#' + id); });
+      }
+      links.forEach(function(l) {
+        l.addEventListener('click', function(e) {
+          e.preventDefault();
+          var id = l.getAttribute('href').slice(1);
+          showSection(id);
+          if (id === 'sec-announcements')  renderAnnouncements();
+          if (id === 'sec-schedule')       renderSchedule();
+          if (id === 'sec-integrations')   loadIntegrations();
+        });
+      });
+      showSection('sec-notifications');
+    })();
+
+    // ── Edit Announcement ─────────────────────────────────────────────
+    function openEditAnn(id, title, msg, seasonId) {
+      document.getElementById('editAnnId').value    = id;
+      document.getElementById('editAnnTitle').value = title;
+      document.getElementById('editAnnMsg').value   = msg;
+      document.getElementById('editAnnSeasonSpecific').checked = !seasonId;
+      document.getElementById('editAnnAlert').innerHTML = '';
+      document.getElementById('editAnnModal').classList.add('open');
+    }
+    document.getElementById('closeEditAnnModal').addEventListener('click', () => document.getElementById('editAnnModal').classList.remove('open'));
+    document.getElementById('editAnnModal').addEventListener('click', (e) => { if (e.target === document.getElementById('editAnnModal')) document.getElementById('editAnnModal').classList.remove('open'); });
+    document.getElementById('editAnnForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('editAnnAlert');
+      const id = document.getElementById('editAnnId').value;
+      const res  = await authFetch(`/api/announcements/${id}`, { method: 'PATCH', body: JSON.stringify({ title: document.getElementById('editAnnTitle').value.trim(), message: document.getElementById('editAnnMsg').value.trim(), seasonSpecific: document.getElementById('editAnnSeasonSpecific').checked }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { setTimeout(() => { document.getElementById('editAnnModal').classList.remove('open'); renderAnnouncements(); }, 900); }
+    });
+
+    // ── Edit Schedule ─────────────────────────────────────────────────
+    function openEditSched(id, title, dt, loc, notes, seasonId) {
+      document.getElementById('editSchedId').value    = id;
+      document.getElementById('editSchedTitle').value = title;
+      document.getElementById('editSchedDt').value    = dt ? new Date(dt).toISOString().slice(0, 16) : '';
+      document.getElementById('editSchedLoc').value   = loc || '';
+      document.getElementById('editSchedNotes').value = notes || '';
+      document.getElementById('editSchedSeasonSpecific').checked = !seasonId;
+      document.getElementById('editSchedAlert').innerHTML = '';
+      document.getElementById('editSchedModal').classList.add('open');
+    }
+    document.getElementById('closeEditSchedModal').addEventListener('click', () => document.getElementById('editSchedModal').classList.remove('open'));
+    document.getElementById('editSchedModal').addEventListener('click', (e) => { if (e.target === document.getElementById('editSchedModal')) document.getElementById('editSchedModal').classList.remove('open'); });
+    document.getElementById('editSchedForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('editSchedAlert');
+      const id = document.getElementById('editSchedId').value;
+      const res  = await authFetch(`/api/schedule/${id}`, { method: 'PATCH', body: JSON.stringify({ title: document.getElementById('editSchedTitle').value.trim(), datetime: document.getElementById('editSchedDt').value, location: document.getElementById('editSchedLoc').value.trim() || null, notes: document.getElementById('editSchedNotes').value.trim() || null, seasonSpecific: document.getElementById('editSchedSeasonSpecific').checked }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { setTimeout(() => { document.getElementById('editSchedModal').classList.remove('open'); renderSchedule(); }, 900); }
+    });
+
+    if (auth) {
+      document.getElementById('topbarName').textContent = auth.name;
+      loadChannelStatus();
+      loadContestantsForNotif();
+      renderNotifHistory();
+      renderTemplates();
+    }
+  </script>
+
+</body>
+</html>

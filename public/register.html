@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="assets/logo-icon.png" />
+  <title>Register — Submit Your Audition | Liberia Talent Quest</title>
+  <meta name="description" content="Submit your audition for Liberia Talent Quest. Open to all Liberians across Dancing, Singing, Rapping, Comedy, Creative Arts, and Spoken Words." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://liberiatq.com/register.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Liberia Talent Quest" />
+  <meta property="og:title" content="Register — Submit Your Audition | Liberia Talent Quest" />
+  <meta property="og:description" content="Submit your audition for Liberia Talent Quest. Open to all Liberians." />
+  <meta property="og:image" content="https://liberiatq.com/assets/og-image.png" />
+  <meta property="og:url" content="https://liberiatq.com/register.html" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Register — Submit Your Audition | Liberia Talent Quest" />
+  <meta name="twitter:description" content="Submit your audition for Liberia Talent Quest." />
+  <meta name="twitter:image" content="https://liberiatq.com/assets/og-image.png" />
+
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Event","name":"Liberia Talent Quest","description":"Liberia's premier talent competition.","url":"https://liberiatq.com/register.html","organizer":{"@type":"Organization","name":"Legacy Hub Incorporated","url":"https://liberiatq.com/"},"location":{"@type":"Place","name":"Paynesville, Liberia","address":{"@type":"PostalAddress","addressLocality":"Paynesville","addressCountry":"LR"}}}
+  </script>
+
+  <!-- Google Analytics GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("ltq_theme")||"dark");}catch(e){}</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="assets/logo-icon.png" alt="Liberia Talent Quest" /> Liberia Talent Quest</a>
+      <button class="nav-toggle" aria-label="Toggle menu">Menu</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="register.html" class="active">Register</a></li>
+        <li><a href="vote.html">Vote</a></li>
+        <li><a href="leaderboard.html">Leaderboard</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="sponsors.html">Sponsors</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth" id="navAuth"></div>
+    </div>
+  </nav>
+
+  <section class="section register-hero" style="border-top:none; padding-top:48px; padding-bottom:56px;">
+    <div class="register-hero-bg">
+      <img class="register-hero-watermark register-hero-watermark-left" src="assets/logo-full.png" alt="" />
+      <img class="register-hero-watermark" src="assets/logo-full.png" alt="" />
+    </div>
+    <div class="wrap" style="position:relative; z-index:2;">
+
+      <div class="section-head" style="text-align:center; margin-left:auto; margin-right:auto; margin-bottom:28px;">
+        <span class="eyebrow"><span class="season-label">Season Two</span></span>
+        <h2>Register for Liberia Talent Quest.</h2>
+        <p style="margin-inline:auto;">Fill in your details and submit your audition. Our judges review every application.</p>
+      </div>
+
+      <div id="closedBanner" class="hidden" style="margin-bottom:24px;">
+        <div class="alert alert-error" style="text-align:center; font-size:1rem; padding:20px;">
+          Registration is currently closed. Check back soon or follow our social media for updates.
+        </div>
+      </div>
+
+      <div class="form-card form-card-reg" id="formCard">
+        <div id="formAlert"></div>
+
+        <form id="registerForm">
+          <input type="hidden" id="entryTypeInput" value="solo" />
+
+          <!-- ── Entry Type (full width) ──────────────────────────── -->
+          <p class="reg-section-head" style="margin-top:0;">Entry Type</p>
+          <div class="reg-entry-btns" style="margin-bottom:24px;">
+            <button type="button" id="btnSolo" class="reg-entry-btn active" aria-pressed="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.866 3.582-7 8-7s8 3.134 8 7"/></svg>
+              <span class="btn-label">Solo</span>
+              <span class="btn-sub">Individual performer</span>
+            </button>
+            <button type="button" id="btnGroup" class="reg-entry-btn" aria-pressed="false">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.85"/></svg>
+              <span class="btn-label">Group</span>
+              <span class="btn-sub">Multiple performers</span>
+            </button>
+          </div>
+
+          <!-- ── Two-column layout ──────────────────────────────────── -->
+          <div class="reg-form-cols">
+
+            <!-- LEFT: Identity + Contact + Group Members -->
+            <div>
+              <p class="reg-section-head" id="infoSectionHead">Personal Information</p>
+
+              <div class="field-row">
+                <div class="field">
+                  <label for="fullName" id="fullNameLabelEl">Full name <span style="color:var(--brand-red);">*</span></label>
+                  <input type="text" id="fullName" required placeholder="e.g. Mardea Kollie" />
+                </div>
+                <div class="field">
+                  <label for="stageName" id="stageNameLabelEl">Stage name <span style="color:var(--muted);font-size:.85em;">(optional)</span></label>
+                  <input type="text" id="stageName" placeholder="e.g. MC Bright" />
+                </div>
+              </div>
+
+              <div class="field-row" id="soloOnlyFields">
+                <div class="field">
+                  <label for="gender">Gender <span style="color:var(--brand-red);">*</span></label>
+                  <select id="gender" required>
+                    <option value="" disabled selected>Select gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Prefer not to say">Prefer not to say</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="dateOfBirth">Date of birth <span style="color:var(--brand-red);">*</span></label>
+                  <input type="date" id="dateOfBirth" required />
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="county" id="countyLabelEl">County <span style="color:var(--brand-red);">*</span></label>
+                <select id="county" required>
+                  <option value="" disabled selected>Select your county</option>
+                  <option>Bomi</option><option>Bong</option><option>Gbarpolu</option>
+                  <option>Grand Bassa</option><option>Grand Cape Mount</option>
+                  <option>Grand Gedeh</option><option>Grand Kru</option><option>Lofa</option>
+                  <option>Margibi</option><option>Maryland</option><option>Montserrado</option>
+                  <option>Nimba</option><option>River Cess</option><option>River Gee</option>
+                  <option>Sinoe</option>
+                </select>
+              </div>
+
+              <p class="reg-section-head">Contact Details</p>
+
+              <div class="field">
+                <label for="email" id="emailLabelEl">Email address <span style="color:var(--brand-red);">*</span></label>
+                <input type="email" id="email" required placeholder="you@example.com" />
+                <span class="hint" id="emailHint">We send competition updates and notifications here.</span>
+              </div>
+
+              <div class="field">
+                <label for="phone" id="phoneLabelEl">Phone number <span style="color:var(--brand-red);">*</span></label>
+                <input type="tel" id="phone" required placeholder="0775551234" />
+              </div>
+            </div>
+
+            <!-- RIGHT: Talent + Media -->
+            <div>
+              <p class="reg-section-head" id="talentSectionHead">Your Talent</p>
+
+              <div class="field">
+                <label for="categoryId">Talent category <span style="color:var(--brand-red);">*</span></label>
+                <select id="categoryId" required>
+                  <option value="" disabled selected>Loading categories…</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="shortBio" id="shortBioLabelEl">Short bio <span style="color:var(--brand-red);">*</span></label>
+                <textarea id="shortBio" required placeholder="A short introduction — who you are, where you're from." rows="3"></textarea>
+              </div>
+
+              <div class="field">
+                <label for="talentDescription" id="talentDescLabelEl">Describe your talent <span style="color:var(--brand-red);">*</span></label>
+                <textarea id="talentDescription" required placeholder="What will you perform? What makes your talent unique?" rows="3"></textarea>
+              </div>
+
+              <p class="reg-section-head">Photo &amp; Video</p>
+
+              <div class="field">
+                <label for="photo" id="photoLabelEl">Profile photo <span style="color:var(--brand-red);">*</span></label>
+                <input type="file" id="photo" accept="image/png,image/jpeg,image/webp" required />
+                <span class="hint" id="photoHint">A clear headshot. JPG, PNG, or WEBP, up to 8 MB.</span>
+                <img id="photoPreview" class="hidden" alt="Photo preview" style="margin-top:10px;max-height:140px;border-radius:8px;border:1px solid var(--panel-border);max-width:100%;" />
+              </div>
+
+              <div class="field" id="videoFieldWrap">
+                <label for="videoFile">Audition video <span style="color:var(--brand-red);">*</span></label>
+                <input type="file" id="videoFile" accept="video/mp4,video/quicktime,video/webm,video/x-msvideo" />
+                <span class="hint">MP4, MOV, or WebM. Up to 300 MB. 60 seconds recommended.</span>
+              </div>
+            </div>
+
+          </div><!-- /.reg-form-cols -->
+
+          <!-- Group Members — full width, own row grid (shown only for group entry) -->
+          <div id="membersSection" class="hidden reg-form-full">
+            <p class="reg-section-head">Group Members</p>
+            <p id="memberHint" style="font-size:0.85rem;color:var(--muted);margin:0 0 12px;"></p>
+            <div id="memberRows" class="reg-members-grid"></div>
+            <button type="button" class="btn btn-secondary btn-sm" id="addMemberBtn" style="margin-top:10px;width:100%;justify-content:center;">+ Add Member</button>
+            <p id="memberCountDisplay" style="font-size:0.82rem;margin:8px 0 0;"></p>
+          </div>
+
+          <!-- ── Full-width: Terms + Submit ─────────────────────────── -->
+          <div class="field reg-form-full" style="margin-top:24px;">
+            <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer;font-weight:400;line-height:1.6;">
+              <input type="checkbox" id="agreeTerms" required style="margin-top:4px;flex-shrink:0;width:16px;height:16px;accent-color:var(--brand-blue);" />
+              <span>I have read and agree to the <a href="terms.html" target="_blank" style="color:var(--brand-blue);">Terms &amp; Conditions</a> and <a href="privacy.html" target="_blank" style="color:var(--brand-blue);">Privacy Policy</a>. I confirm that all information I have provided is accurate and complete, and I give Legacy Hub permission to use my submitted content for LTQ promotion.</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block reg-form-full" id="submitBtn" style="margin-top:8px;">Submit application</button>
+        </form>
+      </div>
+
+      <p class="form-note" id="formNote" style="margin-top:18px;">After submitting, you'll receive instructions to pay the registration fee. Once payment is confirmed, your video will be reviewed by our judges.</p>
+    </div>
+  </section>
+
+  <footer class="site-footer footer-premium">
+    <div class="footer-glow"></div>
+    <div class="wrap footer-top">
+      <div class="footer-col"><h4>Socials</h4><div class="footer-social" id="footerSocial"></div></div>
+      <div class="footer-col"><h4>Explore</h4><ul><li><a href="index.html">Home</a></li><li><a href="vote.html">Vote</a></li><li><a href="leaderboard.html">Leaderboard</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
+      <div class="footer-col"><h4>Get Involved</h4><ul><li><a href="register.html">Register</a></li><li><a href="about.html">About</a></li><li><a href="sponsors.html">Sponsors</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul class="footer-contact-list" id="footerContact"><li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Paynesville, Liberia</li><li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span> <a href="tel:+231778747441">+231 77-874-7441</a></li><li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span> <a href="mailto:legacyhubinc@gmail.com">legacyhubinc@gmail.com</a></li></ul></div>
+    </div>
+    <div class="wrap footer-strip"><span class="footer-strip-label">In partnership with</span><div class="footer-logos" id="footerLogos"></div></div>
+    <div class="wrap footer-bottom"><span>&copy; <span id="footerYear"></span> Legacy Hub Incorporated &middot; Liberia Talent Quest. All rights reserved.</span><div class="footer-bottom-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="sponsors.html">Sponsors</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy Policy</a></div></div>
+  </footer>
+
+  <!-- Payment instructions modal -->
+  <div class="modal-overlay" id="paymentModal">
+    <div class="modal" style="max-width:480px;">
+      <h3 style="margin-bottom:6px;">Almost there — pay your registration fee</h3>
+      <p style="color:var(--muted);font-size:0.875rem;margin-bottom:20px;">Your application has been received. Complete the steps below to finalise your registration.</p>
+      <div id="paymentInstructions" style="background:var(--panel);border:1px solid var(--panel-border);border-radius:10px;padding:18px 20px;white-space:pre-line;line-height:1.75;font-size:0.9rem;margin-bottom:24px;color:var(--paper);"></div>
+      <button class="btn btn-primary btn-block" id="paymentModalClose">Got it — I'll make the payment</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const form         = document.getElementById('registerForm');
+    const alertBox     = document.getElementById('formAlert');
+    const submitBtn    = document.getElementById('submitBtn');
+    const photoInput   = document.getElementById('photo');
+    const photoPreview = document.getElementById('photoPreview');
+    const formCard     = document.getElementById('formCard');
+    const closedBanner = document.getElementById('closedBanner');
+
+    let maxGroupMembers = 6;
+    let members         = [];
+    let currentEntry    = 'solo';
+
+    function showAlert(type, msg) {
+      alertBox.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+      alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // ── Entry type toggle ──────────────────────────────────────────
+    function switchEntryType(type) {
+      currentEntry = type;
+      document.getElementById('entryTypeInput').value = type;
+      const isGroup = type === 'group';
+
+      const btnSolo  = document.getElementById('btnSolo');
+      const btnGroup = document.getElementById('btnGroup');
+      btnSolo.classList.toggle('active', !isGroup);
+      btnSolo.setAttribute('aria-pressed', String(!isGroup));
+      btnGroup.classList.toggle('active', isGroup);
+      btnGroup.setAttribute('aria-pressed', String(isGroup));
+
+      const soloFields   = document.getElementById('soloOnlyFields');
+      const membersSect  = document.getElementById('membersSection');
+      soloFields.style.display  = isGroup ? 'none' : '';
+      membersSect.classList.toggle('hidden', !isGroup);
+
+      document.getElementById('gender').required      = !isGroup;
+      document.getElementById('dateOfBirth').required = !isGroup;
+
+      document.getElementById('infoSectionHead').textContent   = isGroup ? 'Group Information'       : 'Personal Information';
+      document.getElementById('talentSectionHead').textContent = isGroup ? "Your Group's Talent"     : 'Your Talent';
+      document.getElementById('fullNameLabelEl').innerHTML     = `${isGroup ? 'Group name' : 'Full name'} <span style="color:var(--brand-red);">*</span>`;
+      document.getElementById('stageNameLabelEl').innerHTML    = `${isGroup ? 'Alternate group name' : 'Stage name'} <span style="color:var(--muted);font-size:.85em;">(optional)</span>`;
+      document.getElementById('countyLabelEl').innerHTML       = `${isGroup ? 'Base county' : 'County'} <span style="color:var(--brand-red);">*</span>`;
+      document.getElementById('emailLabelEl').innerHTML        = `${isGroup ? 'Primary contact email' : 'Email address'} <span style="color:var(--brand-red);">*</span>`;
+      document.getElementById('emailHint').textContent         = isGroup ? 'Group contact email — we send updates here.' : 'We send competition updates and notifications here.';
+      document.getElementById('phoneLabelEl').innerHTML        = `${isGroup ? 'Primary contact phone' : 'Phone number'} <span style="color:var(--brand-red);">*</span>`;
+      document.getElementById('shortBioLabelEl').innerHTML     = `${isGroup ? 'Group bio' : 'Short bio'} <span style="color:var(--brand-red);">*</span>`;
+      document.getElementById('talentDescLabelEl').innerHTML   = `${isGroup ? "Describe your group's talent" : 'Describe your talent'} <span style="color:var(--brand-red);">*</span>`;
+      document.getElementById('photoLabelEl').innerHTML        = `${isGroup ? 'Group photo' : 'Profile photo'} <span style="color:var(--brand-red);">*</span>`;
+      document.getElementById('photoHint').textContent         = isGroup ? 'A group photo or logo. JPG, PNG, or WEBP, up to 8 MB.' : 'A clear headshot. JPG, PNG, or WEBP, up to 8 MB.';
+      document.getElementById('fullName').placeholder          = isGroup ? 'e.g. The Harmony Five' : 'e.g. Mardea Kollie';
+      document.getElementById('stageName').placeholder         = isGroup ? 'e.g. The Harmony Crew' : 'e.g. MC Bright';
+
+      if (isGroup && members.length === 0) {
+        members.push({ name: '', dob: '', phone: '' });
+        members.push({ name: '', dob: '', phone: '' });
+        renderMembers();
+      }
+    }
+
+    // ── Group member management ───────────────────────────────────
+    function buildMemberRow(member, index) {
+      const div = document.createElement('div');
+      div.className = 'reg-member-card';
+      div.innerHTML = `
+        <div class="reg-member-head">
+          <strong>Member ${index + 1}</strong>
+          ${index >= 2 ? `<button type="button" class="btn btn-secondary btn-sm" style="padding:3px 10px;font-size:0.78rem;" data-remove="${index}">Remove</button>` : ''}
+        </div>
+        <div class="reg-member-fields">
+          <div class="field" style="margin:0;">
+            <label>Name <span style="color:var(--brand-red);">*</span></label>
+            <input type="text" placeholder="Full name" value="${escapeHtml(member.name||'')}" data-field="name" data-idx="${index}" />
+          </div>
+          <div class="field" style="margin:0;">
+            <label>Date of birth</label>
+            <input type="date" value="${member.dob||''}" data-field="dob" data-idx="${index}" />
+          </div>
+        </div>
+        <div class="field" style="margin-top:10px;margin-bottom:0;">
+          <label>Phone <span style="color:var(--muted);font-size:.85em;">(optional)</span></label>
+          <input type="tel" placeholder="0775551234" value="${escapeHtml(member.phone||'')}" data-field="phone" data-idx="${index}" />
+        </div>`;
+
+      const removeBtn = div.querySelector('[data-remove]');
+      if (removeBtn) {
+        removeBtn.addEventListener('click', () => { members.splice(index, 1); renderMembers(); });
+      }
+      div.querySelectorAll('[data-field]').forEach((input) => {
+        input.addEventListener('input', () => {
+          const idx = parseInt(input.dataset.idx);
+          if (members[idx] !== undefined) members[idx][input.dataset.field] = input.value;
+        });
+      });
+      return div;
+    }
+
+    function renderMembers() {
+      const container = document.getElementById('memberRows');
+      const addBtn    = document.getElementById('addMemberBtn');
+      const display   = document.getElementById('memberCountDisplay');
+      container.innerHTML = '';
+      members.forEach((m, i) => container.appendChild(buildMemberRow(m, i)));
+      addBtn.disabled = members.length >= maxGroupMembers;
+      const ok = members.length >= 2;
+      display.textContent = `${members.length} of ${maxGroupMembers} members added${ok ? '' : ' — minimum 2 required'}`;
+      display.style.color = ok ? 'var(--muted)' : 'var(--brand-red)';
+    }
+
+    // ── Init ──────────────────────────────────────────────────────
+    async function init() {
+      try {
+        const [settings, categories] = await Promise.all([
+          fetch('/api/settings').then((r) => r.json()),
+          fetch('/api/categories').then((r) => r.json())
+        ]);
+
+        if (!settings.registration_open) {
+          closedBanner.classList.remove('hidden');
+          formCard.style.display = 'none';
+          document.getElementById('formNote').style.display = 'none';
+          return;
+        }
+
+        maxGroupMembers = settings.max_group_members ?? 6;
+        document.getElementById('memberHint').textContent =
+          `Add between 2 and ${maxGroupMembers} members. Each member needs a name.`;
+
+        const videoRequired = settings.audition_video_required !== false;
+        const videoWrap  = document.getElementById('videoFieldWrap');
+        const videoInput = document.getElementById('videoFile');
+        if (videoRequired) {
+          videoWrap.style.display = '';
+          videoInput.required = true;
+          document.getElementById('formNote').textContent =
+            "After submitting, you'll receive instructions to pay the registration fee. Once payment is confirmed, your video will be reviewed by our judges.";
+        } else {
+          videoWrap.style.display = 'none';
+          videoInput.required = false;
+          videoInput.value = '';
+          document.getElementById('formNote').textContent =
+            "After submitting, you'll receive instructions to pay the registration fee. Once payment is confirmed, you will be automatically qualified.";
+        }
+
+        const sel = document.getElementById('categoryId');
+        sel.innerHTML = '<option value="" disabled selected>Choose a category</option>';
+        categories.forEach((cat) => {
+          const opt = document.createElement('option');
+          opt.value = cat.id;
+          opt.textContent = cat.name;
+          sel.appendChild(opt);
+        });
+
+        document.getElementById('btnSolo').addEventListener('click', () => switchEntryType('solo'));
+        document.getElementById('btnGroup').addEventListener('click', () => switchEntryType('group'));
+        document.getElementById('addMemberBtn').addEventListener('click', () => {
+          if (members.length < maxGroupMembers) {
+            members.push({ name: '', dob: '', phone: '' });
+            renderMembers();
+          }
+        });
+      } catch {
+        showAlert('error', 'Could not load the form. Please refresh the page.');
+      }
+    }
+
+    photoInput.addEventListener('change', () => {
+      const file = photoInput.files[0];
+      if (!file) { photoPreview.classList.add('hidden'); photoPreview.src = ''; return; }
+      photoPreview.src = URL.createObjectURL(file);
+      photoPreview.classList.remove('hidden');
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertBox.innerHTML = '';
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<svg class="ltq-btn-spin" width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3" stroke-dasharray="28 56" stroke-linecap="round"/></svg> Submitting…';
+
+      const isGroup    = currentEntry === 'group';
+      const videoInput = document.getElementById('videoFile');
+      const videoFile  = videoInput.files[0];
+
+      if (videoInput.required && !videoFile) {
+        showAlert('error', 'An audition video file is required.');
+        submitBtn.disabled = false; submitBtn.textContent = 'Submit application';
+        return;
+      }
+
+      if (isGroup) {
+        document.querySelectorAll('#memberRows [data-field]').forEach((input) => {
+          const idx = parseInt(input.dataset.idx);
+          if (members[idx] !== undefined) members[idx][input.dataset.field] = input.value;
+        });
+        if (members.length < 2) {
+          showAlert('error', 'A group must have at least 2 members.');
+          submitBtn.disabled = false; submitBtn.textContent = 'Submit application';
+          return;
+        }
+        if (members.some((m) => !m.name.trim())) {
+          showAlert('error', 'Every group member must have a name.');
+          submitBtn.disabled = false; submitBtn.textContent = 'Submit application';
+          return;
+        }
+      }
+
+      const payload = new FormData();
+      payload.append('entryType',         currentEntry);
+      payload.append('fullName',          document.getElementById('fullName').value);
+      payload.append('stageName',         document.getElementById('stageName').value);
+      payload.append('gender',            document.getElementById('gender').value);
+      payload.append('dateOfBirth',       document.getElementById('dateOfBirth').value);
+      payload.append('county',            document.getElementById('county').value);
+      payload.append('email',             document.getElementById('email').value);
+      payload.append('phone',             document.getElementById('phone').value);
+      payload.append('categoryId',        document.getElementById('categoryId').value);
+      payload.append('shortBio',          document.getElementById('shortBio').value);
+      payload.append('talentDescription', document.getElementById('talentDescription').value);
+      if (isGroup) payload.append('members', JSON.stringify(members));
+      if (videoFile) payload.append('video', videoFile);
+      const photoFile = document.getElementById('photo').files[0];
+      if (photoFile) payload.append('photo', photoFile);
+
+      try {
+        const res  = await fetch('/api/contestants', { method: 'POST', body: payload });
+        const data = await res.json();
+        if (!res.ok) {
+          showAlert('error', data.error || 'Something went wrong. Please try again.');
+        } else {
+          form.reset();
+          members = [];
+          switchEntryType('solo');
+          photoPreview.classList.add('hidden');
+          photoPreview.src = '';
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'registration_submitted', { event_category: 'conversion', event_label: 'audition_application' });
+          }
+          try {
+            const s = await fetch('/api/settings').then((r) => r.json());
+            document.getElementById('paymentInstructions').textContent =
+              s.payment_instructions || 'Please contact us at legacyhubinc@gmail.com or +231 77-874-7441 to receive payment instructions.';
+          } catch {
+            document.getElementById('paymentInstructions').textContent =
+              'Please contact us at legacyhubinc@gmail.com or +231 77-874-7441 to receive payment instructions.';
+          }
+          document.getElementById('paymentModal').classList.add('open');
+        }
+      } catch {
+        showAlert('error', 'Could not reach the server. Check your connection and try again.');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit application';
+      }
+    });
+
+    document.getElementById('paymentModalClose').addEventListener('click', () => {
+      document.getElementById('paymentModal').classList.remove('open');
+    });
+    document.getElementById('paymentModal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('paymentModal'))
+        document.getElementById('paymentModal').classList.remove('open');
+    });
+
+    init();
+  </script>
+</body>
+</html>

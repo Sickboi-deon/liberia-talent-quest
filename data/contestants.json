@@ -1,0 +1,66 @@
+[
+  {
+    "id": "c001",
+    "name": "Mardea Kollie",
+    "category": "singing",
+    "town": "Paynesville",
+    "talent": "Afrobeat vocalist with a soulful original songwriting style.",
+    "createdAt": "2026-06-23T13:59:34.323Z"
+  },
+  {
+    "id": "c002",
+    "name": "Joseph Tarr",
+    "category": "rapping",
+    "town": "Sinkor, Monrovia",
+    "talent": "Rapper blending Liberian English slang with trap production.",
+    "createdAt": "2026-06-23T13:59:34.323Z"
+  },
+  {
+    "id": "c003",
+    "name": "Comfort Doe",
+    "category": "dancing",
+    "town": "Gbengbar Town",
+    "talent": "Traditional Gio dance fused with contemporary choreography.",
+    "createdAt": "2026-06-23T13:59:34.323Z"
+  },
+  {
+    "id": "c004",
+    "name": "Prince Fahnbulleh",
+    "category": "dancing",
+    "town": "Duazon",
+    "talent": "Street dance crew captain, known for acrobatic routines.",
+    "createdAt": "2026-06-23T13:59:34.323Z"
+  },
+  {
+    "id": "c005",
+    "name": "Esther Konneh",
+    "category": "spoken-words",
+    "town": "New Kru Town",
+    "talent": "Spoken word poet writing on youth identity and resilience.",
+    "createdAt": "2026-06-23T13:59:34.323Z"
+  },
+  {
+    "id": "c006",
+    "name": "Beatrice Nyema",
+    "category": "comedy",
+    "town": "Red Light",
+    "talent": "Stand-up comedian with sharp socio-political satire.",
+    "createdAt": "2026-06-23T13:59:34.323Z"
+  },
+  {
+    "id": "c007",
+    "name": "Patricia Sumo",
+    "category": "creative-arts",
+    "town": "Congo Town",
+    "talent": "Designer reworking traditional lappa fabric into streetwear, presented as a live runway performance.",
+    "createdAt": "2026-06-23T13:59:34.323Z"
+  },
+  {
+    "id": "c008",
+    "name": "Samuel Kpehe",
+    "category": "comedy",
+    "town": "Paynesville",
+    "talent": "Multi-talent act blending physical comedy and stage illusion.",
+    "createdAt": "2026-06-23T13:59:34.323Z"
+  }
+]

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="assets/logo-icon.png" />
+  <title>Liberia Talent Quest | Discover Liberia's Next Star</title>
+  <meta name="description" content="Liberia Talent Quest is open! Register your audition, vote for your favorite performers, and follow live competition results across Dancing, Singing, Rapping, Comedy, Creative Arts, and Spoken Words." />
+  <meta name="keywords" content="Liberia Talent Quest, LTQ, talent show Liberia, Liberia singing competition, Liberia youth talent, Legacy Hub, audition Liberia" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://liberiatq.com/" /><!-- TODO: update domain -->
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Liberia Talent Quest" />
+  <meta property="og:title" content="Liberia Talent Quest — Discover Liberia's Next Star" />
+  <meta property="og:description" content="Liberia's premier talent competition. Submit your audition video, compete live, and let the nation vote for their favorite performer." />
+  <meta property="og:image" content="https://liberiatq.com/assets/og-image.png" /><!-- TODO: update domain -->
+  <meta property="og:url" content="https://liberiatq.com/" /><!-- TODO: update domain -->
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Liberia Talent Quest" />
+  <meta name="twitter:description" content="Liberia's premier talent competition. Submit your audition, vote, and follow the live rankings." />
+  <meta name="twitter:image" content="https://liberiatq.com/assets/og-image.png" /><!-- TODO: update domain -->
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://liberiatq.com/#organization",
+        "name": "Legacy Hub Incorporated",
+        "url": "https://liberiatq.com/",
+        "logo": "https://liberiatq.com/assets/logo-full.png",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+231-77-874-7441",
+          "email": "legacyhubinc@gmail.com",
+          "contactType": "customer support"
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Paynesville",
+          "addressCountry": "LR"
+        }
+      },
+      {
+        "@type": "Event",
+        "name": "Liberia Talent Quest",
+        "description": "Liberia's premier talent competition for young performers in singing, dancing, comedy, spoken word, and creative arts.",
+        "organizer": { "@id": "https://liberiatq.com/#organization" },
+        "location": {
+          "@type": "Place",
+          "name": "Paynesville, Liberia",
+          "address": { "@type": "PostalAddress", "addressLocality": "Paynesville", "addressCountry": "LR" }
+        },
+        "url": "https://liberiatq.com/",
+        "image": "https://liberiatq.com/assets/og-image.png"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Google Analytics GA4 — replace G-XXXXXXXXXX with your Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.setAttribute("data-theme", localStorage.getItem("ltq_theme") || "dark");}catch(e){}</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="assets/logo-icon.png" alt="Liberia Talent Quest" /> Liberia Talent Quest</a>
+      <button class="nav-toggle" aria-label="Toggle menu">Menu</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="register.html">Register</a></li>
+        <li><a href="vote.html">Vote</a></li>
+        <li><a href="leaderboard.html">Leaderboard</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="sponsors.html">Sponsors</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth" id="navAuth"></div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div class="hero-inner">
+        <img src="assets/logo-full.png" alt="Liberia Talent Quest" class="hero-logo" />
+        <span class="eyebrow"><span class="season-label">Season Two</span> · Liberia</span>
+        <h1>The stage is lit.<br><em>Your turn</em> is now.</h1>
+        <p class="lede">
+          Liberia Talent Quest gives young performers across singing, dancing, comedy, spoken word,
+          and creative arts a real platform — submit a video, get reviewed by our judges, and if
+          selected, perform live for a national audience voting for their favorites.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="register.html">Submit your audition</a>
+          <a class="btn btn-secondary" href="vote.html">Vote for a contestant</a>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <img src="assets/hero-singer.png" alt="A contestant singing passionately into a microphone on stage" />
+      </div>
+    </div>
+    <div class="wrap">
+      <div id="countdown" class="countdown-card hidden">
+        <span class="eyebrow" style="margin-bottom:10px;">Countdown to the next live show</span>
+        <div style="display:flex; gap:28px; justify-content:center; flex-wrap:wrap;">
+          <div><div id="cdDays" style="font-family:var(--font-mono); font-size:1.8rem; color:var(--brand-blue);">00</div><div class="stat-label">Days</div></div>
+          <div><div id="cdHours" style="font-family:var(--font-mono); font-size:1.8rem; color:var(--brand-blue);">00</div><div class="stat-label">Hours</div></div>
+          <div><div id="cdMins" style="font-family:var(--font-mono); font-size:1.8rem; color:var(--brand-blue);">00</div><div class="stat-label">Minutes</div></div>
+          <div><div id="cdSecs" style="font-family:var(--font-mono); font-size:1.8rem; color:var(--brand-red);">00</div><div class="stat-label">Seconds</div></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Champions section — hidden until finale results are available -->
+  <section id="championsSection" class="section" style="display:none; border-top:1px solid rgba(255,215,0,0.18); border-bottom:1px solid rgba(255,215,0,0.12); background:linear-gradient(180deg,rgba(255,215,0,0.05) 0%,transparent 100%);">
+    <div class="wrap" style="text-align:center;">
+      <span class="eyebrow" id="champEyebrow" style="color:var(--gold-bright);">Grand Finale Results</span>
+      <h2 style="font-family:var(--font-display); margin:8px 0 32px;">Meet the Champions</h2>
+      <div id="championsGrid" style="max-width:900px; margin:0 auto 32px;"></div>
+      <a href="leaderboard.html" class="btn btn-secondary">View Full Results</a>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="category-strip" id="categoryStrip"></div>
+  </section>
+
+  <section class="wrap" id="sponsorStrip" style="display:none; text-align:center; padding-bottom:48px;">
+    <span class="eyebrow">With support from</span>
+    <div id="sponsorLogos" style="display:flex; gap:32px; justify-content:center; align-items:center; flex-wrap:wrap; margin-top:16px;"></div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">How it works</span>
+        <h2>From audition video to the live stage.</h2>
+        <p>Every contestant goes through the same review process before they appear on the voting page.</p>
+      </div>
+      <div class="phase-list">
+        <div class="phase"><span class="phase-tag">Step 1</span><div><h3>Submit your audition</h3><p>Register and upload your audition video directly (MP4, MOV, or WebM, up to 300 MB). Everything is submitted through this site.</p></div></div>
+        <div class="phase"><span class="phase-tag">Step 2</span><div><h3>Judges review</h3><p>Our judging panel watches every submission and decides who advances.</p></div></div>
+        <div class="phase"><span class="phase-tag">Step 3</span><div><h3>You're confirmed</h3><p>Selected contestants are confirmed by our team and appear on the public voting page for national voting.</p></div></div>
+        <div class="phase"><span class="phase-tag">Step 4</span><div><h3>Live shows &amp; voting</h3><p>Weekly live performances, with the national audience voting for their favorites each round.</p></div></div>
+        <div class="phase"><span class="phase-tag">Step 5</span><div><h3>The grand finale</h3><p>Final performances, winner announcement, and awards.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap" style="text-align:center;">
+      <span class="eyebrow">Ready?</span>
+      <h2 style="font-family:var(--font-display); font-size:clamp(1.6rem,4vw,2.2rem); margin:8px 0 28px;">
+        Submit your audition or back a favorite.
+      </h2>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="register.html">Submit your audition</a>
+        <a class="btn btn-secondary" href="leaderboard.html">See the leaderboard</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer footer-premium">
+    <div class="footer-glow"></div>
+    <div class="wrap footer-top">
+      <div class="footer-col">
+        <h4>Socials</h4>
+        <div class="footer-social" id="footerSocial"></div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+            <li><a href="vote.html">Vote</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="sponsors.html">Sponsors</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul class="footer-contact-list" id="footerContact">
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Paynesville, Liberia</li>
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span> <a href="tel:+231778747441">+231 77-874-7441</a></li>
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span> <a href="mailto:legacyhubinc@gmail.com">legacyhubinc@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="wrap footer-strip">
+      <span class="footer-strip-label">In partnership with</span>
+      <div class="footer-logos" id="footerLogos"></div>
+    </div>
+
+    <div class="wrap footer-bottom">
+      <span>&copy; <span id="footerYear"></span> Legacy Hub Incorporated &middot; Liberia Talent Quest. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="sponsors.html">Sponsors</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    let countdownInterval = null;
+
+    async function initCountdown() {
+      try {
+        const res = await fetch('/api/settings');
+        const settings = await res.json();
+        if (!settings.eventDate) return;
+
+        const target = new Date(settings.eventDate).getTime();
+        if (Number.isNaN(target)) return;
+
+        document.getElementById('countdown').classList.remove('hidden');
+
+        function tick() {
+          const diff = target - Date.now();
+          if (diff <= 0) {
+            clearInterval(countdownInterval);
+            document.getElementById('countdown').classList.add('hidden');
+            return;
+          }
+          const days = Math.floor(diff / 86400000);
+          const hours = Math.floor((diff % 86400000) / 3600000);
+          const mins = Math.floor((diff % 3600000) / 60000);
+          const secs = Math.floor((diff % 60000) / 1000);
+          document.getElementById('cdDays').textContent = String(days).padStart(2, '0');
+          document.getElementById('cdHours').textContent = String(hours).padStart(2, '0');
+          document.getElementById('cdMins').textContent = String(mins).padStart(2, '0');
+          document.getElementById('cdSecs').textContent = String(secs).padStart(2, '0');
+        }
+        tick();
+        countdownInterval = setInterval(tick, 1000);
+      } catch (err) {
+        // fail quietly - countdown is a nice-to-have
+      }
+    }
+
+    async function loadSponsorStrip() {
+      try {
+        const res = await fetch('/api/sponsors');
+        const sponsors = await res.json();
+        const withLogos = sponsors.filter((s) => s.logoUrl);
+        if (!withLogos.length) return;
+
+        document.getElementById('sponsorLogos').innerHTML = withLogos.map((s) => `
+          <a href="${s.link || '#'}" target="_blank" rel="noopener">
+            <img src="${s.logoUrl}" alt="${escapeHtml(s.name)}" style="max-height:48px; width:auto;" />
+          </a>
+        `).join('');
+        document.getElementById('sponsorStrip').style.display = 'block';
+      } catch (err) {
+        // fail quietly
+      }
+    }
+
+    // ── Champions / finale results ───────────────────────────────────
+    const CHAMP_ACCENT = {
+      winner:          { color: 'var(--gold-bright)', bg: 'rgba(255,215,0,0.10)', border: 'rgba(255,215,0,0.35)' },
+      runner_up:       { color: '#C0C0C0',            bg: 'rgba(192,192,192,0.10)', border: 'rgba(192,192,192,0.30)' },
+      second_runner_up:{ color: '#CD7F32',            bg: 'rgba(205,127,50,0.10)', border: 'rgba(205,127,50,0.30)' },
+      finalist:        { color: 'var(--brand-blue)',  bg: 'rgba(76,141,255,0.08)', border: 'rgba(76,141,255,0.25)' },
+    };
+    const CHAMP_ICON = {
+      winner: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 17l2.5-9 4 4.5L12 4l3.5 8.5 4-4.5L22 17H2z"/><line x1="2" y1="20" x2="22" y2="20"/></svg>`,
+      runner_up: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+      second_runner_up: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M8.56 13.63L7 22l5-3 5 3-1.56-8.37"/></svg>`,
+      finalist: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/></svg>`,
+    };
+    const CHAMP_LABEL = { winner: 'Champion', runner_up: 'Runner Up', second_runner_up: 'Second Runner Up', finalist: 'Finalist' };
+
+    function champAvatar(p, size) {
+      const acc = CHAMP_ACCENT[p.status] || CHAMP_ACCENT.finalist;
+      const st  = `width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;border:3px solid ${acc.color};display:block;margin:0 auto;`;
+      if (p.photoUrl) return `<img src="${escapeHtml(p.photoUrl)}" alt="${escapeHtml(p.name)}" style="${st}" />`;
+      const fs = Math.round(size * 0.36);
+      return `<div style="${st}background:${acc.bg};display:flex;align-items:center;justify-content:center;font-size:${fs}px;font-weight:700;color:${acc.color};">${escapeHtml((p.name||'').split(' ').filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join(''))}</div>`;
+    }
+
+    async function loadChampions() {
+      try {
+        const [placementsRes, seasonRes] = await Promise.all([
+          fetch('/api/contestants/placements'),
+          fetch('/api/seasons/current').catch(() => null),
+        ]);
+        if (!placementsRes.ok) return;
+        // One overall competition — { placements: [{rank,label,name,category,categoryLabel,...}] },
+        // 4 entries total (Champion/Runner Up/2nd Runner Up/Finalist), spanning every category.
+        const { placements } = await placementsRes.json();
+        if (!placements || !placements.length) return;
+
+        const section = document.getElementById('championsSection');
+        const grid    = document.getElementById('championsGrid');
+        const eyebrow = document.getElementById('champEyebrow');
+
+        try {
+          const season = seasonRes && await seasonRes.json();
+          if (season?.name) eyebrow.textContent = `${season.name} · Grand Finale Results`;
+        } catch {}
+
+        // One overall podium — Champion / Runner Up / 2nd Runner Up on top row, Finalist below.
+        // Category is shown on each card as a label only, never implying a separate competition.
+        function champCard(p, avatarSize) {
+          const acc  = CHAMP_ACCENT[p.status] || CHAMP_ACCENT.finalist;
+          const lbl  = CHAMP_LABEL[p.status]  || p.label;
+          const icon = CHAMP_ICON[p.status]   || CHAMP_ICON.finalist;
+          const meta = [p.categoryLabel, p.county].filter(Boolean).map(escapeHtml).join(' · ');
+          return `
+            <div style="background:${acc.bg};border:1px solid ${acc.border};border-radius:12px;padding:14px 10px;text-align:center;box-sizing:border-box;">
+              <div style="color:${acc.color};margin-bottom:4px;">${icon}</div>
+              <div style="font-size:0.58rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:${acc.color};margin-bottom:6px;">${escapeHtml(lbl)}</div>
+              ${champAvatar(p, avatarSize)}
+              <div style="font-family:var(--font-display);font-size:0.82rem;font-weight:600;color:var(--paper);margin:6px 0 2px;line-height:1.2;">${escapeHtml(p.name)}</div>
+              <div style="font-size:0.68rem;color:var(--paper);opacity:0.5;">${meta}</div>
+              <a href="contestant-profile.html?id=${encodeURIComponent(p.id)}" style="display:inline-block;margin-top:6px;padding:3px 10px;border:1px solid ${acc.border};color:${acc.color};border-radius:5px;font-size:0.68rem;font-weight:600;text-decoration:none;">Profile</a>
+            </div>`;
+        }
+
+        const byStatus = Object.fromEntries(placements.map((p) => [p.status, p]));
+        const top3     = ['runner_up', 'winner', 'second_runner_up'].map((s) => byStatus[s]).filter(Boolean);
+        const finalist = byStatus['finalist'];
+
+        grid.innerHTML = `
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:${finalist ? '8px' : '0'};">
+            ${top3.map((p) => champCard(p, p.status === 'winner' ? 52 : 40)).join('')}
+          </div>
+          ${finalist ? `<div style="display:flex;justify-content:center;"><div style="width:calc(33.333% - 6px);">${champCard(finalist, 38)}</div></div>` : ''}
+        `;
+        section.style.display = 'block';
+      } catch { /* fail quietly */ }
+    }
+
+    async function loadCategoryStrip() {
+      const strip = document.getElementById('categoryStrip');
+      if (!strip) return;
+      try {
+        const cats = await fetch('/api/categories').then((r) => r.json());
+        const GEL_CLASS = {
+          dancing: 'gel--dancing', singing: 'gel--singing', rapping: 'gel--rapping',
+          comedy: 'gel--comedy', 'creative-arts': 'gel--creative-arts', 'spoken-words': 'gel--spoken-words',
+        };
+        strip.innerHTML = cats.map((cat) => `
+          <div class="gel ${GEL_CLASS[cat.slug] || ''}">
+            <span class="gel-label">Category</span>
+            <h3>${cat.name}</h3>
+            <p>${cat.description || 'Open to all talent in this category.'}</p>
+          </div>`).join('');
+      } catch { /* fail quietly — strip stays empty */ }
+    }
+
+    initCountdown();
+    loadSponsorStrip();
+    loadChampions();
+    loadCategoryStrip();
+  </script>
+</body>
+</html>

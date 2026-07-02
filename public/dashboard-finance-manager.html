@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finance Manager — Liberia Talent Quest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("ltq_theme")||"dark");}catch(e){}</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="admin-shell">
+
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-brand"><img src="assets/logo-icon.png" alt="LTQ" /> Liberia Talent Quest</div>
+      <nav class="sidebar-nav" aria-label="Finance Manager navigation">
+        <span class="sidebar-section">Finance Manager</span>
+        <a href="#sec-payments"     class="sidebar-sublink">Payment Verification</a>
+        <a href="#sec-voting-codes" class="sidebar-sublink">Voting Codes</a>
+        <a href="#sec-accounting"   class="sidebar-sublink">Accounting</a>
+        <div class="sidebar-divider"></div>
+        <span class="sidebar-section">Public site</span>
+        <a href="index.html" class="sidebar-link">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Home
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="sidebar-link" id="sidebarLogout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;font-family:var(--font-body);">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Log out
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <button class="topbar-toggle" id="topbarToggle" aria-label="Toggle sidebar">&#9776;</button>
+        <span class="topbar-title">Finance Manager</span>
+        <div class="topbar-user">
+          <strong id="topbarName"></strong>
+          <button class="topbar-logout" id="topbarLogout">Log out</button>
+        </div>
+      </header>
+
+      <div class="admin-content">
+
+        <div class="admin-section active" id="sec-payments">
+        <div class="stat-grid" style="margin-bottom:28px;">
+          <div class="stat-card stat-card--amber">
+            <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+            <div class="num" id="statPending">—</div>
+            <div class="stat-label">Awaiting verification</div>
+          </div>
+          <div class="stat-card stat-card--blue">
+            <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+            <div class="num" id="statCodes">—</div>
+            <div class="stat-label">Unused voting codes</div>
+          </div>
+          <div class="stat-card stat-card--teal">
+            <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+            <div class="num" id="statVerified">—</div>
+            <div class="stat-label">Payments verified</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="4"/><line x1="12" y1="20" x2="12" y2="10"/><line x1="6" y1="20" x2="6" y2="16"/></svg></div>
+            <div class="num" id="statUsedCodes">—</div>
+            <div class="stat-label">Codes used (votes cast)</div>
+          </div>
+        </div>
+
+        <!-- ── Payment Verification ── -->
+        <div class="section-head">
+          <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Payments</h2>
+          <p>Track registration payments. Verify pending ones to move contestants into the competition.</p>
+        </div>
+        <div class="tabs" id="paymentTabs" style="margin-bottom:20px;">
+          <button class="tab active" data-ptab="pending">Pending Verification</button>
+          <button class="tab" data-ptab="history">Payment History</button>
+        </div>
+        <div id="paymentQueue"><p class="empty-state">Loading…</p></div>
+        <div id="paymentHistory" class="hidden"></div>
+        </div><!-- /sec-payments -->
+
+        <div class="admin-section" id="sec-voting-codes">
+        <!-- ── Voting Codes ── -->
+        <div class="section-head">
+          <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Voting Codes</h2>
+          <p>Generate codes after a voter pays. Each code can be used once for one vote. Code format: <code>LTQXXXXXXX</code></p>
+        </div>
+        <div class="form-card" style="margin:0 0 24px;">
+          <div id="genAlert"></div>
+          <form id="genForm" style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+            <div class="field" style="flex:0.8; margin:0; min-width:120px;"><label for="genQty">Quantity (1–500)</label><input type="number" id="genQty" min="1" max="500" value="1" required /></div>
+            <div class="field" style="flex:1.2; margin:0; min-width:160px;"><label for="genMethod">Payment method</label><input type="text" id="genMethod" placeholder="e.g. Orange Money" /></div>
+            <div class="field" style="flex:1.5; margin:0; min-width:180px;">
+              <label for="genRound">Round (optional)</label>
+              <select id="genRound"><option value="">— Not round-specific —</option></select>
+            </div>
+            <button type="submit" class="btn btn-primary" style="flex-shrink:0;">Generate</button>
+          </form>
+          <div id="generatedCodes" style="margin-top:16px;"></div>
+        </div>
+
+        <div class="tabs" id="codeTabs">
+          <button class="tab active" data-used="">All codes</button>
+          <button class="tab" data-used="false">Unused</button>
+          <button class="tab" data-used="true">Used</button>
+        </div>
+        <div class="table-wrap" style="margin-bottom:64px;">
+          <table class="app-table" id="codesTable">
+            <thead><tr><th>Code</th><th>Round</th><th>Payment method</th><th>Generated</th><th>Used by</th><th></th></tr></thead>
+            <tbody id="codesBody"><tr><td colspan="6">Loading…</td></tr></tbody>
+          </table>
+        </div>
+        </div><!-- /sec-voting-codes -->
+
+        <!-- ══════════════════════════════════════════════════════════════
+             ACCOUNTING
+        ══════════════════════════════════════════════════════════════════ -->
+        <div class="admin-section" id="sec-accounting">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display);font-size:1.5rem;margin:0 0 8px;">Accounting</h2>
+            <p>Revenue ledger — every registration fee and voting code sale recorded automatically.</p>
+          </div>
+
+          <!-- Season filter -->
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;flex-wrap:wrap;">
+            <label style="font-size:0.9rem;color:var(--muted);">Season:</label>
+            <select id="acctSeasonFilter" style="padding:8px 12px;background:var(--panel-raised);border:1px solid var(--panel-border);border-radius:8px;color:var(--paper);font-family:var(--font-body);font-size:0.9rem;min-width:180px;">
+              <option value="current">Current Season</option>
+              <option value="all">All Seasons</option>
+            </select>
+          </div>
+
+          <!-- Summary cards for selected season -->
+          <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:10px;" id="acctSeasonLabel">Current Season</div>
+          <div class="stat-grid" style="margin-bottom:32px;" id="acctSummaryCards">
+            <div class="stat-card stat-card--amber">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+              <div class="num" id="acctTotalLrd">—</div>
+              <div class="stat-label">Total Revenue (LRD)</div>
+            </div>
+            <div class="stat-card stat-card--teal">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+              <div class="num" id="acctTotalUsd">—</div>
+              <div class="stat-label">Total Revenue (USD)</div>
+            </div>
+            <div class="stat-card stat-card--blue">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+              <div class="num" id="acctRegLrd">—</div>
+              <div class="stat-label">Registration Revenue (LRD)</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+              <div class="num" id="acctVoteLrd">—</div>
+              <div class="stat-label">Voting Revenue (LRD)</div>
+            </div>
+          </div>
+
+          <!-- Transaction table -->
+          <div class="section-head" style="margin-bottom:12px;">
+            <h3 style="font-size:1.1rem;margin:0;">Transactions</h3>
+          </div>
+          <div class="table-wrap" style="margin-bottom:56px;">
+            <table class="app-table">
+              <thead><tr><th>Date</th><th>Season</th><th>Type</th><th>Reference</th><th>LRD</th><th>USD</th></tr></thead>
+              <tbody id="acctTableBody"><tr><td colspan="6" class="empty-state">Loading…</td></tr></tbody>
+            </table>
+          </div>
+
+          <!-- ── All Seasons Combined ─────────────────────────────────── -->
+          <div style="border-top:2px solid var(--panel-border);padding-top:32px;margin-top:8px;">
+            <div class="section-head" style="margin-bottom:10px;">
+              <h3 style="font-size:1.1rem;margin:0;">All Seasons Combined</h3>
+              <p style="margin:4px 0 0;font-size:0.85rem;">Lifetime totals across every season.</p>
+            </div>
+            <div class="stat-grid" style="margin-bottom:32px;" id="acctAllSummaryCards">
+              <div class="stat-card stat-card--amber">
+                <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+                <div class="num" id="acctAllTotalLrd">—</div>
+                <div class="stat-label">All-Time Revenue (LRD)</div>
+              </div>
+              <div class="stat-card stat-card--teal">
+                <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+                <div class="num" id="acctAllTotalUsd">—</div>
+                <div class="stat-label">All-Time Revenue (USD)</div>
+              </div>
+              <div class="stat-card stat-card--blue">
+                <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+                <div class="num" id="acctAllRegLrd">—</div>
+                <div class="stat-label">All Registration Revenue (LRD)</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+                <div class="num" id="acctAllVoteLrd">—</div>
+                <div class="stat-label">All Voting Revenue (LRD)</div>
+              </div>
+            </div>
+            <div class="table-wrap" style="margin-bottom:64px;">
+              <table class="app-table">
+                <thead><tr><th>Season</th><th>Registrations (LRD)</th><th>Voting (LRD)</th><th>Total (LRD)</th><th>Total (USD)</th></tr></thead>
+                <tbody id="acctAllSeasonBreakdown"><tr><td colspan="5" class="empty-state">Loading…</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div><!-- /sec-accounting -->
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Verify payment modal -->
+  <div class="modal-overlay" id="verifyModal">
+    <div class="modal">
+      <h3 id="verifyModalTitle">Verify payment</h3>
+      <div id="verifyModalAlert"></div>
+      <form id="verifyForm">
+        <input type="hidden" id="verifyId" />
+        <div class="field">
+          <label for="verifyMethod">Payment method</label>
+          <select id="verifyMethod">
+            <option>Orange Money</option>
+            <option>MTN Mobile Money</option>
+            <option>Bank Transfer</option>
+            <option>Cash</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label for="verifyRef">Transaction / reference number</label><input type="text" id="verifyRef" placeholder="e.g. OM123456789" /></div>
+        <div class="field"><label for="verifyNotes">Notes (optional)</label><textarea id="verifyNotes" rows="2" placeholder="Any additional details"></textarea></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="closeVerifyModal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveVerifyBtn" style="flex:1;">Confirm payment</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const auth = guardRole(['finance_manager', 'superuser']);
+
+    function doLogout() { clearAuth(); window.location.href = 'index.html'; }
+    document.getElementById('sidebarLogout').addEventListener('click', doLogout);
+    document.getElementById('topbarLogout').addEventListener('click', doLogout);
+
+    // ── Payment verification ───────────────────────────────────────────
+    async function renderPaymentQueue() {
+      const container = document.getElementById('paymentQueue');
+      container.innerHTML = '<p class="empty-state">Loading…</p>';
+      const list = await authFetch('/api/contestants/queue?status=pending_payment').then((r) => r.json());
+      document.getElementById('statPending').textContent = list.length;
+
+      if (!list.length) { container.innerHTML = '<p class="empty-state">No contestants waiting for payment verification.</p>'; return; }
+      container.innerHTML = list.map((c) => `
+        <div class="queue-item">
+          <div class="queue-item-head">
+            ${c.profile_photo_url ? `<img class="queue-photo" src="${c.profile_photo_url}" alt="${escapeHtml(c.full_name)}" />` : ''}
+            <div style="flex:1;">
+              <h3>${escapeHtml(c.full_name)}${c.entry_type === 'group' ? ' <span class="badge badge-info" style="font-size:0.7rem;vertical-align:middle;">Group</span>' : ''}</h3>
+              ${c.competitionId ? `<p style="margin:1px 0 2px;font-size:0.7rem;font-weight:700;letter-spacing:0.07em;color:var(--gold-bright);">${escapeHtml(c.competitionId)}</p>` : ''}
+              <p class="queue-meta">${escapeHtml(c.categoryLabel || '')} · ${escapeHtml(c.county || '')} · Applied ${new Date(c.created_at).toLocaleDateString()}${c.entry_type === 'group' && c.memberCount ? ` · ${c.memberCount} members` : ''}</p>
+            </div>
+            <span class="badge badge-pending">Pending payment</span>
+          </div>
+          <p class="queue-talent">${escapeHtml(c.email)} · ${escapeHtml(c.phone || '')}${c.talent_video_url ? ` · <a href="${c.talent_video_url}" target="_blank" rel="noopener">Watch video ↗</a>` : ''}</p>
+          <p class="queue-talent" style="color:var(--muted); font-size:0.85rem;">${escapeHtml(c.talent_description || c.short_bio || '')}</p>
+          <button class="btn btn-primary" data-verify="${c.id}" data-name="${escapeHtml(c.full_name)}" style="margin-top:8px;">Verify payment</button>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('[data-verify]').forEach((btn) => {
+        btn.addEventListener('click', () => openVerifyModal(btn.dataset.verify, btn.dataset.name));
+      });
+    }
+
+    async function renderPaymentHistory() {
+      const container = document.getElementById('paymentHistory');
+      container.innerHTML = '<p class="empty-state">Loading…</p>';
+      const list = await authFetch('/api/contestants/queue?verified=true').then((r) => r.json());
+      if (!list.length) { container.innerHTML = '<p class="empty-state">No verified payments yet.</p>'; return; }
+      const statusBadge = (s) => {
+        const map = { qualified:'badge-approved', winner:'badge-approved', registered:'badge-pending', waiting_list:'badge-pending', eliminated:'badge-rejected', rejected:'badge-rejected' };
+        return `<span class="badge ${map[s]||'badge-pending'}">${s.replace(/_/g,' ')}</span>`;
+      };
+      container.innerHTML = `
+        <div class="table-wrap" style="margin-bottom:48px;">
+          <table class="app-table">
+            <thead><tr><th>Name</th><th>Category</th><th>Method</th><th>Reference</th><th>Verified by</th><th>Verified at</th><th>Status</th></tr></thead>
+            <tbody>
+              ${list.map((c) => `
+                <tr>
+                  <td>
+                    <strong>${escapeHtml(c.full_name)}</strong>${c.entry_type === 'group' ? ' <span class="badge badge-info" style="font-size:0.7rem;">Group</span>' : ''}
+                    ${c.competitionId ? `<br/><span style="font-size:0.68rem;font-weight:700;letter-spacing:0.06em;color:var(--gold-bright);">${escapeHtml(c.competitionId)}</span>` : ''}
+                    ${c.stage_name ? `<br/><span style="font-size:0.8rem;color:var(--muted);">"${escapeHtml(c.stage_name)}"</span>` : ''}
+                  </td>
+                  <td>${escapeHtml(c.categoryLabel || '—')}</td>
+                  <td>${escapeHtml(c.payment_method || '—')}</td>
+                  <td><code style="font-size:0.8rem;">${escapeHtml(c.payment_reference || '—')}</code></td>
+                  <td>${escapeHtml(c.paymentVerifiedByName || '—')}</td>
+                  <td>${new Date(c.payment_verified_at).toLocaleString()}</td>
+                  <td>${statusBadge(c.status)}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>`;
+    }
+
+    document.getElementById('paymentTabs').querySelectorAll('.tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        document.getElementById('paymentTabs').querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
+        tab.classList.add('active');
+        const isPending = tab.dataset.ptab === 'pending';
+        document.getElementById('paymentQueue').classList.toggle('hidden', !isPending);
+        document.getElementById('paymentHistory').classList.toggle('hidden', isPending);
+        if (!isPending) renderPaymentHistory();
+      });
+    });
+
+    function openVerifyModal(id, name) {
+      document.getElementById('verifyId').value            = id;
+      document.getElementById('verifyModalTitle').textContent = `Verify payment — ${name}`;
+      document.getElementById('verifyModalAlert').innerHTML = '';
+      document.getElementById('verifyRef').value           = '';
+      document.getElementById('verifyNotes').value         = '';
+      document.getElementById('verifyModal').classList.add('open');
+    }
+    document.getElementById('closeVerifyModal').addEventListener('click', () => document.getElementById('verifyModal').classList.remove('open'));
+    document.getElementById('verifyModal').addEventListener('click', (e) => { if (e.target === document.getElementById('verifyModal')) document.getElementById('verifyModal').classList.remove('open'); });
+
+    document.getElementById('verifyForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('verifyModalAlert');
+      const btn     = document.getElementById('saveVerifyBtn');
+      const id      = document.getElementById('verifyId').value;
+      btn.disabled = true; btn.textContent = 'Confirming…';
+      const payload = {
+        paymentMethod:    document.getElementById('verifyMethod').value,
+        paymentReference: document.getElementById('verifyRef').value,
+        paymentNotes:     document.getElementById('verifyNotes').value
+      };
+      const res  = await authFetch(`/api/contestants/${id}/verify-payment`, { method: 'POST', body: JSON.stringify(payload) });
+      const data = await res.json();
+      btn.disabled = false; btn.textContent = 'Confirm payment';
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { setTimeout(() => { document.getElementById('verifyModal').classList.remove('open'); renderPaymentQueue(); }, 1200); }
+    });
+
+    // ── Voting Codes ───────────────────────────────────────────────────
+    let activeUsedFilter = '';
+
+    async function loadRounds() {
+      const rounds = await fetch('/api/rounds').then((r) => r.json());
+      const sel    = document.getElementById('genRound');
+      rounds.forEach((r) => { const o = document.createElement('option'); o.value = r.id; o.textContent = r.name; sel.appendChild(o); });
+    }
+
+    async function renderCodes() {
+      const tbody = document.getElementById('codesBody');
+      tbody.innerHTML = '<tr><td colspan="6">Loading…</td></tr>';
+      const url = activeUsedFilter !== '' ? `/api/voting-codes?used=${activeUsedFilter}` : '/api/voting-codes';
+      const codes = await authFetch(url).then((r) => r.json());
+
+      const unused = codes.filter((c) => !c.used);
+      const used   = codes.filter((c) =>  c.used);
+      document.getElementById('statCodes').textContent     = unused.length;
+      document.getElementById('statUsedCodes').textContent = used.length;
+
+      if (!codes.length) { tbody.innerHTML = '<tr><td colspan="6">No codes in this view.</td></tr>'; return; }
+      tbody.innerHTML = codes.map((c) => `
+        <tr>
+          <td><code style="font-family:var(--font-mono); letter-spacing:0.05em;">${escapeHtml(c.code)}</code></td>
+          <td>${escapeHtml(c.roundName || '—')}</td>
+          <td>${escapeHtml(c.payment_method || '—')}</td>
+          <td>${new Date(c.created_at).toLocaleDateString()}</td>
+          <td>${c.used ? (escapeHtml(c.usedByName || '?')) : '<span class="badge badge-approved">Unused</span>'}</td>
+          <td>${!c.used ? `<button class="btn btn-danger btn-sm" data-del-code="${c.id}">Delete</button>` : ''}</td>
+        </tr>
+      `).join('');
+
+      document.querySelectorAll('[data-del-code]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!await ltqConfirm('Delete this unused voting code?', { title: 'Delete Code', danger: true })) return;
+          const res  = await authFetch(`/api/voting-codes/${btn.dataset.delCode}`, { method: 'DELETE' });
+          const data = await res.json();
+          if (!res.ok) { ltqToast(data.error || 'Could not delete code.', 'error'); } else renderCodes();
+        });
+      });
+    }
+
+    document.getElementById('codeTabs').querySelectorAll('.tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        document.getElementById('codeTabs').querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
+        tab.classList.add('active');
+        activeUsedFilter = tab.dataset.used;
+        renderCodes();
+      });
+    });
+
+    document.getElementById('genForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('genAlert');
+      const genDiv  = document.getElementById('generatedCodes');
+      alertEl.innerHTML = '<div class="alert alert-info">Generating…</div>';
+      genDiv.innerHTML  = '';
+      const payload = {
+        quantity:      Number(document.getElementById('genQty').value),
+        paymentMethod: document.getElementById('genMethod').value,
+        roundId:       document.getElementById('genRound').value || null
+      };
+      const res  = await authFetch('/api/voting-codes/generate', { method: 'POST', body: JSON.stringify(payload) });
+      const data = await res.json();
+      if (!res.ok) { alertEl.innerHTML = `<div class="alert alert-error">${data.error}</div>`; return; }
+      alertEl.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+      genDiv.innerHTML  = `<p style="font-size:0.85rem; color:var(--muted); margin-bottom:8px;">Copy and distribute these codes to paying voters:</p><div style="font-family:var(--font-mono); background:var(--panel-raised); border:1px solid var(--panel-border); border-radius:8px; padding:12px; max-height:220px; overflow-y:auto; line-height:2;">${data.codes.map((c) => `<span style="display:inline-block; margin:2px 6px; letter-spacing:0.08em;">${c.code}</span>`).join('')}</div>`;
+      renderCodes();
+    });
+
+    // ── Accounting ────────────────────────────────────────────────────────
+    const fmtUsd = (n) => '$' + parseFloat(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const fmtLrd = (n) => 'L$' + parseFloat(n || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    let acctCurrentSeasonId = null;
+    let acctAllSeasons = [];
+
+    function renderAcctSummary(summary, prefix) {
+      document.getElementById(`${prefix}TotalLrd`).textContent = fmtLrd(summary.total.lrd);
+      document.getElementById(`${prefix}TotalUsd`).textContent = fmtUsd(summary.total.usd);
+      document.getElementById(`${prefix}RegLrd`).textContent   = fmtLrd(summary.registration.lrd);
+      document.getElementById(`${prefix}VoteLrd`).textContent  = fmtLrd(summary.voting.lrd);
+    }
+
+    async function loadAccounting() {
+      const sel = document.getElementById('acctSeasonFilter');
+      const val = sel.value;
+
+      let url;
+      if (val === 'all') {
+        url = '/api/accounting?season=all';
+        document.getElementById('acctSeasonLabel').textContent = 'All Seasons';
+      } else if (val === 'current') {
+        url = acctCurrentSeasonId ? `/api/accounting?season_id=${acctCurrentSeasonId}` : '/api/accounting?season=all';
+        const s = acctAllSeasons.find((s) => s.is_current);
+        document.getElementById('acctSeasonLabel').textContent = s ? `Season ${s.number} — ${s.name}` : 'Current Season';
+      } else {
+        url = `/api/accounting?season_id=${val}`;
+        const s = acctAllSeasons.find((s) => s.id === val);
+        document.getElementById('acctSeasonLabel').textContent = s ? `Season ${s.number} — ${s.name}` : 'Season';
+      }
+
+      const [data, allData] = await Promise.all([
+        authFetch(url).then((r) => r.json()),
+        authFetch('/api/accounting?season=all').then((r) => r.json())
+      ]);
+
+      // Summary cards for filtered view
+      renderAcctSummary(data.summary, 'acct');
+
+      // Transaction table
+      const tbody = document.getElementById('acctTableBody');
+      if (!data.entries.length) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No transactions recorded yet.</td></tr>';
+      } else {
+        tbody.innerHTML = data.entries.map((e) => `
+          <tr>
+            <td style="white-space:nowrap;">${new Date(e.created_at).toLocaleString()}</td>
+            <td>${e.season_name ? `S${e.season_number} — ${escapeHtml(e.season_name)}` : '—'}</td>
+            <td><span class="badge ${e.type === 'registration' ? 'badge-approved' : 'badge-pending'}" style="font-size:0.7rem;">
+              ${e.type === 'registration' ? 'Registration' : 'Voting Code'}
+            </span></td>
+            <td>${escapeHtml(e.reference_name || '—')}</td>
+            <td style="font-family:var(--font-mono);text-align:right;">${fmtLrd(e.amount_lrd)}</td>
+            <td style="font-family:var(--font-mono);text-align:right;">${fmtUsd(e.amount_usd)}</td>
+          </tr>`).join('');
+      }
+
+      // All Seasons Combined summary
+      renderAcctSummary(allData.summary, 'acctAll');
+
+      // Per-season breakdown
+      const bySeasonMap = {};
+      allData.entries.forEach((e) => {
+        const key = e.season_id || 'unknown';
+        if (!bySeasonMap[key]) bySeasonMap[key] = { label: e.season_name ? `Season ${e.season_number} — ${e.season_name}` : '—', regLrd: 0, voteLrd: 0, totalLrd: 0, totalUsd: 0 };
+        bySeasonMap[key].totalLrd += parseFloat(e.amount_lrd || 0);
+        bySeasonMap[key].totalUsd += parseFloat(e.amount_usd || 0);
+        if (e.type === 'registration') bySeasonMap[key].regLrd  += parseFloat(e.amount_lrd || 0);
+        if (e.type === 'voting_code')  bySeasonMap[key].voteLrd += parseFloat(e.amount_lrd || 0);
+      });
+      const breakdown = document.getElementById('acctAllSeasonBreakdown');
+      const seasons = Object.values(bySeasonMap);
+      if (!seasons.length) {
+        breakdown.innerHTML = '<tr><td colspan="5" class="empty-state">No data yet.</td></tr>';
+      } else {
+        breakdown.innerHTML = seasons.map((s) => `
+          <tr>
+            <td>${escapeHtml(s.label)}</td>
+            <td style="font-family:var(--font-mono);text-align:right;">${fmtLrd(s.regLrd)}</td>
+            <td style="font-family:var(--font-mono);text-align:right;">${fmtLrd(s.voteLrd)}</td>
+            <td style="font-family:var(--font-mono);text-align:right;font-weight:600;">${fmtLrd(s.totalLrd)}</td>
+            <td style="font-family:var(--font-mono);text-align:right;">${fmtUsd(s.totalUsd)}</td>
+          </tr>`).join('');
+      }
+    }
+
+    async function initAccounting() {
+      const seasons = await authFetch('/api/accounting/seasons').then((r) => r.json()).catch(() => []);
+      acctAllSeasons = seasons;
+      const sel = document.getElementById('acctSeasonFilter');
+      // Populate season options
+      seasons.forEach((s) => {
+        if (!sel.querySelector(`option[value="${s.id}"]`)) {
+          const opt = document.createElement('option');
+          opt.value = s.id;
+          opt.textContent = `Season ${s.number} — ${s.name}${s.is_current ? ' (Current)' : ''}`;
+          sel.appendChild(opt);
+        }
+        if (s.is_current) acctCurrentSeasonId = s.id;
+      });
+      document.getElementById('acctSeasonFilter').addEventListener('change', loadAccounting);
+      await loadAccounting();
+    }
+
+    // ── Section navigation ─────────────────────────────────────────────
+    (function() {
+      var panels = document.querySelectorAll('.admin-section');
+      var links  = document.querySelectorAll('.sidebar-sublink');
+      function showSection(id) {
+        panels.forEach(function(p) { p.classList.toggle('active', p.id === id); });
+        links.forEach(function(l) { l.classList.toggle('active', l.getAttribute('href') === '#' + id); });
+      }
+      links.forEach(function(l) {
+        l.addEventListener('click', function(e) {
+          e.preventDefault();
+          showSection(l.getAttribute('href').slice(1));
+        });
+      });
+      showSection('sec-payments');
+    })();
+
+    // Load accounting when its section is first clicked
+    let acctLoaded = false;
+    const _origShowSection = window._ltqShowSection;
+    document.querySelectorAll('.sidebar-sublink').forEach((l) => {
+      l.addEventListener('click', () => {
+        if (l.getAttribute('href') === '#sec-accounting' && !acctLoaded) {
+          acctLoaded = true;
+          initAccounting();
+        }
+      });
+    });
+
+    if (auth) {
+      document.getElementById('topbarName').textContent = auth.name;
+      renderPaymentQueue();
+      renderCodes();
+      loadRounds();
+      // Pre-fetch verified count for stat card update
+      authFetch('/api/contestants/queue?verified=true').then((r) => r.json()).then((list) => {
+        const statEl = document.getElementById('statVerified');
+        if (statEl) statEl.textContent = list.length;
+      }).catch(() => {});
+    }
+  </script>
+</body>
+</html>

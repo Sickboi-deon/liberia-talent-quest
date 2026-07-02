@@ -1,0 +1,109 @@
+[
+  {
+    "id": "u9f19d7f8",
+    "name": "Demo Admin",
+    "email": "admin.demo@example.com",
+    "passwordHash": "$2a$10$wZ7zf732f31M.RuqXsPVQuPRoAAgcdMln4YwA99CqLrAhKHsffIgi",
+    "role": "admin",
+    "mustChangePassword": false,
+    "createdAt": "2026-06-23T13:59:34.428Z"
+  },
+  {
+    "id": "u3456c538",
+    "name": "Demo Judge",
+    "email": "judge.demo@example.com",
+    "passwordHash": "$2a$10$i32fiMX2zDzxB4sNTQnN2O.ps8ZVfjnZhGaSdEBvLfkxMYQCvPwZ.",
+    "role": "judge",
+    "mustChangePassword": false,
+    "createdAt": "2026-06-23T13:59:34.510Z"
+  },
+  {
+    "id": "u39649664",
+    "name": "Mardea Kollie",
+    "email": "c001.demo@example.com",
+    "passwordHash": "$2a$10$4CpUwo7hdzgSe.4DvfyegOWns5t6mm2Dx5FWz0azpKV9v.nKB9sLO",
+    "role": "contestant",
+    "contestantId": "c001",
+    "mustChangePassword": false,
+    "createdAt": "2026-06-23T13:59:34.594Z"
+  },
+  {
+    "id": "uead42c7b",
+    "name": "Joseph Tarr",
+    "email": "c002.demo@example.com",
+    "passwordHash": "$2a$10$DKzE7CNBs4JEZIacWPXuOuNGOrWtuYLR/U5Kqv8qoda/sajkkd2Uu",
+    "role": "contestant",
+    "contestantId": "c002",
+    "mustChangePassword": false,
+    "createdAt": "2026-06-23T13:59:34.677Z"
+  },
+  {
+    "id": "u00988fdf",
+    "name": "Comfort Doe",
+    "email": "c003.demo@example.com",
+    "passwordHash": "$2a$10$Kf3rsUaE/kNT4eNdyctxeeYBNgiZqkZSkjaHrLYUhNuJ.zJ1Iz8su",
+    "role": "contestant",
+    "contestantId": "c003",
+    "mustChangePassword": false,
+    "createdAt": "2026-06-23T13:59:34.762Z"
+  },
+  {
+    "id": "u0eaab92e",
+    "name": "Prince Fahnbulleh",
+    "email": "c004.demo@example.com",
+    "passwordHash": "$2a$10$m2Cg6KvN1wAqrs2na8MZmOSmMtzGfrUUOzbLGBePehncKAGQUdO/C",
+    "role": "contestant",
+    "contestantId": "c004",
+    "mustChangePassword": false,
+    "createdAt": "2026-06-23T13:59:34.845Z"
+  },
+  {
+    "id": "u3dc55adf",
+    "name": "Esther Konneh",
+    "email": "c005.demo@example.com",
+    "passwordHash": "$2a$10$5CU1kj7uOxq8P8jJ8mWUduMjbOXDvNbWqte8UirOmYWA0BFVVhHe.",
+    "role": "contestant",
+    "contestantId": "c005",
+    "mustChangePassword": false,
+    "createdAt": "2026-06-23T13:59:34.929Z"
+  },
+  {
+    "id": "u267a96ff",
+    "name": "Beatrice Nyema",
+    "email": "c006.demo@example.com",
+    "passwordHash": "$2a$10$QMbWXmsc.OAmvFyC9UNGqefgDCIZp9PIfQ8kD44Cfa4ynQd8GMLFi",
+    "role": "contestant",
+    "contestantId": "c006",
+    "mustChangePassword": false,
+    "createdAt": "2026-06-23T13:59:35.012Z"
+  },
+  {
+    "id": "u80aef339",
+    "name": "Patricia Sumo",
+    "email": "c007.demo@example.com",
+    "passwordHash": "$2a$10$7D6Vj7ettrEJqTeynNQQjOxOJcVPGhapN6eyLtJmUeArrapRgDbyS",
+    "role": "contestant",
+    "contestantId": "c007",
+    "mustChangePassword": false,
+    "createdAt": "2026-06-23T13:59:35.097Z"
+  },
+  {
+    "id": "u5c48d91a",
+    "name": "Samuel Kpehe",
+    "email": "c008.demo@example.com",
+    "passwordHash": "$2a$10$9tc.PnWbsdu.YyedqnwTn.fXxzKn9/SI8i4q92bmQE5jhq4rZ0L8q",
+    "role": "contestant",
+    "contestantId": "c008",
+    "mustChangePassword": false,
+    "createdAt": "2026-06-23T13:59:35.179Z"
+  },
+  {
+    "id": "uea3bf4a1",
+    "name": "Francis Suomie",
+    "email": "francis@example.com",
+    "passwordHash": "$2a$10$Hc.sUMkIiS0qTGILuzP8sOd1uutqDyFqCX7UEB5v74M8.Tt7/6poK",
+    "role": "superuser",
+    "mustChangePassword": true,
+    "createdAt": "2026-06-23T14:04:05.343Z"
+  }
+]

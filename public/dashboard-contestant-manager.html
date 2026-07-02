@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contestant Manager — Liberia Talent Quest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("ltq_theme")||"dark");}catch(e){}</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="admin-shell">
+
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-brand"><img src="assets/logo-icon.png" alt="LTQ" /> Liberia Talent Quest</div>
+      <nav class="sidebar-nav" aria-label="Contestant Manager navigation">
+        <span class="sidebar-section">Contestant Manager</span>
+        <a href="#sec-stats"         class="sidebar-sublink">Overview</a>
+        <a href="#sec-contestants"       class="sidebar-sublink">All Contestants</a>
+        <a href="#sec-performances"  class="sidebar-sublink">Performance Submissions</a>
+        <a href="#sec-notifications" class="sidebar-sublink">Notifications</a>
+        <a href="#sec-scores"        class="sidebar-sublink">Audition Scores</a>
+        <div class="sidebar-divider"></div>
+        <span class="sidebar-section">Public site</span>
+        <a href="index.html" class="sidebar-link">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Home
+        </a>
+        <a href="leaderboard.html" class="sidebar-link">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="4"/><line x1="12" y1="20" x2="12" y2="10"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+          Leaderboard
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="sidebar-link" id="sidebarLogout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;font-family:var(--font-body);">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Log out
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <button class="topbar-toggle" id="topbarToggle" aria-label="Toggle sidebar">&#9776;</button>
+        <span class="topbar-title">Contestant Manager</span>
+        <div class="topbar-user">
+          <strong id="topbarName"></strong>
+          <button class="topbar-logout" id="topbarLogout">Log out</button>
+        </div>
+      </header>
+
+      <div class="admin-content">
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             OVERVIEW
+        ══════════════════════════════════════════════════════════════════ -->
+        <div class="admin-section active" id="sec-stats">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display);font-size:1.5rem;margin:0 0 4px;">Overview</h2>
+            <p style="color:var(--muted);margin:0;">Qualified contestants under your management.</p>
+          </div>
+          <div class="stat-grid" style="margin-bottom:32px;">
+            <div class="stat-card stat-card--blue">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+              <div class="num" id="statTotal">—</div>
+              <div class="stat-label">Total with accounts</div>
+            </div>
+            <div class="stat-card stat-card--green">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+              <div class="num" id="statQualified">—</div>
+              <div class="stat-label">Qualified</div>
+            </div>
+            <div class="stat-card stat-card--amber">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+              <div class="num" id="statWaitlist">—</div>
+              <div class="stat-label">On standby</div>
+            </div>
+            <div class="stat-card stat-card--red">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
+              <div class="num" id="statEliminated">—</div>
+              <div class="stat-label">Eliminated</div>
+            </div>
+            <div class="stat-card stat-card--gold">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/></svg></div>
+              <div class="num" id="statWinner">—</div>
+              <div class="stat-label">Winner</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             ALL CONTESTANTS
+        ══════════════════════════════════════════════════════════════════ -->
+        <div class="admin-section" id="sec-contestants">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display);font-size:1.5rem;margin:0 0 8px;">My Contestants</h2>
+            <p>Qualified contestants assigned to your management. Click any row to view and edit.</p>
+          </div>
+          <div style="margin-bottom:16px;">
+            <input type="text" id="searchInput" placeholder="Search by name, email or county…" style="width:100%;max-width:440px;padding:10px 14px;background:var(--panel-raised);border:1px solid var(--panel-border);border-radius:8px;color:var(--paper);font-family:var(--font-body);font-size:0.9rem;" />
+          </div>
+          <div class="tabs" id="statusTabs">
+            <button class="tab active" data-status="">All</button>
+            <button class="tab" data-status="qualified">Qualified</button>
+            <button class="tab" data-status="waiting_list">On standby</button>
+            <button class="tab" data-status="eliminated">Eliminated</button>
+            <button class="tab" data-status="winner">Winner</button>
+          </div>
+          <div id="contestantList"><p class="empty-state">Loading…</p></div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             PERFORMANCE SUBMISSIONS
+        ══════════════════════════════════════════════════════════════════ -->
+        <div class="admin-section" id="sec-performances">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display);font-size:1.5rem;margin:0 0 8px;">Performance Submissions</h2>
+            <p>Submit a performance video for a qualified contestant in an open round.</p>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+            <div class="form-card">
+              <h3 style="font-size:1rem;color:var(--brand-blue);margin:0 0 16px;">New Submission</h3>
+              <div id="perfSubmitAlert"></div>
+              <form id="perfSubmitForm">
+                <div class="field">
+                  <label for="perfContestantId">Contestant <span style="color:var(--brand-red);">*</span></label>
+                  <select id="perfContestantId" required>
+                    <option value="">— select qualified contestant —</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="perfRoundId">Round <span style="color:var(--brand-red);">*</span></label>
+                  <select id="perfRoundId" required>
+                    <option value="">— select round —</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="perfType">Performance type <span style="color:var(--brand-red);">*</span></label>
+                  <select id="perfType" required>
+                    <option value="live">Live (no video upload needed)</option>
+                    <option value="video">Video submission</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="perfSongName">Song / Act title</label>
+                  <input type="text" id="perfSongName" placeholder="e.g. Amazing Grace (cover)" />
+                </div>
+                <div class="field" id="perfVideoField">
+                  <label for="perfVideoFile">Performance video <span style="color:var(--brand-red);">*</span></label>
+                  <input type="file" id="perfVideoFile" accept="video/mp4,video/quicktime,video/webm,video/x-msvideo" />
+                  <span class="hint">MP4, MOV, WebM, AVI · max 300 MB</span>
+                </div>
+                <div class="field">
+                  <label for="perfDescription">Description (optional)</label>
+                  <textarea id="perfDescription" rows="2" placeholder="Brief note about the performance"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" id="perfSubmitBtn">Submit performance</button>
+              </form>
+            </div>
+
+            <div>
+              <div class="section-head" style="margin-bottom:12px;">
+                <h3 style="font-size:1rem;margin:0;">Round Status</h3>
+              </div>
+              <div id="roundStatusList"><p class="empty-state">Loading…</p></div>
+            </div>
+          </div>
+
+          <div class="section-head" style="margin-top:40px;margin-bottom:12px;">
+            <h3 style="font-size:1.1rem;margin:0;">Submitted Performances</h3>
+            <div class="field" style="max-width:320px;margin-top:12px;">
+              <label for="perfViewRound">View round</label>
+              <select id="perfViewRound">
+                <option value="">— select round —</option>
+              </select>
+            </div>
+          </div>
+          <div id="perfList"><p class="empty-state">Select a round to view performances.</p></div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             NOTIFICATIONS
+        ══════════════════════════════════════════════════════════════════ -->
+        <div class="admin-section" id="sec-notifications">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display);font-size:1.5rem;margin:0 0 8px;">Notifications</h2>
+            <p>Send notifications to contestants via <strong>Email</strong> and <strong>WhatsApp</strong>. Both channels fire simultaneously for every send.</p>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;">
+
+            <!-- Compose -->
+            <div class="form-card">
+              <h3 style="font-size:1rem;color:var(--brand-blue);margin:0 0 16px;">Compose Notification</h3>
+              <div id="notifAlert"></div>
+              <form id="notifForm">
+                <div class="field">
+                  <label for="notifType">Notification type</label>
+                  <select id="notifType">
+                    <option value="audition_schedule">Audition schedule</option>
+                    <option value="qualification_notice">Qualification notice</option>
+                    <option value="rehearsal_notice">Rehearsal notice</option>
+                    <option value="elimination_notice">Elimination notice</option>
+                    <option value="finalist_announcement">Finalist announcement</option>
+                    <option value="general_update">General update</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="notifRecipients">Send to</label>
+                  <select id="notifRecipients">
+                    <option value="all">All contestants (registered + above)</option>
+                    <option value="qualified">Qualified contestants only</option>
+                    <option value="waiting_list">Waiting list only</option>
+                    <option value="registered">In-review only</option>
+                    <option value="individual">One specific contestant</option>
+                  </select>
+                </div>
+                <div class="field" id="notifIndividualField" style="display:none;">
+                  <label for="notifContestantId">Contestant</label>
+                  <select id="notifContestantId">
+                    <option value="">— select contestant —</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="notifSubject">Subject <span style="color:var(--brand-red);">*</span></label>
+                  <input type="text" id="notifSubject" placeholder="e.g. Rehearsal this Friday at 3 PM" required />
+                </div>
+                <div class="field">
+                  <label for="notifMessage">Message <span style="color:var(--brand-red);">*</span></label>
+                  <textarea id="notifMessage" rows="6" placeholder="Write the message here…" required style="font-size:0.9rem;"></textarea>
+                </div>
+                <div id="channelStatus" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:4px;margin-bottom:16px;">
+                  <span style="font-size:0.8rem;color:var(--muted);margin-right:2px;">Channels:</span>
+                  <span class="ch-pill ch-email" style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:0.78rem;font-weight:600;background:rgba(76,141,255,0.12);border:1px solid rgba(76,141,255,0.3);color:var(--brand-blue);">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    Email
+                    <span id="emailStatus" style="font-size:0.72rem;opacity:0.8;">checking…</span>
+                  </span>
+                  <span class="ch-pill ch-wa" style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:0.78rem;font-weight:600;background:rgba(47,217,194,0.1);border:1px solid rgba(47,217,194,0.25);color:var(--teal);">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    WhatsApp
+                    <span id="waStatus" style="font-size:0.72rem;opacity:0.8;">checking…</span>
+                  </span>
+                </div>
+                <button type="submit" class="btn btn-primary" id="notifSendBtn">Send notification</button>
+              </form>
+            </div>
+
+            <!-- Templates helper -->
+            <div>
+              <div class="form-card" style="margin-bottom:20px;">
+                <h3 style="font-size:0.95rem;color:var(--gold-bright);margin:0 0 12px;">Message templates</h3>
+                <p style="font-size:0.83rem;color:var(--muted);margin:0 0 12px;">Click a template to auto-fill the form.</p>
+                <div id="templateList" style="display:flex;flex-direction:column;gap:8px;"></div>
+              </div>
+
+              <!-- Recent history -->
+              <div class="section-head" style="margin-bottom:12px;">
+                <h3 style="font-size:1rem;margin:0;">Recent notifications sent</h3>
+              </div>
+              <div id="notifHistory"><p class="empty-state">Loading…</p></div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ══════════════════════════════════════════════════════════════════
+             AUDITION SCORES
+        ══════════════════════════════════════════════════════════════════ -->
+        <div class="admin-section" id="sec-scores">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display);font-size:1.5rem;margin:0 0 8px;">Audition Scores</h2>
+            <p>All judge scores submitted so far. <a href="/api/audition-scores/report" target="_blank" style="color:var(--gold-bright);">Download CSV ↗</a></p>
+          </div>
+          <div class="table-wrap" style="margin-bottom:64px;">
+            <table class="app-table" id="scoresTable">
+              <thead><tr><th>Contestant</th><th>Category</th><th>Judge</th><th>Total</th><th>Comments</th><th>Date</th></tr></thead>
+              <tbody id="scoresBody"><tr><td colspan="6">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div><!-- /admin-content -->
+    </div><!-- /admin-main -->
+  </div><!-- /admin-shell -->
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       EDIT CONTESTANT MODAL
+  ════════════════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal" style="max-width:780px;max-height:90vh;overflow-y:auto;">
+      <h3 id="editModalTitle" style="font-family:var(--font-display);font-size:1.2rem;margin:0 0 4px;"></h3>
+      <p id="editModalMeta" style="font-size:0.82rem;color:var(--muted);margin:0 0 20px;"></p>
+      <div id="editModalAlert"></div>
+
+      <div class="tabs" id="editTabs" style="margin-bottom:20px;">
+        <button class="tab active" data-edit-tab="profile">Profile</button>
+        <button class="tab" data-edit-tab="info">Edit Info</button>
+        <button class="tab" data-edit-tab="bio">Bio &amp; Talent</button>
+        <button class="tab" data-edit-tab="photo">Profile Photo</button>
+      </div>
+
+      <!-- Tab: Profile view -->
+      <div id="editTab-profile">
+        <p class="empty-state">Loading profile…</p>
+      </div>
+
+      <form id="editForm">
+        <input type="hidden" id="editId" />
+
+        <!-- Tab: Info -->
+        <div id="editTab-info">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="field"><label for="editFullName">Full name</label><input type="text" id="editFullName" /></div>
+            <div class="field"><label for="editStageName">Stage name</label><input type="text" id="editStageName" placeholder="(optional)" /></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div class="field">
+              <label for="editCounty">County</label>
+              <select id="editCounty">
+                <option value="">— select county —</option>
+                <option>Bomi</option><option>Bong</option><option>Gbarpolu</option>
+                <option>Grand Bassa</option><option>Grand Cape Mount</option><option>Grand Gedeh</option>
+                <option>Grand Kru</option><option>Lofa</option><option>Margibi</option>
+                <option>Maryland</option><option>Montserrado</option><option>Nimba</option>
+                <option>River Cess</option><option>River Gee</option><option>Sinoe</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="editCategory">Talent category</label>
+              <select id="editCategory">
+                <option value="">— select —</option>
+              </select>
+            </div>
+          </div>
+          <div class="field"><label for="editNotes">Internal notes</label><textarea id="editNotes" rows="2" placeholder="Notes visible only to staff"></textarea></div>
+        </div>
+
+        <!-- Tab: Bio & Talent -->
+        <div id="editTab-bio" style="display:none;">
+          <div class="field"><label for="editShortBio">Personal story / Short bio</label><textarea id="editShortBio" rows="3" placeholder="The contestant's background and story"></textarea></div>
+          <div class="field"><label for="editTalentDesc">Talent description</label><textarea id="editTalentDesc" rows="3" placeholder="What they perform and how they describe their talent"></textarea></div>
+        </div>
+
+        <!-- Tab: Profile photo -->
+        <div id="editTab-photo" style="display:none;">
+          <div id="editPhotoPreview" style="margin-bottom:16px;"></div>
+          <div class="field">
+            <label for="editPhotoFile">Replace profile photo</label>
+            <input type="file" id="editPhotoFile" accept="image/jpeg,image/png,image/webp" />
+            <span class="hint">JPG, PNG, WEBP · max 8 MB. Uploading will replace the current primary photo.</span>
+          </div>
+          <div id="editPhotoAlert"></div>
+          <button type="button" class="btn btn-secondary" id="uploadPhotoFromEditBtn">Upload photo</button>
+        </div>
+
+        <div class="modal-actions" style="margin-top:20px;">
+          <button type="button" class="btn btn-secondary" id="closeEditModal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveEditBtn" style="flex:1;">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const auth = guardRole(['contestant_manager', 'superuser', 'admin']);
+
+    // CM sees only their scoped recipients — not pre-qualification statuses
+    if (auth?.role === 'contestant_manager') {
+      document.getElementById('notifRecipients').innerHTML = `
+        <option value="all">All my contestants</option>
+        <option value="qualified">Qualified only</option>
+        <option value="waiting_list">Waiting list only</option>
+        <option value="eliminated">Eliminated only</option>
+        <option value="winner">Winner(s)</option>
+        <option value="individual">One specific contestant</option>
+      `;
+    }
+
+    // ── Topbar ──────────────────────────────────────────────────────────
+    function doLogout() { clearAuth(); window.location.href = 'index.html'; }
+    document.getElementById('sidebarLogout').addEventListener('click', doLogout);
+    document.getElementById('topbarLogout').addEventListener('click', doLogout);
+    if (auth) document.getElementById('topbarName').textContent = auth.name;
+
+    // ── Section navigation ──────────────────────────────────────────────
+    const panels    = document.querySelectorAll('.admin-section');
+    const navLinks  = document.querySelectorAll('.sidebar-sublink');
+    function showSection(id) {
+      panels.forEach((p)  => p.classList.toggle('active', p.id === id));
+      navLinks.forEach((l) => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+    }
+    navLinks.forEach((l) => {
+      l.addEventListener('click', (e) => {
+        e.preventDefault();
+        const id = l.getAttribute('href').slice(1);
+        showSection(id);
+        if (id === 'sec-performances')       { loadPerfSection(); }
+        if (id === 'sec-notifications')      { loadNotifSection(); }
+        if (id === 'sec-scores')             { renderScores(); }
+      });
+    });
+    showSection('sec-stats');
+
+    // ── Helpers ─────────────────────────────────────────────────────────
+    function statusBadge(st) {
+      const cls = { qualified:'badge-approved', waiting_list:'badge-pending', eliminated:'badge-rejected', winner:'badge-approved', runner_up:'badge-approved', second_runner_up:'badge-approved', finalist:'badge-approved' };
+      const goldStyle = { winner:'background:var(--gold-bright);color:#000;', runner_up:'background:#c0b060;color:#000;', second_runner_up:'background:#a09050;color:#fff;', finalist:'background:#807040;color:#fff;' };
+      const lbl = { qualified:'Qualified', waiting_list:'Waiting list', eliminated:'Eliminated', winner:'Champion', runner_up:'Runner Up', second_runner_up:'2nd Runner Up', finalist:'Finalist' };
+      return `<span class="badge ${cls[st]||'badge-info'}" style="${goldStyle[st]||''}">${lbl[st]||st}</span>`;
+    }
+
+    function fmtDate(d) { return d ? new Date(d).toLocaleDateString() : '—'; }
+
+    // ── Cache ────────────────────────────────────────────────────────────
+    let allContestants  = [];
+    let allCategories   = [];
+    let allRounds       = [];
+
+    async function ensureContestants() {
+      if (!allContestants.length) {
+        allContestants = await authFetch('/api/contestants/queue').then((r) => r.json());
+      }
+      return allContestants;
+    }
+    async function ensureCategories() {
+      if (!allCategories.length) {
+        allCategories = await authFetch('/api/categories').then((r) => r.json());
+      }
+      return allCategories;
+    }
+    async function ensureRounds() {
+      if (!allRounds.length) {
+        allRounds = await fetch('/api/rounds').then((r) => r.json());
+      }
+      return allRounds;
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // OVERVIEW
+    // ════════════════════════════════════════════════════════════════════
+    async function loadStats() {
+      const list = await authFetch('/api/contestants/queue').then((r) => r.json());
+      allContestants = list;
+      document.getElementById('statTotal').textContent     = list.length;
+      document.getElementById('statQualified').textContent = list.filter((c) => c.status === 'qualified').length;
+      document.getElementById('statWaitlist').textContent  = list.filter((c) => c.status === 'waiting_list').length;
+      document.getElementById('statEliminated').textContent= list.filter((c) => c.status === 'eliminated').length;
+      document.getElementById('statWinner').textContent    = list.filter((c) => c.status === 'winner').length;
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // ALL CONTESTANTS
+    // ════════════════════════════════════════════════════════════════════
+    let activeStatus = '';
+    let searchTerm   = '';
+
+    async function renderContestants() {
+      const container = document.getElementById('contestantList');
+      container.innerHTML = '<p class="empty-state">Loading…</p>';
+      await ensureContestants();
+      let list = allContestants;
+      if (activeStatus) list = list.filter((c) => c.status === activeStatus);
+      if (searchTerm)   list = list.filter((c) =>
+        [c.full_name, c.email, c.county, c.stage_name].some((v) => v && v.toLowerCase().includes(searchTerm))
+      );
+      if (!list.length) { container.innerHTML = '<p class="empty-state">No contestants match this filter.</p>'; return; }
+
+      container.innerHTML = list.map((c) => `
+        <div class="queue-item" style="cursor:pointer;" data-cid="${c.id}">
+          <div class="queue-item-head" style="pointer-events:none;">
+            ${c.profile_photo_url
+              ? `<img class="queue-photo" src="${c.profile_photo_url}" alt="${escapeHtml(c.full_name)}" style="width:52px;height:52px;object-fit:cover;border-radius:50%;flex-shrink:0;" />`
+              : `<div style="width:52px;height:52px;border-radius:50%;background:var(--panel-raised);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--muted);"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.866 3.582-7 8-7s8 3.134 8 7"/></svg></div>`}
+            <div style="flex:1;min-width:0;">
+              <h3 style="margin:0 0 2px;">${escapeHtml(c.full_name)}${c.entry_type === 'group' ? ' <span class="badge badge-info" style="font-size:0.7rem;vertical-align:middle;">Group</span>' : ''}${c.stage_name ? ` <span style="color:var(--gold-bright);font-size:0.82rem;">"${escapeHtml(c.stage_name)}"</span>` : ''}</h3>
+              ${c.competitionId ? `<p style="margin:0 0 2px;font-size:0.7rem;font-weight:700;letter-spacing:0.07em;color:var(--gold-bright);">${escapeHtml(c.competitionId)}</p>` : ''}
+              <p class="queue-meta" style="margin:0;">${escapeHtml(c.categoryLabel || '—')} · ${escapeHtml(c.county || '—')} · ${fmtDate(c.created_at)}${c.entry_type === 'group' && c.memberCount ? ` · ${c.memberCount} members` : ''}</p>
+            </div>
+            ${statusBadge(c.status)}
+          </div>
+          <p class="queue-talent" style="pointer-events:none;margin-top:6px;">${escapeHtml(c.email)} · ${escapeHtml(c.phone || '—')}</p>
+        </div>
+      `).join('');
+
+      container.querySelectorAll('[data-cid]').forEach((item) => {
+        item.addEventListener('click', () => {
+          const c = allContestants.find((x) => x.id === item.dataset.cid);
+          if (c) openEdit(c);
+        });
+      });
+    }
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      searchTerm = e.target.value.trim().toLowerCase();
+      renderContestants();
+    });
+
+    document.getElementById('statusTabs').querySelectorAll('.tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        document.getElementById('statusTabs').querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
+        tab.classList.add('active');
+        activeStatus = tab.dataset.status;
+        renderContestants();
+      });
+    });
+
+    // ── Edit modal ───────────────────────────────────────────────────────
+    let editCurrentCid = null;
+
+    async function openEdit(c) {
+      editCurrentCid = c.id;
+      await ensureCategories();
+
+      document.getElementById('editId').value           = c.id;
+      document.getElementById('editModalTitle').textContent = escapeHtml(c.full_name);
+      document.getElementById('editModalMeta').textContent  = `${c.categoryLabel || ''} · ${c.county || ''} · ${c.email}`;
+      document.getElementById('editFullName').value     = c.full_name  || '';
+      document.getElementById('editStageName').value    = c.stage_name || '';
+      document.getElementById('editShortBio').value     = c.short_bio  || '';
+      document.getElementById('editTalentDesc').value   = c.talent_description || '';
+      document.getElementById('editNotes').value        = c.judge_notes || '';
+
+      // County select
+      const countySel = document.getElementById('editCounty');
+      countySel.value = c.county || '';
+
+      // Category select
+      const catSel = document.getElementById('editCategory');
+      catSel.innerHTML = '<option value="">— select —</option>' +
+        allCategories.map((cat) => `<option value="${cat.id}" ${cat.id === c.category_id ? 'selected' : ''}>${escapeHtml(cat.name)}</option>`).join('');
+
+      // Profile photo preview
+      const preview = document.getElementById('editPhotoPreview');
+      preview.innerHTML = c.profile_photo_url
+        ? `<img src="${c.profile_photo_url}" alt="" style="width:100px;height:100px;object-fit:cover;border-radius:50%;border:3px solid var(--gold-bright);" />`
+        : `<div style="width:100px;height:100px;border-radius:50%;background:var(--panel-raised);display:flex;align-items:center;justify-content:center;color:var(--muted);"><svg xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.866 3.582-7 8-7s8 3.134 8 7"/></svg></div>`;
+
+      document.getElementById('editModalAlert').innerHTML = '';
+      document.getElementById('editPhotoAlert').innerHTML = '';
+      // Open on Profile tab and load profile data
+      showEditTab('profile');
+      document.getElementById('editModal').classList.add('open');
+      loadProfileInModal(c.id);
+    }
+
+    async function loadProfileInModal(id) {
+      const profileTab = document.getElementById('editTab-profile');
+      profileTab.innerHTML = '<p class="empty-state">Loading profile…</p>';
+      try {
+        const [contestant, perfs] = await Promise.all([
+          authFetch(`/api/contestants/${id}`).then((r) => r.json()),
+          authFetch(`/api/performances/contestant/${id}`).then((r) => r.json())
+        ]);
+        const statusBorder = { qualified:'var(--teal)', waiting_list:'var(--gold-bright)', eliminated:'var(--brand-red)', winner:'var(--gold-bright)', runner_up:'var(--gold-bright)', second_runner_up:'var(--gold-bright)', finalist:'var(--gold-bright)' };
+        profileTab.innerHTML = `
+          <div style="display:grid;grid-template-columns:160px 1fr;gap:20px;align-items:start;margin-bottom:20px;">
+            <div style="text-align:center;">
+              ${contestant.profile_photo_url
+                ? `<img src="${contestant.profile_photo_url}" alt="" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;border:3px solid ${statusBorder[contestant.status]||'var(--panel-border)'};" />`
+                : `<div style="width:100%;aspect-ratio:1;border-radius:10px;background:var(--panel-raised);border:3px solid var(--panel-border);display:flex;align-items:center;justify-content:center;color:var(--muted);"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.866 3.582-7 8-7s8 3.134 8 7"/></svg></div>`}
+              <div style="margin-top:10px;">${statusBadge(contestant.status)}</div>
+            </div>
+            <div>
+              <h3 style="font-family:var(--font-display);font-size:1.3rem;margin:0 0 2px;">${escapeHtml(contestant.full_name)}</h3>
+              ${contestant.competitionId ? `<p style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;color:var(--gold-bright);background:rgba(246,211,116,0.08);border:1px solid rgba(246,211,116,0.18);border-radius:5px;display:inline-block;padding:2px 8px;margin:0 0 8px;">${escapeHtml(contestant.competitionId)}</p>` : ''}
+              ${contestant.stage_name ? `<p style="color:var(--gold-bright);font-size:0.95rem;margin:0 0 14px;">"${escapeHtml(contestant.stage_name)}"</p>` : `<div style="margin-bottom:14px;"></div>`}
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;font-size:0.86rem;margin-bottom:14px;">
+                <div><span style="color:var(--muted);">Category</span><br/><strong>${escapeHtml(contestant.categoryLabel||'—')}</strong></div>
+                <div><span style="color:var(--muted);">County</span><br/><strong>${escapeHtml(contestant.county||'—')}</strong></div>
+                <div><span style="color:var(--muted);">Email</span><br/><strong>${escapeHtml(contestant.email||'—')}</strong></div>
+                <div><span style="color:var(--muted);">Phone</span><br/><strong>${escapeHtml(contestant.phone||'—')}</strong></div>
+                ${contestant.entry_type !== 'group'
+                  ? `<div><span style="color:var(--muted);">Gender</span><br/><strong>${escapeHtml(contestant.gender||'—')}</strong></div>`
+                  : `<div><span style="color:var(--muted);">Type</span><br/><strong>Group entry</strong></div>`}
+                <div><span style="color:var(--muted);">Registered</span><br/><strong>${fmtDate(contestant.created_at)}</strong></div>
+              </div>
+              ${contestant.short_bio ? `<div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Personal Story</div><p style="font-size:0.86rem;line-height:1.6;margin:0 0 10px;">${escapeHtml(contestant.short_bio)}</p>` : ''}
+              ${contestant.talent_description ? `<div style="font-size:0.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">Talent</div><p style="font-size:0.86rem;line-height:1.6;margin:0;">${escapeHtml(contestant.talent_description)}</p>` : ''}
+              ${contestant.judge_notes ? `<div style="margin-top:12px;padding:8px 12px;background:rgba(255,200,50,0.07);border-left:3px solid var(--gold-bright);border-radius:4px;"><div style="font-size:0.75rem;color:var(--gold-bright);margin-bottom:3px;">Staff notes</div><p style="font-size:0.84rem;margin:0;">${escapeHtml(contestant.judge_notes)}</p></div>` : ''}
+            </div>
+          </div>
+
+          ${contestant.entry_type === 'group' && contestant.members?.length ? `
+          <div class="form-card" style="margin-bottom:16px;">
+            <h3 style="font-size:0.95rem;color:var(--brand-blue);margin:0 0 12px;">Group Members (${contestant.members.length})</h3>
+            <div class="table-wrap"><table class="app-table">
+              <thead><tr><th>#</th><th>Name</th><th>Date of Birth</th><th>Phone</th></tr></thead>
+              <tbody>${contestant.members.map((m, i) => `<tr>
+                <td style="color:var(--muted);">${i + 1}</td>
+                <td><strong>${escapeHtml(m.name)}</strong></td>
+                <td>${m.dob ? new Date(m.dob).toLocaleDateString() : '<span style="color:var(--muted);">—</span>'}</td>
+                <td>${m.phone ? escapeHtml(m.phone) : '<span style="color:var(--muted);">—</span>'}</td>
+              </tr>`).join('')}
+              </tbody>
+            </table></div>
+          </div>` : ''}
+
+          <div class="form-card" style="margin-bottom:16px;">
+            <h3 style="font-size:0.95rem;color:var(--brand-blue);margin:0 0 12px;">Audition Scores</h3>
+            ${contestant.auditionScores?.length ? `
+            <div class="table-wrap"><table class="app-table">
+              <thead><tr><th>Judge</th><th>Total</th><th>Comments</th><th>Date</th></tr></thead>
+              <tbody>${contestant.auditionScores.map((s) => `<tr>
+                <td>${escapeHtml(s.judgeName||'—')}</td>
+                <td><strong>${s.total_score}</strong></td>
+                <td>${s.comments ? escapeHtml(s.comments) : '<span style="color:var(--muted);">—</span>'}</td>
+                <td>${fmtDate(s.submitted_at)}</td>
+              </tr>`).join('')}
+              </tbody>
+            </table></div>` : `<p class="empty-state" style="margin:0;">No audition scores recorded yet.</p>`}
+          </div>
+
+          <div class="form-card">
+            <h3 style="font-size:0.95rem;color:var(--brand-blue);margin:0 0 12px;">Round Performance History</h3>
+            ${perfs?.length ? `
+            <div class="table-wrap"><table class="app-table">
+              <thead><tr><th>Round</th><th>Type</th><th>Song / Act</th><th>Avg Score</th><th>Judges</th><th>Video</th></tr></thead>
+              <tbody>${perfs.map((p) => `<tr>
+                <td>${escapeHtml(p.roundName||'—')}</td>
+                <td><span class="badge badge-info" style="font-size:0.75rem;">${p.performance_type||'live'}</span></td>
+                <td>${p.song_name ? escapeHtml(p.song_name) : '<span style="color:var(--muted);">—</span>'}</td>
+                <td>${p.avgScore !== null ? `<strong>${p.avgScore}</strong>` : '<span style="color:var(--muted);">—</span>'}</td>
+                <td>${p.judgeCount}</td>
+                <td>${p.performance_video_url ? `<a href="${p.performance_video_url}" target="_blank" style="color:var(--gold-bright);">Watch ↗</a>` : '<span style="color:var(--muted);">—</span>'}</td>
+              </tr>`).join('')}
+              </tbody>
+            </table></div>` : `<p class="empty-state" style="margin:0;">No competition performances yet.</p>`}
+          </div>
+        `;
+      } catch {
+        profileTab.innerHTML = '<p class="empty-state">Failed to load profile. Please try again.</p>';
+      }
+    }
+
+    function showEditTab(tab) {
+      ['profile','info','bio','photo'].forEach((t) => {
+        document.getElementById('editTab-' + t).style.display = (t === tab) ? '' : 'none';
+      });
+      document.querySelectorAll('#editTabs .tab').forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.editTab === tab);
+      });
+    }
+    document.querySelectorAll('#editTabs .tab').forEach((btn) => {
+      btn.addEventListener('click', () => showEditTab(btn.dataset.editTab));
+    });
+
+    document.getElementById('closeEditModal').addEventListener('click', () => document.getElementById('editModal').classList.remove('open'));
+    document.getElementById('editModal').addEventListener('click', (e) => { if (e.target === document.getElementById('editModal')) document.getElementById('editModal').classList.remove('open'); });
+
+    document.getElementById('editForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('editModalAlert');
+      const btn     = document.getElementById('saveEditBtn');
+      const id      = document.getElementById('editId').value;
+      btn.disabled = true; btn.textContent = 'Saving…';
+
+      const payload = {
+        fullName:          document.getElementById('editFullName').value.trim(),
+        stageName:         document.getElementById('editStageName').value.trim(),
+        shortBio:          document.getElementById('editShortBio').value.trim(),
+        talentDescription: document.getElementById('editTalentDesc').value.trim(),
+        judgeNotes:        document.getElementById('editNotes').value.trim(),
+        county:            document.getElementById('editCounty').value || undefined,
+        categoryId:        document.getElementById('editCategory').value || undefined
+      };
+
+      const res  = await authFetch(`/api/contestants/${id}`, { method: 'PATCH', body: JSON.stringify(payload) });
+      const data = await res.json();
+      btn.disabled = false; btn.textContent = 'Save changes';
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) {
+        allContestants = [];
+        setTimeout(() => { document.getElementById('editModal').classList.remove('open'); renderContestants(); }, 800);
+      }
+    });
+
+    // Upload photo from within the edit modal
+    document.getElementById('uploadPhotoFromEditBtn').addEventListener('click', async () => {
+      const alertEl = document.getElementById('editPhotoAlert');
+      const btn     = document.getElementById('uploadPhotoFromEditBtn');
+      const file    = document.getElementById('editPhotoFile').files[0];
+      if (!file) { alertEl.innerHTML = '<div class="alert alert-error">Select a photo file first.</div>'; return; }
+      btn.disabled = true; btn.textContent = 'Uploading…';
+      const fd = new FormData();
+      fd.append('file', file);
+      fd.append('category', 'profile');
+      fd.append('isPrimary', 'true');
+
+      const res = await authFetch(`/api/media/contestant/${editCurrentCid}/photo`, {
+        method: 'POST',
+        body: fd
+      });
+      const data = await res.json();
+      btn.disabled = false; btn.textContent = 'Upload photo';
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) {
+        allContestants = [];
+        renderContestants();
+        document.getElementById('editPhotoFile').value = '';
+      }
+    });
+
+    // ════════════════════════════════════════════════════════════════════
+    // PERFORMANCE SUBMISSIONS
+    // ════════════════════════════════════════════════════════════════════
+    async function loadPerfSection() {
+      const [list, rounds] = await Promise.all([ensureContestants(), ensureRounds()]);
+      const qualified = list.filter((c) => c.status === 'qualified');
+
+      // Populate contestant picker
+      const cSel = document.getElementById('perfContestantId');
+      cSel.innerHTML = '<option value="">— select qualified contestant —</option>' +
+        qualified.map((c) => `<option value="${c.id}">${escapeHtml(c.full_name)}${c.stage_name ? ' "' + c.stage_name + '"' : ''}</option>`).join('');
+
+      // Populate round pickers
+      const rSel  = document.getElementById('perfRoundId');
+      const rvSel = document.getElementById('perfViewRound');
+      const activeRounds = rounds.filter((r) => ['open','scoring'].includes(r.status));
+      rSel.innerHTML = '<option value="">— select round —</option>' +
+        activeRounds.map((r) => `<option value="${r.id}">${escapeHtml(r.name)} [${r.status}]</option>`).join('');
+      rvSel.innerHTML = '<option value="">— select round —</option>' +
+        rounds.map((r) => `<option value="${r.id}">${escapeHtml(r.name)} [${r.status}]</option>`).join('');
+
+      // Round status cards
+      const statusDiv = document.getElementById('roundStatusList');
+      if (!rounds.length) { statusDiv.innerHTML = '<p class="empty-state">No rounds yet.</p>'; return; }
+      const statusColor = { open:'var(--gold-bright)', scoring:'var(--brand-blue)', closed:'var(--muted)', upcoming:'var(--muted)' };
+      statusDiv.innerHTML = rounds.map((r) => `
+        <div style="padding:12px 16px;background:var(--panel-raised);border-radius:8px;border-left:4px solid ${statusColor[r.status]||'var(--panel-border)'};margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:0.9rem;">${escapeHtml(r.name)}</span>
+          <span class="badge ${r.status === 'open' ? 'badge-approved' : r.status === 'scoring' ? 'badge-info' : 'badge-pending'}" style="font-size:0.78rem;">${r.status}</span>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('perfViewRound').addEventListener('change', async (e) => {
+      const rid = e.target.value;
+      const container = document.getElementById('perfList');
+      if (!rid) { container.innerHTML = '<p class="empty-state">Select a round to view performances.</p>'; return; }
+      container.innerHTML = '<p class="empty-state">Loading…</p>';
+      const perfs = await authFetch(`/api/performances/round/${rid}`).then((r) => r.json());
+      if (!perfs.length) { container.innerHTML = '<p class="empty-state">No performances submitted for this round yet.</p>'; return; }
+      container.innerHTML = `<div class="table-wrap"><table class="app-table">
+        <thead><tr><th>Contestant</th><th>Category</th><th>Song / Act</th><th>Avg score</th><th>Judges</th><th>Video</th></tr></thead>
+        <tbody>${perfs.map((p) => `
+          <tr>
+            <td>${escapeHtml(p.contestantName||'')}</td>
+            <td>${escapeHtml(p.categoryLabel||'—')}</td>
+            <td>${escapeHtml(p.song_name||'—')}</td>
+            <td>${p.avgScore !== null ? p.avgScore : '—'}</td>
+            <td>${p.judgeCount}</td>
+            <td>${p.performance_video_url ? `<a href="${p.performance_video_url}" target="_blank" style="color:var(--gold-bright);">Watch ↗</a>` : '—'}</td>
+          </tr>`).join('')}
+        </tbody></table></div>`;
+    });
+
+    // Show/hide video file input based on performance type
+    document.getElementById('perfType').addEventListener('change', function() {
+      const videoField = document.getElementById('perfVideoField');
+      videoField.style.display = this.value === 'video' ? '' : 'none';
+    });
+    document.getElementById('perfVideoField').style.display = 'none'; // hidden by default (live)
+
+    document.getElementById('perfSubmitForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl  = document.getElementById('perfSubmitAlert');
+      const btn      = document.getElementById('perfSubmitBtn');
+      const perfType = document.getElementById('perfType').value;
+      const file     = document.getElementById('perfVideoFile').files[0];
+      if (perfType === 'video' && !file) {
+        alertEl.innerHTML = '<div class="alert alert-error">Select a video file for a video submission.</div>';
+        return;
+      }
+      btn.disabled = true; btn.textContent = 'Uploading…'; alertEl.innerHTML = '';
+      const fd = new FormData();
+      fd.append('contestantId',    document.getElementById('perfContestantId').value);
+      fd.append('roundId',         document.getElementById('perfRoundId').value);
+      fd.append('performanceType', perfType);
+      fd.append('songName',        document.getElementById('perfSongName').value);
+      fd.append('description',     document.getElementById('perfDescription').value);
+      if (file) fd.append('file', file);
+      const res = await authFetch('/api/performances', { method: 'POST', body: fd });
+      const data = await res.json();
+      btn.disabled = false; btn.textContent = 'Submit performance';
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { document.getElementById('perfSubmitForm').reset(); document.getElementById('perfVideoField').style.display = 'none'; }
+    });
+
+    // ════════════════════════════════════════════════════════════════════
+    // NOTIFICATIONS
+    // ════════════════════════════════════════════════════════════════════
+    const NOTIF_TEMPLATES = [
+      {
+        type: 'audition_schedule',
+        label: 'Audition schedule',
+        subject: 'Your Audition is Scheduled — Liberia Talent Quest Season Two',
+        message: 'Dear [Contestant Name],\n\nYour audition for Liberia Talent Quest Season Two has been confirmed. Please review the details below carefully:\n\n📍 Venue: [Venue Name & Address]\n📅 Date: [Day, Month Date, Year]\n⏰ Reporting Time: [Time] (please arrive 30 minutes early)\n🎤 Category: [Your Category]\n\nWhat to bring:\n• A valid national ID or passport\n• Any props or materials required for your performance\n• This confirmation message or the reference code above\n\nImportant notes:\n• Late arrivals may forfeit their audition slot\n• You will have [X] minutes to perform\n• Results will be communicated within [X] days\n\nFor any questions, call us on +231 77-874-7441 or reply to this message.\n\nWe look forward to seeing you perform!\n\nWarm regards,\nLiberia Talent Quest Team'
+      },
+      {
+        type: 'audition_schedule',
+        label: 'Audition reminder (day before)',
+        subject: 'Reminder: Your Audition is Tomorrow — Liberia Talent Quest',
+        message: 'Dear [Contestant Name],\n\nThis is a friendly reminder that your audition for Liberia Talent Quest Season Two is TOMORROW.\n\n📍 Venue: [Venue Name]\n⏰ Your slot: [Time]\n\nPlease remember to:\n✅ Arrive at least 30 minutes before your slot\n✅ Bring a valid ID\n✅ Have your performance ready\n\nWe are excited to see you tomorrow. Break a leg!\n\nThe LTQ Team\n+231 77-874-7441'
+      },
+      {
+        type: 'qualification_notice',
+        label: 'Qualification notice',
+        subject: 'Congratulations — You Have Qualified for Liberia Talent Quest Season Two!',
+        message: 'Dear [Contestant Name],\n\nWe are thrilled to inform you that you have officially QUALIFIED for Liberia Talent Quest Season Two!\n\nYour audition impressed our panel of judges and you have earned your place among the best young talents in Liberia. This is a major achievement — be proud.\n\nWHAT HAPPENS NEXT:\n1. You will receive your login credentials by email within 24 hours\n2. Use your dashboard to confirm your participation\n3. Watch for our next message with the rehearsal schedule\n4. Ensure your contact details are up to date\n\nIMPORTANT: Please confirm your participation by replying to this message or calling +231 77-874-7441 within 48 hours.\n\nWelcome to the LTQ Stage!\n\nThe Liberia Talent Quest Team'
+      },
+      {
+        type: 'qualification_notice',
+        label: 'Waiting list notice',
+        subject: 'Your Liberia Talent Quest Application — Waiting List Update',
+        message: 'Dear [Contestant Name],\n\nThank you for auditioning for Liberia Talent Quest Season Two.\n\nAfter reviewing all applications, we are pleased to inform you that your performance has earned you a place on our WAITING LIST. This means:\n\n• Your scores were strong and you are being considered\n• If any qualified contestant is unable to proceed, you will be invited to join the competition\n• You will hear from us within [X] days\n\nPlease keep your phone and email accessible in case we need to reach you quickly.\n\nWe appreciate your talent and your time. Stay ready.\n\nWith respect,\nLiberia Talent Quest Team\n+231 77-874-7441'
+      },
+      {
+        type: 'rehearsal_notice',
+        label: 'Rehearsal notice',
+        subject: 'Rehearsal Schedule — Liberia Talent Quest Season Two',
+        message: 'Dear [Contestant Name],\n\nPlease be informed of the upcoming rehearsal for Liberia Talent Quest Season Two:\n\n📍 Location: [Venue Name & Address]\n📅 Date: [Day, Month Date, Year]\n⏰ Time: [Start Time] — [End Time]\n👔 Dress code: [Casual / Stage costume / Practice wear]\n\nAll qualified contestants are REQUIRED to attend. If you have an emergency or conflict, contact your Contestant Manager immediately.\n\nWhat to bring:\n• Your performance materials (music, props, etc.)\n• A notebook for notes from the director\n• Water and a light snack\n\nThis is your opportunity to get comfortable with the stage before the live show. Take it seriously.\n\nQuestions? Call us: +231 77-874-7441\n\nSee you there,\nThe LTQ Production Team'
+      },
+      {
+        type: 'rehearsal_notice',
+        label: 'Technical run-through notice',
+        subject: 'Technical Run-Through — Liberia Talent Quest [Round Name]',
+        message: 'Dear [Contestant Name],\n\nA technical run-through has been scheduled before the [Round Name] live show.\n\n📍 Venue: [Location]\n📅 Date: [Date]\n⏰ Time: [Time]\n\nDuring this session:\n• Sound check and lighting for each act\n• Stage positioning and movement review\n• Timing confirmation for your performance\n• Final notes from the production team\n\nYour assigned performance slot: [Slot Number/Time]\n\nThis is mandatory. Non-attendance without prior notice will affect your readiness for the live show.\n\nThank you,\nLTQ Production Team'
+      },
+      {
+        type: 'elimination_notice',
+        label: 'Elimination notice',
+        subject: 'Regarding Your Participation — Liberia Talent Quest Season Two',
+        message: 'Dear [Contestant Name],\n\nThank you sincerely for your dedication, courage, and the remarkable performances you delivered throughout your journey in Liberia Talent Quest Season Two.\n\nAfter the combined evaluation of judges\' scores and public votes from the [Round Name] round, we regret to inform you that you have not advanced to the next stage of the competition.\n\nThis decision was not easy. Your talent is real, your presence was felt, and you represented [County] with dignity.\n\nWhat this means:\n• Your profile and performance history remain on record\n• You are welcome to apply again in future seasons\n• We encourage you to keep performing and developing your craft\n\nWe are proud of everything you have contributed to this season. Liberia saw you, and Liberia is proud.\n\nWith deep appreciation,\nThe Liberia Talent Quest Team\n+231 77-874-7441'
+      },
+      {
+        type: 'finalist_announcement',
+        label: 'Finalist announcement',
+        subject: 'YOU ARE A FINALIST — Liberia Talent Quest Grand Finale!',
+        message: 'Dear [Contestant Name],\n\n🎉 CONGRATULATIONS! 🎉\n\nYou have advanced to the GRAND FINALE of Liberia Talent Quest Season Two!\n\nYou are among the top performers in the entire competition. This is an extraordinary achievement and a testament to your hard work, your talent, and the support of everyone who voted for you.\n\nTHE GRAND FINALE:\n📍 Venue: Capitol Building, Monrovia\n📅 Date: Saturday, August 23rd, 2026\n⏰ Show starts: 6:00 PM (arrive by 4:00 PM)\n📺 Live on national television\n\nYour Contestant Manager will be in touch with the final schedule, costume review, and stage briefing.\n\nTell your family. Tell your community. Liberia will be watching.\n\nLet\'s make history together!\n\nWith pride,\nThe Liberia Talent Quest Team'
+      },
+      {
+        type: 'general_update',
+        label: 'General update',
+        subject: 'Important Update — Liberia Talent Quest Season Two',
+        message: 'Dear [Contestant Name],\n\nWe have an important update to share with you regarding Liberia Talent Quest Season Two.\n\n[Write your message here]\n\nIf you have any questions, please contact us at:\n📞 +231 77-874-7441\n📧 legacyhubinc@gmail.com\n\nThank you for your continued commitment to this competition.\n\nWarm regards,\nThe Liberia Talent Quest Team'
+      },
+      {
+        type: 'general_update',
+        label: 'Payment reminder',
+        subject: 'Registration Fee Reminder — Liberia Talent Quest Season Two',
+        message: 'Dear [Contestant Name],\n\nThis is a reminder that your registration fee for Liberia Talent Quest Season Two has not yet been confirmed.\n\nTo secure your place in the competition, please complete your payment as soon as possible using one of the following methods:\n\n💚 Orange Money: [Number]\n💛 MTN Mobile Money: [Number]\n💵 Cash payment: Legacy Hub Office, Paynesville\n\nRegistration fee: [Amount]\nPayment deadline: [Date]\n\nOnce payment is made, please send your proof of payment to +231 77-874-7441 or email legacyhubinc@gmail.com with your full name as reference.\n\nNote: Applications with unpaid fees after the deadline will be cancelled.\n\nThank you,\nLTQ Finance Team'
+      }
+    ];
+
+    function renderTemplates() {
+      const container = document.getElementById('templateList');
+      container.innerHTML = NOTIF_TEMPLATES.map((t, i) => `
+        <button type="button" class="btn btn-secondary" style="text-align:left;padding:8px 12px;font-size:0.83rem;width:100%;" data-tpl-idx="${i}">${t.label}</button>
+      `).join('');
+      container.querySelectorAll('[data-tpl-idx]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const t = NOTIF_TEMPLATES[Number(btn.dataset.tplIdx)];
+          if (!t) return;
+          document.getElementById('notifType').value    = t.type;
+          document.getElementById('notifSubject').value = t.subject;
+          document.getElementById('notifMessage').value = t.message;
+        });
+      });
+    }
+
+    async function loadChannelStatus() {
+      try {
+        const ch = await fetch('/api/notifications/channels').then((r) => r.json());
+        const emailEl = document.getElementById('emailStatus');
+        const waEl    = document.getElementById('waStatus');
+        if (emailEl) emailEl.textContent = ch.email    ? '✓ active' : '⚠ not configured';
+        if (waEl)    waEl.textContent    = ch.whatsapp ? '✓ active' : '⚠ not configured';
+        // Dim the WhatsApp pill if not configured
+        const waPill = document.querySelector('.ch-wa');
+        if (waPill && !ch.whatsapp) {
+          waPill.style.opacity = '0.45';
+          waPill.title = 'Add WHATSAPP_TOKEN and WHATSAPP_PHONE_ID to .env to enable WhatsApp delivery';
+        }
+      } catch {}
+    }
+
+    async function loadNotifSection() {
+      renderTemplates();
+      loadChannelStatus();
+      // Populate individual contestant picker
+      const list = await ensureContestants();
+      const sel  = document.getElementById('notifContestantId');
+      if (sel.options.length <= 1) {
+        list.forEach((c) => {
+          const opt = document.createElement('option');
+          opt.value = c.id;
+          opt.textContent = `${c.full_name} — ${c.status.replace(/_/g,' ')}`;
+          sel.appendChild(opt);
+        });
+      }
+      loadNotifHistory();
+    }
+
+    document.getElementById('notifRecipients').addEventListener('change', (e) => {
+      document.getElementById('notifIndividualField').style.display = e.target.value === 'individual' ? '' : 'none';
+    });
+
+    function channelBadges(n) {
+      const parts = [];
+      const emailCount = n.email_sent_count ?? n.sent_count ?? 0;
+      const waCount    = n.wa_sent_count    ?? 0;
+      if (emailCount > 0) parts.push(`<span style="color:var(--brand-blue);font-size:0.72rem;">✉ ${emailCount}</span>`);
+      if (waCount    > 0) parts.push(`<span style="color:var(--teal);font-size:0.72rem;">WA: ${waCount}</span>`);
+      return parts.length ? parts.join(' <span style="opacity:0.3;">|</span> ') : `<span style="font-size:0.72rem;">${n.sent_count ?? 0}</span>`;
+    }
+
+    async function loadNotifHistory() {
+      const container = document.getElementById('notifHistory');
+      const items     = await authFetch('/api/notifications').then((r) => r.json());
+      if (!items.length) { container.innerHTML = '<p class="empty-state">No notifications sent yet.</p>'; return; }
+      container.innerHTML = items.slice(0, 15).map((n) => `
+        <div style="padding:10px 14px;background:var(--panel-raised);border-radius:8px;margin-bottom:8px;border:1px solid var(--panel-border);">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <strong style="font-size:0.88rem;">${escapeHtml(n.subject)}</strong>
+            <span style="font-size:0.75rem;color:var(--muted);">${fmtDate(n.sent_at)}</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+            <span style="font-size:0.78rem;color:var(--muted);">To: ${escapeHtml(n.recipients_type.replace(/_/g,' '))}${n.recipient_name ? ' — ' + escapeHtml(n.recipient_name) : ''}</span>
+            <span style="font-size:0.78rem;color:var(--muted);">Delivered: ${channelBadges(n)}</span>
+            <span style="font-size:0.78rem;color:var(--muted);">By: ${escapeHtml(n.sent_by_name||'—')}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('notifForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('notifAlert');
+      const btn     = document.getElementById('notifSendBtn');
+      btn.disabled = true; btn.textContent = 'Sending…'; alertEl.innerHTML = '';
+
+      const recipients = document.getElementById('notifRecipients').value;
+      const payload = {
+        type:          document.getElementById('notifType').value,
+        recipients,
+        contestantId:  recipients === 'individual' ? document.getElementById('notifContestantId').value : undefined,
+        subject:       document.getElementById('notifSubject').value.trim(),
+        message:       document.getElementById('notifMessage').value.trim()
+      };
+
+      const res  = await authFetch('/api/notifications/send', { method: 'POST', body: JSON.stringify(payload) });
+      const data = await res.json();
+      btn.disabled = false; btn.textContent = 'Send notification';
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}${data.errors?.length ? '<br><small style="opacity:0.7;">' + data.errors.join('<br>') + '</small>' : ''}</div>`;
+      if (res.ok) loadNotifHistory();
+    });
+
+    // ════════════════════════════════════════════════════════════════════
+    // AUDITION SCORES
+    // ════════════════════════════════════════════════════════════════════
+    async function renderScores() {
+      const tbody = document.getElementById('scoresBody');
+      tbody.innerHTML = '<tr><td colspan="6">Loading…</td></tr>';
+      const scores = await authFetch('/api/audition-scores').then((r) => r.json());
+      if (!scores.length) { tbody.innerHTML = '<tr><td colspan="6">No scores yet.</td></tr>'; return; }
+      tbody.innerHTML = scores.map((s) => `
+        <tr>
+          <td>${escapeHtml(s.contestantName||'')}</td>
+          <td>${escapeHtml(s.categoryLabel||'')}</td>
+          <td>${escapeHtml(s.judgeName||'')}</td>
+          <td><strong>${s.total_score}</strong></td>
+          <td>${s.comments ? escapeHtml(s.comments) : '—'}</td>
+          <td>${fmtDate(s.submitted_at)}</td>
+        </tr>
+      `).join('');
+    }
+
+    // ── Init ─────────────────────────────────────────────────────────────
+    if (auth) {
+      loadStats();
+      renderContestants();
+      ensureCategories();
+    }
+  </script>
+</body>
+</html>

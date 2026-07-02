@@ -1,0 +1,16 @@
+[
+  {
+    "id": "scdemo01",
+    "contestantId": "c001",
+    "contestantName": "Mardea Kollie",
+    "category": "singing",
+    "judgeEmail": "judge.demo@example.com",
+    "judgeName": "Demo Judge",
+    "talent": 9,
+    "stagePresence": 8,
+    "overallImpression": 8,
+    "total": 25,
+    "comments": "Strong vocal control and original songwriting.",
+    "submittedAt": "2026-06-23T13:59:35.181Z"
+  }
+]

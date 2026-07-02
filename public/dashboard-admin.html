@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Liberia Talent Quest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("ltq_theme")||"dark");}catch(e){}</script>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    @keyframes ltqSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .ltq-spin { animation: ltqSpin 0.75s linear infinite; display: inline-block; vertical-align: middle; }
+  </style>
+</head>
+<body>
+  <div class="admin-shell">
+
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-brand"><img src="assets/logo-icon.png" alt="LTQ" /> Liberia Talent Quest</div>
+      <nav class="sidebar-nav" aria-label="Admin navigation">
+        <span class="sidebar-section">Operations</span>
+        <a href="#sec-overview"      class="sidebar-sublink">Overview</a>
+        <a href="#sec-notifications" class="sidebar-sublink">Send Notifications</a>
+        <a href="#sec-contestants"   class="sidebar-sublink">Contestants</a>
+        <a href="#sec-pipeline"      class="sidebar-sublink">Pipeline</a>
+        <a href="#sec-rounds"        class="sidebar-sublink">Rounds</a>
+        <a href="#sec-scores"        class="sidebar-sublink">Audition Scores</a>
+        <a href="#sec-performances"  class="sidebar-sublink">Performances</a>
+        <div class="sidebar-divider"></div>
+        <span class="sidebar-section">Content</span>
+        <a href="#sec-announcements" class="sidebar-sublink">Announcements</a>
+        <a href="#sec-schedule"      class="sidebar-sublink">Schedule</a>
+        <a href="#sec-sponsors"      class="sidebar-sublink">Sponsors</a>
+        <a href="#sec-sponsor-content" class="sidebar-sublink">Sponsor Page Content</a>
+        <a href="#sec-team-profiles" class="sidebar-sublink">Team Profiles</a>
+        <a href="#sec-event-photos"  class="sidebar-sublink">Event Photos</a>
+        <div class="sidebar-divider"></div>
+        <span class="sidebar-section">Public site</span>
+        <a href="index.html" class="sidebar-link">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Home
+        </a>
+        <a href="leaderboard.html" class="sidebar-link">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="4"/><line x1="12" y1="20" x2="12" y2="10"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+          Leaderboard
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="sidebar-link" id="sidebarLogout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;font-family:var(--font-body);">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Log out
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <button class="topbar-toggle" id="topbarToggle" aria-label="Toggle sidebar">&#9776;</button>
+        <span class="topbar-title">Admin</span>
+        <div class="topbar-user">
+          <strong id="topbarName"></strong>
+          <button class="topbar-logout" id="topbarLogout">Log out</button>
+        </div>
+      </header>
+
+      <div class="admin-content">
+
+        <!-- ── OVERVIEW ── -->
+        <div class="admin-section active" id="sec-overview">
+          <div class="stat-grid" style="margin-bottom:28px;">
+            <div class="stat-card stat-card--blue">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+              <div class="num" id="statTotal">—</div>
+              <div class="stat-label">Total applications</div>
+            </div>
+            <div class="stat-card stat-card--green">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+              <div class="num" id="statQualified">—</div>
+              <div class="stat-label">Qualified</div>
+            </div>
+            <div class="stat-card stat-card--amber">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+              <div class="num" id="statPending">—</div>
+              <div class="stat-label">Pending / Registered</div>
+            </div>
+            <div class="stat-card stat-card--teal">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+              <div class="num" id="statRounds">—</div>
+              <div class="stat-label">Active rounds</div>
+            </div>
+          </div>
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;" id="welcomeHeading">Welcome</h2>
+            <p>Overview of the current season. Qualification, round advance, and user management are handled by the Superuser.</p>
+          </div>
+          <div id="overviewRounds"><p class="empty-state">Loading rounds…</p></div>
+        </div>
+
+        <!-- ── SEND NOTIFICATIONS ── -->
+        <div class="admin-section" id="sec-notifications">
+          <div class="stat-grid" style="margin-bottom:28px;">
+            <div class="stat-card stat-card--blue">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
+              <div class="num" id="statSent">—</div>
+              <div class="stat-label">Notifications sent (total)</div>
+            </div>
+            <div class="stat-card stat-card--teal">
+              <div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+              <div class="num" id="statRecent">—</div>
+              <div class="stat-label">Last 7 days</div>
+            </div>
+          </div>
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Send Notification</h2>
+            <p>Send Email + WhatsApp notifications to contestant groups or individual contestants. Each send is logged.</p>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 300px; gap:24px; align-items:start; margin-bottom:32px;">
+            <div class="form-card">
+              <div id="notifAlert"></div>
+              <form id="notifForm">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                  <div class="field">
+                    <label for="notifType">Notification type</label>
+                    <select id="notifType">
+                      <option value="general_update">General update</option>
+                      <option value="audition_schedule">Audition schedule</option>
+                      <option value="qualification_notice">Qualification notice</option>
+                      <option value="rehearsal_notice">Rehearsal notice</option>
+                      <option value="elimination_notice">Elimination notice</option>
+                      <option value="finalist_announcement">Finalist announcement</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="notifRecipients">Recipients</label>
+                    <select id="notifRecipients">
+                      <option value="all">All contestants</option>
+                      <option value="qualified">Qualified</option>
+                      <option value="waiting_list">Waiting list</option>
+                      <option value="registered">Registered (awaiting scoring)</option>
+                      <option value="individual">Individual contestant</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="field" id="individualPickerField" style="display:none;">
+                  <label for="notifContestant">Select contestant</label>
+                  <select id="notifContestant"><option value="">— select —</option></select>
+                </div>
+                <div class="field"><label for="notifSubject">Subject</label><input type="text" id="notifSubject" required placeholder="e.g. Rehearsal Schedule — Round 2" /></div>
+                <div class="field"><label for="notifMessage">Message</label><textarea id="notifMessage" rows="6" required placeholder="Write the full message here…"></textarea></div>
+                <div id="channelStatus" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px;">
+                  <span style="font-size:0.8rem;color:var(--muted);margin-right:2px;">Channels:</span>
+                  <span class="ch-pill ch-email" style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:0.8rem;font-weight:600;background:rgba(59,130,246,0.12);color:var(--brand-blue,#3b82f6);border:1px solid rgba(59,130,246,0.25);">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+                    Email <span id="emailStatus" style="font-size:0.72rem;opacity:0.8;">checking…</span>
+                  </span>
+                  <span class="ch-wa" style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:99px;font-size:0.8rem;font-weight:600;background:rgba(20,184,166,0.12);color:var(--teal,#14b8a6);border:1px solid rgba(20,184,166,0.25);">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.999 2C6.477 2 2 6.477 2 12c0 1.989.58 3.842 1.585 5.4L2 22l4.737-1.55A9.96 9.96 0 0 0 12 22c5.523 0 10-4.477 10-10S17.522 2 11.999 2zm0 18a7.96 7.96 0 0 1-4.072-1.115l-.292-.174-3.024.99.919-2.948-.19-.303A7.97 7.97 0 0 1 4 12c0-4.411 3.589-8 8-8s8 3.589 8 8-3.589 8-7.999 8z"/></svg>
+                    WhatsApp <span id="waStatus" style="font-size:0.72rem;opacity:0.8;">checking…</span>
+                  </span>
+                </div>
+                <button type="submit" class="btn btn-primary">Send notification</button>
+              </form>
+            </div>
+            <div>
+              <div class="form-card">
+                <h3 style="font-size:0.95rem; color:var(--gold-bright); margin:0 0 8px;">Message templates</h3>
+                <p style="font-size:0.83rem; color:var(--muted); margin:0 0 12px;">Click a template to auto-fill the form.</p>
+                <div id="templateList" style="display:flex; flex-direction:column; gap:8px;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.2rem; margin:0 0 8px;">Recent notifications</h2>
+          </div>
+          <div id="notifHistory"><p class="empty-state">Loading history…</p></div>
+        </div>
+
+        <!-- ── CONTESTANTS ── -->
+        <div class="admin-section" id="sec-contestants">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Contestants</h2>
+          </div>
+          <div class="tabs" id="ctTabs">
+            <button class="tab active" data-status="">All</button>
+            <button class="tab" data-status="pending_payment">Pending payment</button>
+            <button class="tab" data-status="registered">Registered</button>
+            <button class="tab" data-status="qualified">Qualified</button>
+            <button class="tab" data-status="waiting_list">Waiting list</button>
+            <button class="tab" data-status="rejected">Rejected</button>
+            <button class="tab" data-status="eliminated">Eliminated</button>
+            <button class="tab" data-status="winner">Winner</button>
+          </div>
+          <div id="ctList" style="margin-top:16px;"><p class="empty-state">Loading…</p></div>
+        </div>
+
+        <!-- ── ROUNDS ── -->
+        <div class="admin-section" id="sec-rounds">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Rounds</h2>
+            <p>Create and manage competition rounds.</p>
+          </div>
+          <div class="form-card" style="margin-bottom:24px;">
+            <div id="roundFormAlert"></div>
+            <form id="roundForm" style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+              <div class="field" style="flex:2; min-width:160px; margin:0;"><label for="roundName">Round name</label><input type="text" id="roundName" placeholder="e.g. Semi-Finals" required /></div>
+              <div class="field" style="flex:1; min-width:120px; margin:0;">
+                <label for="roundType">Type</label>
+                <select id="roundType">
+                  <option value="competition">Competition</option>
+                  <option value="audition">Audition</option>
+                </select>
+              </div>
+              <div class="field" style="flex:0.9; min-width:90px; margin:0;"><label for="roundCapacity" title="How many contestants advance INTO this round. Leave blank for first round.">Capacity</label><input type="number" id="roundCapacity" min="1" placeholder="e.g. 20" /></div>
+              <div class="field" style="flex:0.8; min-width:80px; margin:0;"><label for="roundOrder">Order</label><input type="number" id="roundOrder" value="0" /></div>
+              <button type="submit" class="btn btn-primary" style="flex-shrink:0;">Create round</button>
+            </form>
+          </div>
+          <div id="roundsList"><p class="empty-state">Loading…</p></div>
+        </div>
+
+        <!-- ── AUDITION SCORES ── -->
+        <div class="admin-section" id="sec-scores">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Audition Scores</h2>
+          </div>
+          <div class="table-wrap" style="margin-top:12px;">
+            <table class="app-table">
+              <thead><tr><th>Contestant</th><th>Category</th><th>Judge</th><th>Total</th><th>Comments</th><th>Date</th></tr></thead>
+              <tbody id="scoresBody"><tr><td colspan="6">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── PERFORMANCES ── -->
+        <div class="admin-section" id="sec-performances">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Performances</h2>
+            <p>View submitted performance videos by round.</p>
+          </div>
+          <div class="tabs" id="perfRoundTabs" style="margin-bottom:12px;"></div>
+          <div id="perfList"><p class="empty-state">Select a round above.</p></div>
+        </div>
+
+        <!-- ── ANNOUNCEMENTS ── -->
+        <div class="admin-section" id="sec-announcements">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Announcements</h2>
+          </div>
+          <div class="form-card" style="margin-bottom:24px;">
+            <div id="annAlert"></div>
+            <form id="annForm">
+              <div class="field"><label for="annTitle">Title</label><input type="text" id="annTitle" required placeholder="e.g. Registration is now open!" /></div>
+              <div class="field"><label for="annMessage">Message</label><textarea id="annMessage" rows="4" required placeholder="Write your announcement here…"></textarea></div>
+              <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+                <input type="checkbox" id="annSeasonSpecific" style="width:auto; margin:0;" />
+                <label for="annSeasonSpecific" style="margin:0;">Global / all seasons <span style="color:var(--muted); font-size:0.8rem;">(uncheck to tie to current season only)</span></label>
+              </div>
+              <button type="submit" class="btn btn-primary">Post announcement</button>
+            </form>
+          </div>
+          <div id="annList"><p class="empty-state">Loading…</p></div>
+        </div>
+
+        <!-- ── SCHEDULE ── -->
+        <div class="admin-section" id="sec-schedule">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Schedule</h2>
+          </div>
+          <div class="form-card" style="margin-bottom:24px;">
+            <div id="schedAlert"></div>
+            <form id="schedForm">
+              <div class="field"><label for="schedTitle">Event title</label><input type="text" id="schedTitle" required placeholder="e.g. Live Show — Week 1" /></div>
+              <div class="field-row">
+                <div class="field"><label for="schedDt">Date &amp; time</label><input type="datetime-local" id="schedDt" required /></div>
+                <div class="field"><label for="schedLoc">Location</label><input type="text" id="schedLoc" placeholder="e.g. Unity Conference Center, Monrovia" /></div>
+              </div>
+              <div class="field"><label for="schedNotes">Notes (optional)</label><input type="text" id="schedNotes" placeholder="e.g. Doors open at 5 PM" /></div>
+              <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+                <input type="checkbox" id="schedSeasonSpecific" style="width:auto; margin:0;" />
+                <label for="schedSeasonSpecific" style="margin:0;">Global / all seasons <span style="color:var(--muted); font-size:0.8rem;">(uncheck to tie to current season only)</span></label>
+              </div>
+              <button type="submit" class="btn btn-primary">Add to schedule</button>
+            </form>
+          </div>
+          <div id="schedList"><p class="empty-state">Loading…</p></div>
+        </div>
+
+        <!-- ── PIPELINE ── -->
+        <div class="admin-section" id="sec-pipeline">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Application Pipeline</h2>
+          </div>
+          <div id="pipelineGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:8px;">
+            <p class="empty-state">Loading…</p>
+          </div>
+        </div>
+
+        <!-- ── SPONSORS ── -->
+        <div class="admin-section" id="sec-sponsors">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px;">Sponsors</h2>
+          </div>
+          <div class="form-card" style="margin-bottom:24px;">
+            <div id="sponAlert"></div>
+            <form id="sponForm">
+              <div class="field-row">
+                <div class="field"><label for="sponName">Sponsor name</label><input type="text" id="sponName" required placeholder="e.g. Orange Liberia" /></div>
+                <div class="field"><label for="sponTier">Tier / level</label>
+                  <select id="sponTier">
+                    <option value="Platinum">Platinum — Title Sponsor</option>
+                    <option value="Gold">Gold — Official Partner</option>
+                    <option value="Silver">Silver — Community Partner</option>
+                    <option value="Media Partner">Media Partner</option>
+                    <option value="Community Partner">Community Partner (grassroots)</option>
+                    <option value="Partner" selected>General Partner</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field-row">
+                <div class="field"><label for="sponLogo">Logo (image file, optional)</label><input type="file" id="sponLogo" accept="image/jpeg,image/png,image/webp" /></div>
+                <div class="field"><label for="sponWeb">Website (optional)</label><input type="url" id="sponWeb" placeholder="https://…" /></div>
+              </div>
+              <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+                <input type="checkbox" id="sponSeasonSpecific" style="width:auto; margin:0;" />
+                <label for="sponSeasonSpecific" style="margin:0;">Global / all seasons <span style="color:var(--muted); font-size:0.8rem;">(uncheck to tie to current season only)</span></label>
+              </div>
+              <button type="submit" class="btn btn-primary">Add sponsor</button>
+            </form>
+          </div>
+          <div id="sponList"><p class="empty-state">Loading…</p></div>
+        </div>
+
+        <!-- ── Team Profiles ── -->
+        <div class="admin-section" id="sec-team-profiles">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display);font-size:1.5rem;margin:0 0 8px;">Team Profiles</h2>
+            <p>Manage the leadership, MC, and judges shown on the About page.</p>
+          </div>
+          <div id="tpAlert" style="margin-bottom:12px;"></div>
+          <div class="form-card" style="margin-bottom:28px;">
+            <h4 style="margin:0 0 16px;">Add Profile</h4>
+            <form id="tpAddForm">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+                <div class="field"><label>Role</label>
+                  <select id="tpRoleTag">
+                    <option value="chairman">Executive Chairman</option>
+                    <option value="ceo">CEO / Leadership</option>
+                    <option value="mc">Master of Ceremony</option>
+                    <option value="judge" selected>Judge</option>
+                    <option value="head_judge">Head Judge</option>
+                  </select>
+                </div>
+                <div class="field"><label>Display Order</label><input type="number" id="tpOrder" value="10" min="0" /></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+                <div class="field"><label>Full Name</label><input type="text" id="tpName" required placeholder="e.g. Erica L. Dunbar" /></div>
+                <div class="field"><label>Title / Speciality</label><input type="text" id="tpTitle" required placeholder="e.g. Vocal &amp; Songwriting" /></div>
+              </div>
+              <div class="field" style="margin-bottom:14px;"><label>Photo (image file, optional)</label><input type="file" id="tpPhoto" accept="image/jpeg,image/png,image/webp" /></div>
+              <div class="field" style="margin-bottom:14px;"><label>Bio</label><textarea id="tpBio" rows="3" placeholder="Short biography…"></textarea></div>
+              <div class="field" style="margin-bottom:14px;"><label>Quote (optional)</label><input type="text" id="tpQuote" placeholder="Inspiring quote…" /></div>
+              <button type="submit" class="btn btn-primary">Add Profile</button>
+            </form>
+          </div>
+          <div id="tpList"><p class="empty-state">Loading profiles…</p></div>
+        </div>
+
+        <!-- ── Event Photos ── -->
+        <div class="admin-section" id="sec-event-photos">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display);font-size:1.5rem;margin:0 0 8px;">Event / Stage Photos</h2>
+            <p>Photos shown in the Gallery's "Event Photos" tab.</p>
+          </div>
+          <div id="epAlert" style="margin-bottom:12px;"></div>
+          <div class="form-card" style="margin-bottom:28px;">
+            <form id="epUploadForm" enctype="multipart/form-data">
+              <div class="field" style="margin-bottom:14px;"><label>Photo or Video file</label><input type="file" id="epFile" accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm,video/x-msvideo" required /></div>
+              <div class="field" style="margin-bottom:14px;"><label>Caption (optional)</label><input type="text" id="epCaption" placeholder="e.g. Season Two opening night on the main stage." /></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+                <div class="field"><label>Wide tile?</label>
+                  <select id="epWide"><option value="false">No — portrait / square</option><option value="true">Yes — landscape wide</option></select>
+                </div>
+                <div class="field"><label>Display Order</label><input type="number" id="epOrder" value="10" min="0" /></div>
+              </div>
+              <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+          </div>
+          <div id="epList"><p class="empty-state">Loading event photos…</p></div>
+        </div>
+
+        <!-- ── SPONSOR PAGE CONTENT ── -->
+        <div class="admin-section" id="sec-sponsor-content">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display);font-size:1.5rem;margin:0 0 8px;">Sponsor Page Content</h2>
+            <p>Manage the proposal PDF, partner testimonials, sponsorship benefits, and tier packages shown on the public Sponsors page.</p>
+          </div>
+
+          <!-- Proposal PDF -->
+          <div class="form-card" style="margin-bottom:28px;">
+            <h4 style="margin:0 0 12px;">Sponsorship Proposal PDF</h4>
+            <p style="font-size:0.875rem; color:var(--muted); margin:0 0 16px;">Upload a PDF and it will appear as a download button on the Sponsors page.</p>
+            <div id="spProposalStatus" style="margin-bottom:12px;"></div>
+            <div id="spProposalAlert" style="margin-bottom:8px;"></div>
+            <form id="spProposalForm" enctype="multipart/form-data" style="display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap;">
+              <div class="field" style="flex:1; min-width:200px; margin:0;">
+                <label>PDF file (max 20 MB)</label>
+                <input type="file" id="spProposalFile" accept="application/pdf" required />
+              </div>
+              <button type="submit" class="btn btn-primary">Upload PDF</button>
+              <button type="button" class="btn btn-danger" id="spProposalRemoveBtn" style="display:none;">Remove</button>
+            </form>
+          </div>
+
+          <!-- Testimonials -->
+          <div class="form-card" style="margin-bottom:28px;">
+            <h4 style="margin:0 0 12px;">Partner Testimonials</h4>
+            <div id="spTestiAlert" style="margin-bottom:8px;"></div>
+            <form id="spTestiForm">
+              <div class="field-row">
+                <div class="field"><label>Quote *</label><textarea id="spTestiQuote" rows="3" required placeholder="What the partner said about working with LTQ…"></textarea></div>
+              </div>
+              <div class="field-row">
+                <div class="field"><label>Author name *</label><input type="text" id="spTestiName" required placeholder="e.g. Amara K." /></div>
+                <div class="field"><label>Author role *</label><input type="text" id="spTestiRole" required placeholder="e.g. Marketing Director, Gold Sponsor" /></div>
+              </div>
+              <div class="field-row">
+                <div class="field"><label>Initials (auto-generated if blank)</label><input type="text" id="spTestiInitials" maxlength="4" placeholder="e.g. AK" /></div>
+                <div class="field"><label>Display order</label><input type="number" id="spTestiOrder" value="0" min="0" /></div>
+              </div>
+              <button type="submit" class="btn btn-primary">Add testimonial</button>
+            </form>
+          </div>
+          <div id="spTestiList" style="margin-bottom:28px;"><p class="empty-state">Loading…</p></div>
+
+          <!-- Benefits -->
+          <div class="form-card" style="margin-bottom:28px;">
+            <h4 style="margin:0 0 12px;">Sponsorship Benefits</h4>
+            <div id="spBenefitAlert" style="margin-bottom:8px;"></div>
+            <form id="spBenefitForm">
+              <div class="field-row">
+                <div class="field">
+                  <label>Icon</label>
+                  <select id="spBenefitIcon">
+                    <option value="star">⭐ Star</option>
+                    <option value="screen">📺 Screen / TV</option>
+                    <option value="target">🎯 Target / Audience</option>
+                    <option value="users">👥 Users / Community</option>
+                    <option value="chart">📈 Chart / ROI</option>
+                    <option value="mic">🎤 Mic / Stage</option>
+                    <option value="globe">🌐 Globe / Digital</option>
+                    <option value="award">🏆 Award</option>
+                    <option value="zap">⚡ Zap / Impact</option>
+                    <option value="heart">❤️ Heart</option>
+                    <option value="shield">🛡️ Shield</option>
+                    <option value="gift">🎁 Gift</option>
+                  </select>
+                </div>
+                <div class="field"><label>Title *</label><input type="text" id="spBenefitTitle" required placeholder="e.g. Nationwide Visibility" /></div>
+              </div>
+              <div class="field"><label>Description *</label><textarea id="spBenefitDesc" rows="2" required placeholder="e.g. Brand exposure across TV, radio, and social media reaching every county."></textarea></div>
+              <div class="field" style="max-width:180px;"><label>Display order</label><input type="number" id="spBenefitOrder" value="0" min="0" /></div>
+              <button type="submit" class="btn btn-primary">Add benefit</button>
+            </form>
+          </div>
+          <div id="spBenefitList" style="margin-bottom:28px;"><p class="empty-state">Loading…</p></div>
+
+          <!-- Tiers -->
+          <div class="form-card" style="margin-bottom:28px;">
+            <h4 style="margin:0 0 12px;">Sponsorship Tiers</h4>
+            <div id="spTierAlert" style="margin-bottom:8px;"></div>
+            <form id="spTierForm">
+              <div class="field-row">
+                <div class="field"><label>Tier name *</label><input type="text" id="spTierName" required placeholder="e.g. Gold" /></div>
+                <div class="field"><label>Subtitle / price label</label><input type="text" id="spTierSubtitle" placeholder="e.g. Official Partner" /></div>
+              </div>
+              <div class="field"><label>Features (one per line)</label><textarea id="spTierFeatures" rows="5" placeholder="Logo on website partners page&#10;Social media shoutout&#10;2 complimentary tickets"></textarea></div>
+              <div class="field-row">
+                <div class="field">
+                  <label>Style</label>
+                  <select id="spTierStyle">
+                    <option value="silver">Silver</option>
+                    <option value="gold">Gold</option>
+                    <option value="platinum">Platinum</option>
+                    <option value="custom">Custom</option>
+                  </select>
+                </div>
+                <div class="field"><label>Display order</label><input type="number" id="spTierOrder" value="0" min="0" /></div>
+              </div>
+              <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+                <input type="checkbox" id="spTierFeatured" style="width:auto; margin:0;" />
+                <label for="spTierFeatured" style="margin:0;">Show "Most Popular" badge</label>
+              </div>
+              <button type="submit" class="btn btn-primary">Add tier</button>
+            </form>
+          </div>
+          <div id="spTierList" style="margin-bottom:28px;"><p class="empty-state">Loading…</p></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit contestant modal -->
+  <div class="modal-overlay" id="editCtModal">
+    <div class="modal" style="max-width:520px;">
+      <h3 id="editCtTitle">Edit Contestant</h3>
+      <div id="editCtAlert"></div>
+      <form id="editCtForm">
+        <input type="hidden" id="editCtId" />
+        <div class="field"><label for="editCtName">Full name</label><input type="text" id="editCtName" /></div>
+        <div class="field"><label for="editCtStage">Stage name</label><input type="text" id="editCtStage" /></div>
+        <div class="field"><label for="editCtBio">Short bio</label><textarea id="editCtBio" rows="3"></textarea></div>
+        <div class="field"><label for="editCtStatus">Status override</label>
+          <select id="editCtStatus">
+            <option value="">— no change —</option>
+            <option value="pending_payment">pending_payment</option>
+            <option value="registered">registered</option>
+            <option value="qualified">qualified</option>
+            <option value="waiting_list">waiting_list</option>
+            <option value="rejected">rejected</option>
+            <option value="eliminated">eliminated</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="closeEditCtModal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1;">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit round modal -->
+  <div class="modal-overlay" id="editRoundModal">
+    <div class="modal">
+      <h3 id="editRoundTitle">Edit Round</h3>
+      <div id="editRoundAlert"></div>
+      <form id="editRoundForm">
+        <input type="hidden" id="editRoundId" />
+        <div class="field"><label for="editRoundName">Name</label><input type="text" id="editRoundName" /></div>
+        <div class="field"><label for="editRoundType">Type</label>
+          <select id="editRoundType">
+            <option value="competition">Competition</option>
+            <option value="audition">Audition</option>
+          </select>
+        </div>
+        <div class="field"><label for="editRoundCapacity" title="How many contestants advance INTO this round. Leave blank for first round.">Capacity</label><input type="number" id="editRoundCapacity" min="1" placeholder="e.g. 20" /></div>
+        <div class="field"><label for="editRoundStatus">Status</label>
+          <select id="editRoundStatus">
+            <option value="upcoming">upcoming</option>
+            <option value="open">open</option>
+            <option value="scoring">scoring</option>
+            <option value="closed">closed</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="closeEditRoundModal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1;">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Announcement Modal -->
+  <div class="modal-overlay" id="editAnnModal">
+    <div class="modal" style="max-width:520px;">
+      <h3>Edit Announcement</h3>
+      <div id="editAnnAlert"></div>
+      <form id="editAnnForm">
+        <input type="hidden" id="editAnnId" />
+        <div class="field"><label>Title</label><input type="text" id="editAnnTitle" required /></div>
+        <div class="field"><label>Message</label><textarea id="editAnnMsg" rows="4" required></textarea></div>
+        <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+          <input type="checkbox" id="editAnnSeasonSpecific" style="width:auto; margin:0;" />
+          <label for="editAnnSeasonSpecific" style="margin:0;">Global / all seasons <span style="color:var(--muted); font-size:0.8rem;">(uncheck to tie to current season only)</span></label>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="closeEditAnnModal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1;">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Schedule Modal -->
+  <div class="modal-overlay" id="editSchedModal">
+    <div class="modal" style="max-width:520px;">
+      <h3>Edit Schedule Entry</h3>
+      <div id="editSchedAlert"></div>
+      <form id="editSchedForm">
+        <input type="hidden" id="editSchedId" />
+        <div class="field"><label>Title</label><input type="text" id="editSchedTitle" required /></div>
+        <div class="field"><label>Date &amp; Time</label><input type="datetime-local" id="editSchedDt" required /></div>
+        <div class="field"><label>Location</label><input type="text" id="editSchedLoc" /></div>
+        <div class="field"><label>Notes</label><input type="text" id="editSchedNotes" /></div>
+        <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+          <input type="checkbox" id="editSchedSeasonSpecific" style="width:auto; margin:0;" />
+          <label for="editSchedSeasonSpecific" style="margin:0;">Global / all seasons <span style="color:var(--muted); font-size:0.8rem;">(uncheck to tie to current season only)</span></label>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="closeEditSchedModal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1;">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Sponsor Modal -->
+  <div class="modal-overlay" id="editSponModal">
+    <div class="modal" style="max-width:520px;">
+      <h3>Edit Sponsor</h3>
+      <div id="editSponAlert"></div>
+      <form id="editSponForm">
+        <input type="hidden" id="editSponId" />
+        <div class="field"><label>Name</label><input type="text" id="editSponName" required /></div>
+        <div class="field"><label>Tier / level</label>
+          <select id="editSponTier">
+            <option value="Platinum">Platinum — Title Sponsor</option>
+            <option value="Gold">Gold — Official Partner</option>
+            <option value="Silver">Silver — Community Partner</option>
+            <option value="Media Partner">Media Partner</option>
+            <option value="Community Partner">Community Partner (grassroots)</option>
+            <option value="Partner">General Partner</option>
+          </select>
+        </div>
+        <div class="field"><label>Website (optional)</label><input type="url" id="editSponWeb" placeholder="https://…" /></div>
+        <div class="field"><label>Display order</label><input type="number" id="editSponOrder" min="0" /></div>
+        <div class="field"><label>New logo (leave empty to keep current)</label><input type="file" id="editSponLogo" accept="image/jpeg,image/png,image/webp" /></div>
+        <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+          <input type="checkbox" id="editSponSeasonSpecific" style="width:auto; margin:0;" />
+          <label for="editSponSeasonSpecific" style="margin:0;">Global / all seasons <span style="color:var(--muted); font-size:0.8rem;">(uncheck to tie to current season only)</span></label>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="closeEditSponModal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1;">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Team Profile Modal -->
+  <div class="modal-overlay" id="editTpModal">
+    <div class="modal" style="max-width:520px;">
+      <h3>Edit Profile</h3>
+      <div id="editTpAlert"></div>
+      <form id="editTpForm">
+        <input type="hidden" id="editTpId" />
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+          <div class="field"><label>Role</label>
+            <select id="editTpRole">
+              <option value="chairman">Executive Chairman</option>
+              <option value="ceo">CEO / Leadership</option>
+              <option value="mc">Master of Ceremony</option>
+              <option value="judge">Judge</option>
+              <option value="head_judge">Head Judge</option>
+            </select>
+          </div>
+          <div class="field"><label>Display Order</label><input type="number" id="editTpOrder" min="0" /></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+          <div class="field"><label>Full Name</label><input type="text" id="editTpName" required /></div>
+          <div class="field"><label>Title / Speciality</label><input type="text" id="editTpTitle2" required /></div>
+        </div>
+        <div class="field"><label>New Photo (leave empty to keep current)</label><input type="file" id="editTpPhoto" accept="image/jpeg,image/png,image/webp" /></div>
+        <div class="field"><label>Bio</label><textarea id="editTpBio" rows="2"></textarea></div>
+        <div class="field"><label>Quote</label><input type="text" id="editTpQuote" /></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="closeEditTpModal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1;">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Event Photo Modal -->
+  <div class="modal-overlay" id="editEpModal">
+    <div class="modal" style="max-width:480px;">
+      <h3>Edit Event Photo</h3>
+      <div id="editEpAlert"></div>
+      <form id="editEpForm">
+        <input type="hidden" id="editEpId" />
+        <div class="field"><label>Caption</label><input type="text" id="editEpCaption" /></div>
+        <div class="field"><label>Wide tile?</label>
+          <select id="editEpWide"><option value="false">No</option><option value="true">Yes — landscape</option></select>
+        </div>
+        <div class="field"><label>Display Order</label><input type="number" id="editEpOrder" min="0" /></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="closeEditEpModal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1;">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const auth = guardRole(['admin', 'superuser']);
+
+    function doLogout() { clearAuth(); window.location.href = 'index.html'; }
+    document.getElementById('sidebarLogout').addEventListener('click', doLogout);
+    document.getElementById('topbarLogout').addEventListener('click', doLogout);
+
+    // ── Overview ──────────────────────────────────────────────────────────
+    async function renderOverview() {
+      const [allCts, rounds] = await Promise.all([
+        authFetch('/api/contestants/queue').then((r) => r.json()),
+        fetch('/api/rounds').then((r) => r.json())
+      ]);
+      document.getElementById('statTotal').textContent     = allCts.length;
+      document.getElementById('statQualified').textContent = allCts.filter((c) => c.status === 'qualified').length;
+      document.getElementById('statPending').textContent   = allCts.filter((c) => ['pending_payment','registered'].includes(c.status)).length;
+      document.getElementById('statRounds').textContent    = rounds.filter((r) => ['open','scoring'].includes(r.status)).length;
+
+      const overviewEl = document.getElementById('overviewRounds');
+      if (!rounds.length) { overviewEl.innerHTML = '<p class="empty-state">No rounds created yet.</p>'; return; }
+      overviewEl.innerHTML = `<div class="table-wrap"><table class="app-table"><thead><tr><th>Round</th><th>Status</th></tr></thead><tbody>
+        ${rounds.map((r) => `<tr><td>${escapeHtml(r.name)}</td><td><span class="badge badge-${r.status === 'open' ? 'approved' : r.status === 'closed' ? '' : 'pending'}">${r.status}</span></td></tr>`).join('')}
+      </tbody></table></div>`;
+    }
+
+    // ── Contestants ───────────────────────────────────────────────────────
+    let ctStatusFilter = '';
+    async function renderContestants() {
+      const el = document.getElementById('ctList');
+      el.innerHTML = '<p class="empty-state">Loading…</p>';
+      const url = ctStatusFilter ? `/api/contestants/queue?status=${ctStatusFilter}` : '/api/contestants/queue';
+      const list = await authFetch(url).then((r) => r.json());
+      if (!list.length) { el.innerHTML = '<p class="empty-state">No contestants in this view.</p>'; return; }
+      el.innerHTML = list.map((c) => `
+        <div class="queue-item">
+          <div class="queue-item-head">
+            ${c.profile_photo_url ? `<img class="queue-photo" src="${c.profile_photo_url}" alt="${escapeHtml(c.full_name)}" />` : ''}
+            <div style="flex:1;">
+              <h3>${escapeHtml(c.full_name)}${c.stage_name ? ` <span style="color:var(--gold-bright); font-size:0.85rem;">"${escapeHtml(c.stage_name)}"</span>` : ''}</h3>
+              <p class="queue-meta">${escapeHtml(c.categoryLabel || '')} · ${escapeHtml(c.county || '')} · ${escapeHtml(c.email || '')}</p>
+            </div>
+            <span class="badge badge-${c.status === 'qualified' ? 'approved' : ['rejected','eliminated'].includes(c.status) ? 'rejected' : 'pending'}">${c.status.replace(/_/g,' ')}</span>
+          </div>
+          <p class="queue-talent" style="font-size:0.85rem; color:var(--muted);">${escapeHtml(c.short_bio || '')}</p>
+          <button class="btn btn-secondary btn-sm" data-edit-ct="${c.id}" data-ct-name="${escapeHtml(c.full_name)}" data-ct-stage="${escapeHtml(c.stage_name || '')}" data-ct-bio="${escapeHtml(c.short_bio || '')}" data-ct-status="${c.status}">Edit</button>
+        </div>
+      `).join('');
+      el.querySelectorAll('[data-edit-ct]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.getElementById('editCtId').value          = btn.dataset.editCt;
+          document.getElementById('editCtTitle').textContent = 'Edit — ' + btn.dataset.ctName;
+          document.getElementById('editCtName').value        = btn.dataset.ctName;
+          document.getElementById('editCtStage').value       = btn.dataset.ctStage;
+          document.getElementById('editCtBio').value         = btn.dataset.ctBio;
+          document.getElementById('editCtStatus').value      = '';
+          document.getElementById('editCtAlert').innerHTML   = '';
+          document.getElementById('editCtModal').classList.add('open');
+        });
+      });
+    }
+
+    document.getElementById('ctTabs').querySelectorAll('.tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        document.getElementById('ctTabs').querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
+        tab.classList.add('active');
+        ctStatusFilter = tab.dataset.status;
+        renderContestants();
+      });
+    });
+
+    document.getElementById('closeEditCtModal').addEventListener('click', () => document.getElementById('editCtModal').classList.remove('open'));
+    document.getElementById('editCtModal').addEventListener('click', (e) => { if (e.target === document.getElementById('editCtModal')) document.getElementById('editCtModal').classList.remove('open'); });
+
+    document.getElementById('editCtForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('editCtAlert');
+      const id      = document.getElementById('editCtId').value;
+      const status  = document.getElementById('editCtStatus').value;
+      alertEl.innerHTML = '';
+
+      const patch = { fullName: document.getElementById('editCtName').value.trim() || undefined, stageName: document.getElementById('editCtStage').value, shortBio: document.getElementById('editCtBio').value.trim() || undefined };
+      const promises = [authFetch(`/api/contestants/${id}`, { method: 'PATCH', body: JSON.stringify(patch) })];
+      if (status) promises.push(authFetch(`/api/contestants/${id}/status`, { method: 'PATCH', body: JSON.stringify({ status }) }));
+
+      const results = await Promise.all(promises);
+      const failed  = results.find((r) => !r.ok);
+      if (failed) { const d = await failed.json(); alertEl.innerHTML = `<div class="alert alert-error">${d.error}</div>`; }
+      else { alertEl.innerHTML = '<div class="alert alert-success">Saved.</div>'; setTimeout(() => { document.getElementById('editCtModal').classList.remove('open'); renderContestants(); }, 900); }
+    });
+
+    // ── Rounds ────────────────────────────────────────────────────────────
+    async function renderRounds() {
+      const el = document.getElementById('roundsList');
+      const rounds = await fetch('/api/rounds').then((r) => r.json());
+      if (!rounds.length) { el.innerHTML = '<p class="empty-state">No rounds yet.</p>'; return; }
+      el.innerHTML = `<div class="table-wrap"><table class="app-table"><thead><tr><th>Name</th><th>Type</th><th>Capacity</th><th>Status</th><th>Order</th><th></th></tr></thead><tbody>
+        ${rounds.map((r) => `<tr>
+          <td>${escapeHtml(r.name)}</td>
+          <td><span class="badge ${r.round_type === 'audition' ? 'badge-info' : 'badge-pending'}" style="font-size:0.75rem;">${r.round_type || 'competition'}</span></td>
+          <td>${r.capacity != null ? r.capacity : '<span style="color:var(--muted);font-size:0.8rem;">open</span>'}</td>
+          <td><span class="badge badge-${r.status === 'open' ? 'approved' : r.status === 'closed' ? '' : 'pending'}">${r.status}</span></td>
+          <td>${r.display_order}</td>
+          <td><button class="btn btn-secondary btn-sm" data-edit-round="${r.id}" data-name="${escapeHtml(r.name)}" data-status="${r.status}" data-type="${r.round_type||'competition'}" data-capacity="${r.capacity||''}">Edit</button></td>
+        </tr>`).join('')}
+      </tbody></table></div>`;
+      el.querySelectorAll('[data-edit-round]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.getElementById('editRoundId').value          = btn.dataset.editRound;
+          document.getElementById('editRoundTitle').textContent = 'Edit — ' + btn.dataset.name;
+          document.getElementById('editRoundName').value        = btn.dataset.name;
+          document.getElementById('editRoundType').value        = btn.dataset.type || 'competition';
+          document.getElementById('editRoundCapacity').value    = btn.dataset.capacity || '';
+          document.getElementById('editRoundStatus').value      = btn.dataset.status;
+          document.getElementById('editRoundAlert').innerHTML   = '';
+          document.getElementById('editRoundModal').classList.add('open');
+        });
+      });
+    }
+
+    document.getElementById('roundForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('roundFormAlert');
+      const capVal = document.getElementById('roundCapacity').value;
+      const res  = await authFetch('/api/rounds', { method: 'POST', body: JSON.stringify({ name: document.getElementById('roundName').value.trim(), round_type: document.getElementById('roundType').value, capacity: capVal ? Number(capVal) : null, display_order: Number(document.getElementById('roundOrder').value) }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { document.getElementById('roundName').value = ''; renderRounds(); }
+    });
+
+    document.getElementById('closeEditRoundModal').addEventListener('click', () => document.getElementById('editRoundModal').classList.remove('open'));
+    document.getElementById('editRoundModal').addEventListener('click', (e) => { if (e.target === document.getElementById('editRoundModal')) document.getElementById('editRoundModal').classList.remove('open'); });
+
+    document.getElementById('editRoundForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('editRoundAlert');
+      const id   = document.getElementById('editRoundId').value;
+      const editCap = document.getElementById('editRoundCapacity').value;
+      const res  = await authFetch(`/api/rounds/${id}`, { method: 'PATCH', body: JSON.stringify({ name: document.getElementById('editRoundName').value.trim(), round_type: document.getElementById('editRoundType').value, capacity: editCap ? Number(editCap) : null, status: document.getElementById('editRoundStatus').value }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { setTimeout(() => { document.getElementById('editRoundModal').classList.remove('open'); renderRounds(); }, 900); }
+    });
+
+    // ── Audition Scores ───────────────────────────────────────────────────
+    async function renderScores() {
+      const tbody = document.getElementById('scoresBody');
+      tbody.innerHTML = '<tr><td colspan="6">Loading…</td></tr>';
+      const scores = await authFetch('/api/audition-scores').then((r) => r.json());
+      if (!scores.length) { tbody.innerHTML = '<tr><td colspan="6">No scores yet.</td></tr>'; return; }
+      tbody.innerHTML = scores.map((s) => `<tr>
+        <td>${escapeHtml(s.contestantName || '')}</td>
+        <td>${escapeHtml(s.categoryLabel || '—')}</td>
+        <td>${escapeHtml(s.judgeName || '')}</td>
+        <td><strong>${s.total_score}</strong></td>
+        <td style="font-size:0.85rem; color:var(--muted);">${escapeHtml(s.comments || '—')}</td>
+        <td style="font-size:0.8rem;">${new Date(s.submitted_at).toLocaleDateString()}</td>
+      </tr>`).join('');
+    }
+
+    // ── Performances ──────────────────────────────────────────────────────
+    async function loadPerfRoundTabs() {
+      const rounds = await fetch('/api/rounds').then((r) => r.json());
+      const tabsEl = document.getElementById('perfRoundTabs');
+      if (!rounds.length) { tabsEl.innerHTML = '<p class="empty-state" style="margin:0;">No rounds yet.</p>'; return; }
+      tabsEl.innerHTML = rounds.map((r) => `<button class="tab" data-rid="${r.id}">${escapeHtml(r.name)}</button>`).join('');
+      tabsEl.querySelectorAll('.tab').forEach((tab) => {
+        tab.addEventListener('click', async () => {
+          tabsEl.querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
+          tab.classList.add('active');
+          const el = document.getElementById('perfList');
+          el.innerHTML = '<p class="empty-state">Loading…</p>';
+          const perfs = await authFetch(`/api/performances/round/${tab.dataset.rid}`).then((r) => r.json());
+          if (!perfs.length) { el.innerHTML = '<p class="empty-state">No performances for this round.</p>'; return; }
+          el.innerHTML = perfs.map((p) => `
+            <div class="queue-item">
+              <div class="queue-item-head">
+                <div>
+                  <h3>${escapeHtml(p.contestantName || '')}</h3>
+                  <p class="queue-meta">${escapeHtml(p.categoryLabel || '')}${p.song_name ? ' · ' + escapeHtml(p.song_name) : ''} · ${p.judgeCount || 0} score(s), avg ${p.avgScore || '—'}</p>
+                </div>
+              </div>
+              ${p.performance_video_url ? `<a class="btn btn-secondary btn-sm" href="${p.performance_video_url}" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="vertical-align:-1px;margin-right:4px;"><polygon points="5 3 19 12 5 21 5 3"/></svg>Watch performance</a>` : ''}
+            </div>
+          `).join('');
+        });
+      });
+    }
+
+    // ── Announcements ──────────────────────────────────────────────────────
+    async function renderAnnouncements() {
+      const el = document.getElementById('annList');
+      const list = await fetch('/api/announcements?season=all').then((r) => r.json());
+      if (!list.length) { el.innerHTML = '<p class="empty-state">No announcements yet.</p>'; return; }
+      el.innerHTML = list.map((a) => `
+        <div class="queue-item">
+          <div class="queue-item-head">
+            <div style="flex:1;"><h3>${escapeHtml(a.title)}</h3><p class="queue-meta">${new Date(a.createdAt).toLocaleDateString()} · by ${escapeHtml(a.postedBy || '?')}</p></div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-secondary btn-sm" data-edit-ann="${a.id}" data-ann-title="${escapeHtml(a.title)}" data-ann-msg="${escapeHtml(a.message)}" data-ann-season="${a.seasonId || ''}">Edit</button>
+              <button class="btn btn-danger btn-sm" data-del-ann="${a.id}">Delete</button>
+            </div>
+          </div>
+          <p class="queue-talent">${escapeHtml(a.message)}</p>
+        </div>
+      `).join('');
+      el.querySelectorAll('[data-edit-ann]').forEach((btn) => {
+        btn.addEventListener('click', () => openEditAnn(btn.dataset.editAnn, btn.dataset.annTitle, btn.dataset.annMsg, btn.dataset.annSeason));
+      });
+      el.querySelectorAll('[data-del-ann]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!await ltqConfirm('Delete this announcement?', { title: 'Delete Announcement', danger: true })) return;
+          const res = await authFetch(`/api/announcements/${btn.dataset.delAnn}`, { method: 'DELETE' });
+          if (res.ok) renderAnnouncements(); else { const d = await res.json(); ltqToast(d.error || 'Could not delete announcement.', 'error'); }
+        });
+      });
+    }
+
+    document.getElementById('annForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('annAlert');
+      const res  = await authFetch('/api/announcements', { method: 'POST', body: JSON.stringify({ title: document.getElementById('annTitle').value.trim(), message: document.getElementById('annMessage').value.trim(), seasonSpecific: document.getElementById('annSeasonSpecific').checked }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { document.getElementById('annForm').reset(); renderAnnouncements(); }
+    });
+
+    // ── Schedule ───────────────────────────────────────────────────────────
+    async function renderSchedule() {
+      const el = document.getElementById('schedList');
+      const entries = await fetch('/api/schedule?season=all').then((r) => r.json());
+      if (!entries.length) { el.innerHTML = '<p class="empty-state">No schedule entries yet.</p>'; return; }
+      el.innerHTML = `<div class="table-wrap"><table class="app-table"><thead><tr><th>Title</th><th>Date &amp; Time</th><th>Location</th><th></th></tr></thead><tbody>
+        ${entries.map((e) => `<tr>
+          <td>${escapeHtml(e.title)}</td>
+          <td>${new Date(e.datetime).toLocaleString()}</td>
+          <td>${escapeHtml(e.location || '—')}</td>
+          <td style="display:flex;gap:6px;">
+            <button class="btn btn-secondary btn-sm"
+              data-edit-sched="${e.id}"
+              data-sched-title="${escapeHtml(e.title)}"
+              data-sched-dt="${e.datetime}"
+              data-sched-loc="${escapeHtml(e.location || '')}"
+              data-sched-notes="${escapeHtml(e.notes || '')}"
+              data-sched-season="${e.seasonId || ''}">Edit</button>
+            <button class="btn btn-danger btn-sm" data-del-sched="${e.id}">Remove</button>
+          </td>
+        </tr>`).join('')}
+      </tbody></table></div>`;
+      el.querySelectorAll('[data-edit-sched]').forEach((btn) => {
+        btn.addEventListener('click', () => openEditSched(btn.dataset.editSched, btn.dataset.schedTitle, btn.dataset.schedDt, btn.dataset.schedLoc, btn.dataset.schedNotes, btn.dataset.schedSeason));
+      });
+      el.querySelectorAll('[data-del-sched]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!await ltqConfirm('Remove this schedule entry?', { title: 'Remove Entry', danger: true })) return;
+          const res = await authFetch(`/api/schedule/${btn.dataset.delSched}`, { method: 'DELETE' });
+          if (res.ok) renderSchedule(); else { const d = await res.json(); ltqToast(d.error || 'Could not remove entry.', 'error'); }
+        });
+      });
+    }
+
+    document.getElementById('schedForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('schedAlert');
+      const res  = await authFetch('/api/schedule', { method: 'POST', body: JSON.stringify({ title: document.getElementById('schedTitle').value.trim(), datetime: document.getElementById('schedDt').value, location: document.getElementById('schedLoc').value.trim(), notes: document.getElementById('schedNotes').value.trim(), seasonSpecific: document.getElementById('schedSeasonSpecific').checked }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { document.getElementById('schedForm').reset(); renderSchedule(); }
+    });
+
+    // ── Sponsors ───────────────────────────────────────────────────────────
+    async function renderSponsors() {
+      const el = document.getElementById('sponList');
+      const list = await fetch('/api/sponsors?season=all').then((r) => r.json());
+      if (!list.length) { el.innerHTML = '<p class="empty-state">No sponsors yet.</p>'; return; }
+      el.innerHTML = `<div class="table-wrap"><table class="app-table"><thead><tr><th>Logo</th><th>Name</th><th>Tier</th><th>Website</th><th></th></tr></thead><tbody>
+        ${list.map((s) => `<tr>
+          <td>${s.logoUrl ? `<img src="${escapeHtml(s.logoUrl)}" style="height:32px;object-fit:contain;border-radius:4px;" alt="" />` : '—'}</td>
+          <td>${escapeHtml(s.name)}</td>
+          <td>${escapeHtml(s.tier || '—')}</td>
+          <td>${s.websiteUrl ? `<a href="${escapeHtml(s.websiteUrl)}" target="_blank" rel="noopener">Visit ↗</a>` : '—'}</td>
+          <td style="display:flex;gap:6px;">
+            <button class="btn btn-secondary btn-sm"
+              data-edit-spon="${s.id}"
+              data-spon-name="${escapeHtml(s.name)}"
+              data-spon-tier="${escapeHtml(s.tier || 'Partner')}"
+              data-spon-web="${escapeHtml(s.websiteUrl || '')}"
+              data-spon-order="${s.displayOrder || 0}"
+              data-spon-season="${s.seasonId || ''}">Edit</button>
+            <button class="btn btn-danger btn-sm" data-del-spon="${s.id}">Remove</button>
+          </td>
+        </tr>`).join('')}
+      </tbody></table></div>`;
+      el.querySelectorAll('[data-edit-spon]').forEach((btn) => {
+        btn.addEventListener('click', () => openEditSpon(btn.dataset.editSpon, btn.dataset.sponName, btn.dataset.sponTier, btn.dataset.sponWeb, btn.dataset.sponOrder, btn.dataset.sponSeason));
+      });
+      el.querySelectorAll('[data-del-spon]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!await ltqConfirm('Remove this sponsor?', { title: 'Remove Sponsor', danger: true })) return;
+          const res = await authFetch(`/api/sponsors/${btn.dataset.delSpon}`, { method: 'DELETE' });
+          if (res.ok) renderSponsors(); else { const d = await res.json(); ltqToast(d.error || 'Could not remove sponsor.', 'error'); }
+        });
+      });
+    }
+
+    document.getElementById('sponForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('sponAlert');
+      const fd = new FormData();
+      fd.append('name', document.getElementById('sponName').value.trim());
+      fd.append('tier', document.getElementById('sponTier').value);
+      fd.append('websiteUrl', document.getElementById('sponWeb').value.trim());
+      fd.append('seasonSpecific', document.getElementById('sponSeasonSpecific').checked);
+      const logoFile = document.getElementById('sponLogo').files[0];
+      if (logoFile) fd.append('file', logoFile);
+      const res  = await authFetch('/api/sponsors', { method: 'POST', body: fd, headers: {} });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { document.getElementById('sponForm').reset(); renderSponsors(); }
+    });
+
+    // ── Pipeline ───────────────────────────────────────────────────────────
+    async function renderPipeline() {
+      const el = document.getElementById('pipelineGrid');
+      el.innerHTML = '<p class="empty-state">Loading…</p>';
+      const list = await authFetch('/api/contestants/queue').then((r) => r.json());
+
+      const stages = [
+        { key: 'pending_payment', label: 'Pending payment',  color: '#f59e0b', desc: 'Applied, awaiting fee' },
+        { key: 'registered',      label: 'Registered',       color: '#3b82f6', desc: 'Paid, in review queue' },
+        { key: 'rejected',        label: 'Rejected',         color: '#ef4444', desc: 'Did not pass review' },
+        { key: 'waiting_list',    label: 'Waiting list',     color: '#8b5cf6', desc: 'Below qualify threshold' },
+        { key: 'qualified',       label: 'Qualified',        color: '#22c55e', desc: 'Passed audition review' },
+        { key: 'eliminated',      label: 'Eliminated',       color: '#f97316', desc: 'Removed from competition' },
+        { key: 'winner',          label: 'Winner',           color: '#f6d374', desc: 'Grand finale champion' },
+      ];
+
+      const counts = {};
+      list.forEach((c) => { counts[c.status] = (counts[c.status] || 0) + 1; });
+
+      el.innerHTML = stages.map((s) => `
+        <div style="border-left:3px solid ${s.color};background:var(--panel-raised);border-radius:10px;padding:16px 18px;">
+          <div style="font-size:2rem;font-weight:700;color:${s.color};font-family:var(--font-display);">${counts[s.key] || 0}</div>
+          <div style="font-weight:600;font-size:0.9rem;margin:4px 0 2px;">${s.label}</div>
+          <div style="font-size:0.78rem;color:var(--muted);">${s.desc}</div>
+        </div>
+      `).join('');
+    }
+
+    // ── Section navigation ─────────────────────────────────────────────────
+    (function() {
+      var panels = document.querySelectorAll('.admin-section');
+      var links  = document.querySelectorAll('.sidebar-sublink');
+      function showSection(id) {
+        panels.forEach(function(p) { p.classList.toggle('active', p.id === id); });
+        links.forEach(function(l) { l.classList.toggle('active', l.getAttribute('href') === '#' + id); });
+      }
+      links.forEach(function(l) {
+        l.addEventListener('click', function(e) {
+          e.preventDefault();
+          var id = l.getAttribute('href').slice(1);
+          showSection(id);
+          if (id === 'sec-notifications') { loadChannelStatus(); renderNotifHistory(); }
+          if (id === 'sec-contestants')   renderContestants();
+          if (id === 'sec-pipeline')      renderPipeline();
+          if (id === 'sec-rounds')        renderRounds();
+          if (id === 'sec-scores')        renderScores();
+          if (id === 'sec-performances')  loadPerfRoundTabs();
+          if (id === 'sec-announcements') renderAnnouncements();
+          if (id === 'sec-schedule')      renderSchedule();
+          if (id === 'sec-sponsors')      renderSponsors();
+          if (id === 'sec-team-profiles') loadTeamProfiles();
+          if (id === 'sec-event-photos')    loadEventPhotos();
+          if (id === 'sec-sponsor-content') loadSponsorContent();
+        });
+      });
+      showSection('sec-overview');
+    })();
+
+    // ── Notifications ─────────────────────────────────────────────────
+    const NOTIF_TEMPLATES = [
+      { type: 'audition_schedule',    label: 'Audition schedule',         subject: 'Your Audition is Scheduled — Liberia Talent Quest', message: 'Dear [Contestant Name],\n\nYour audition has been confirmed.\n\nVenue: [Venue Name & Address]\nDate: [Day, Month Date, Year]\nReporting Time: [Time] (arrive 30 minutes early)\nCategory: [Your Category]\n\nBring: Valid national ID or passport, props/materials for your performance, this confirmation.\n\nLate arrivals may forfeit their slot. Results will be communicated within [X] days.\n\nFor questions: +231 77-874-7441\n\nWarm regards,\nLiberia Talent Quest Team' },
+      { type: 'audition_schedule',    label: 'Audition reminder (day before)', subject: 'Reminder: Your Audition is Tomorrow — Liberia Talent Quest', message: 'Dear [Contestant Name],\n\nThis is a friendly reminder that your audition is TOMORROW.\n\nVenue: [Venue Name]\nYour slot: [Time]\n\nPlease arrive at least 30 minutes early, bring a valid ID, and have your performance ready.\n\nThe LTQ Team\n+231 77-874-7441' },
+      { type: 'qualification_notice', label: 'Qualification notice',      subject: 'Congratulations — You Have Qualified for Liberia Talent Quest!', message: 'Dear [Contestant Name],\n\nWe are thrilled to inform you that you have officially QUALIFIED!\n\nYour audition impressed our panel and you have earned your place among the best young talents in Liberia.\n\nWatch for our next message with the rehearsal schedule.\n\nWelcome to the LTQ Stage!\n\nThe Liberia Talent Quest Team' },
+      { type: 'qualification_notice', label: 'Waiting list notice',       subject: 'Your Liberia Talent Quest Application — Waiting List Update', message: 'Dear [Contestant Name],\n\nYour performance has earned you a place on our WAITING LIST. If any qualified contestant is unable to proceed, you will be invited to join.\n\nPlease keep your phone and email accessible.\n\nWith respect,\nLiberia Talent Quest Team\n+231 77-874-7441' },
+      { type: 'rehearsal_notice',     label: 'Rehearsal notice',          subject: 'Rehearsal Schedule — Liberia Talent Quest', message: 'Dear [Contestant Name],\n\nPlease be informed of the upcoming rehearsal:\n\nLocation: [Venue Name & Address]\nDate: [Day, Month Date, Year]\nTime: [Start Time] — [End Time]\nDress code: [Casual / Stage costume / Practice wear]\n\nAll qualified contestants are REQUIRED to attend.\n\nThe LTQ Production Team' },
+      { type: 'elimination_notice',   label: 'Elimination notice',        subject: 'Regarding Your Participation — Liberia Talent Quest', message: 'Dear [Contestant Name],\n\nThank you for your dedication throughout your journey in Liberia Talent Quest.\n\nAfter the combined evaluation of judges\' scores and public votes, we regret to inform you that you have not advanced from the [Round Name] round.\n\nYou are welcome to apply again in future seasons.\n\nWith deep appreciation,\nThe Liberia Talent Quest Team\n+231 77-874-7441' },
+      { type: 'finalist_announcement', label: 'Finalist announcement',    subject: 'YOU ARE A FINALIST — Liberia Talent Quest Grand Finale!', message: 'Dear [Contestant Name],\n\nCONGRATULATIONS!\n\nYou have advanced to the GRAND FINALE of Liberia Talent Quest!\n\nYour Contestant Manager will be in touch with the final schedule, costume review, and stage briefing.\n\nWith pride,\nThe Liberia Talent Quest Team' },
+      { type: 'general_update',       label: 'General update',            subject: 'Important Update — Liberia Talent Quest', message: 'Dear [Contestant Name],\n\nWe have an important update to share with you.\n\n[Write your message here]\n\nFor questions: +231 77-874-7441 | legacyhubinc@gmail.com\n\nWarm regards,\nThe Liberia Talent Quest Team' },
+      { type: 'general_update',       label: 'Payment reminder',          subject: 'Registration Fee Reminder — Liberia Talent Quest', message: 'Dear [Contestant Name],\n\nThis is a reminder that your registration fee has not yet been confirmed.\n\nFee: [Amount]\nDeadline: [Date]\n\nSend proof of payment to +231 77-874-7441 or legacyhubinc@gmail.com with your full name.\n\nThank you,\nLTQ Finance Team' }
+    ];
+
+    function renderTemplates() {
+      const container = document.getElementById('templateList');
+      if (!container) return;
+      container.innerHTML = NOTIF_TEMPLATES.map((t, i) => `
+        <button type="button" class="btn btn-secondary" style="text-align:left;padding:8px 12px;font-size:0.83rem;width:100%;" data-tpl-idx="${i}">${escapeHtml(t.label)}</button>
+      `).join('');
+      container.querySelectorAll('[data-tpl-idx]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const t = NOTIF_TEMPLATES[Number(btn.dataset.tplIdx)];
+          if (!t) return;
+          document.getElementById('notifType').value    = t.type;
+          document.getElementById('notifSubject').value = t.subject;
+          document.getElementById('notifMessage').value = t.message;
+          document.getElementById('notifSubject').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+      });
+    }
+
+    async function loadChannelStatus() {
+      try {
+        const ch = await fetch('/api/notifications/channels').then((r) => r.json());
+        const emailEl = document.getElementById('emailStatus');
+        const waEl    = document.getElementById('waStatus');
+        if (emailEl) emailEl.textContent = ch.email    ? 'active' : 'not configured';
+        if (waEl)    waEl.textContent    = ch.whatsapp ? 'active' : 'not configured';
+        const waPill = document.querySelector('.ch-wa');
+        if (waPill && !ch.whatsapp) waPill.style.opacity = '0.45';
+      } catch {}
+    }
+
+    document.getElementById('notifRecipients').addEventListener('change', function() {
+      document.getElementById('individualPickerField').style.display = this.value === 'individual' ? '' : 'none';
+    });
+
+    async function loadContestantsForNotif() {
+      const all = await authFetch('/api/contestants/queue').then((r) => r.json()).catch(() => []);
+      const sel = document.getElementById('notifContestant');
+      if (!sel) return;
+      sel.innerHTML = '<option value="">— select —</option>';
+      all.forEach((c) => {
+        const o = document.createElement('option');
+        o.value = c.id;
+        o.textContent = c.full_name + ' (' + (c.status || '').replace(/_/g,' ') + ')';
+        sel.appendChild(o);
+      });
+    }
+
+    function deliveryCell(n) {
+      const emailCount = n.email_sent_count ?? n.sent_count ?? 0;
+      const waCount    = n.wa_sent_count    ?? 0;
+      const parts = [];
+      if (emailCount > 0) parts.push(`<span style="color:var(--brand-blue,#3b82f6);">Email: ${emailCount}</span>`);
+      if (waCount    > 0) parts.push(`<span style="color:var(--teal,#14b8a6);">WA: ${waCount}</span>`);
+      return parts.length ? parts.join(' ') : n.sent_count ?? 0;
+    }
+
+    async function renderNotifHistory() {
+      const el = document.getElementById('notifHistory');
+      if (!el) return;
+      const list = await authFetch('/api/notifications').then((r) => r.json()).catch(() => []);
+      const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+      const sentEl   = document.getElementById('statSent');
+      const recentEl = document.getElementById('statRecent');
+      if (sentEl)   sentEl.textContent   = list.length;
+      if (recentEl) recentEl.textContent = list.filter((n) => new Date(n.sent_at) > weekAgo).length;
+      if (!list.length) { el.innerHTML = '<p class="empty-state">No notifications sent yet.</p>'; return; }
+      el.innerHTML = `<div class="table-wrap"><table class="app-table"><thead><tr><th>Subject</th><th>Recipients</th><th>Delivered</th><th>By</th><th>Date</th></tr></thead><tbody>
+        ${list.map((n) => `<tr>
+          <td>${escapeHtml(n.subject)}</td>
+          <td>${escapeHtml((n.recipients_type || '').replace(/_/g,' '))}${n.recipient_name ? ' — ' + escapeHtml(n.recipient_name) : ''}</td>
+          <td>${deliveryCell(n)}</td>
+          <td>${escapeHtml(n.sent_by_name || '?')}</td>
+          <td style="font-size:0.85rem;">${new Date(n.sent_at).toLocaleString()}</td>
+        </tr>`).join('')}
+      </tbody></table></div>`;
+    }
+
+    document.getElementById('notifForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl    = document.getElementById('notifAlert');
+      const btn        = e.target.querySelector('button[type="submit"]');
+      const origHTML   = btn.innerHTML;
+      const recipients = document.getElementById('notifRecipients').value;
+      const payload    = {
+        type:         document.getElementById('notifType').value,
+        recipients,
+        contestantId: recipients === 'individual' ? document.getElementById('notifContestant').value : undefined,
+        subject:      document.getElementById('notifSubject').value.trim(),
+        message:      document.getElementById('notifMessage').value.trim(),
+      };
+      alertEl.innerHTML = '<div class="alert alert-info">Sending…</div>';
+      btn.disabled  = true;
+      btn.innerHTML = `<svg class="ltq-spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Sending…`;
+      const res  = await authFetch('/api/notifications/send', { method: 'POST', body: JSON.stringify(payload) });
+      const data = await res.json();
+      btn.disabled  = false;
+      btn.innerHTML = origHTML;
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}${data.errors?.length ? '<br><small style="opacity:0.7;">' + data.errors.join('<br>') + '</small>' : ''}</div>`;
+      if (res.ok) { document.getElementById('notifForm').reset(); document.getElementById('individualPickerField').style.display = 'none'; renderNotifHistory(); }
+    });
+
+    // ── Team Profiles ─────────────────────────────────────────────────
+    const ROLE_LABELS = { chairman:'Executive Chairman', ceo:'CEO / Leadership', mc:'Master of Ceremony', judge:'Judge', head_judge:'Head Judge' };
+
+    async function loadTeamProfiles() {
+      const el = document.getElementById('tpList');
+      const profiles = await authFetch('/api/team-profiles').then((r) => r.json()).catch(() => []);
+      if (!profiles.length) { el.innerHTML = '<p class="empty-state">No profiles yet.</p>'; return; }
+      el.innerHTML = `<div class="table-wrap"><table class="app-table"><thead><tr><th>Role</th><th>Name</th><th>Title</th><th>Photo</th><th>Order</th><th></th></tr></thead><tbody>
+        ${profiles.map((p) => `<tr>
+          <td><span class="badge badge-info" style="font-size:0.72rem;">${escapeHtml(ROLE_LABELS[p.roleTag] || p.roleTag)}</span></td>
+          <td>${escapeHtml(p.name)}</td>
+          <td style="font-size:0.85rem;color:var(--muted);">${escapeHtml(p.title)}</td>
+          <td>${p.photoUrl ? `<img src="${escapeHtml(p.photoUrl)}" style="width:38px;height:38px;object-fit:cover;border-radius:50%;" alt="" />` : '—'}</td>
+          <td style="text-align:center;">${p.displayOrder}</td>
+          <td style="display:flex;gap:6px;">
+            <button class="btn btn-secondary" style="padding:4px 10px;font-size:0.8rem;"
+              data-edit-tp="${p.id}"
+              data-tp-role="${p.roleTag}"
+              data-tp-name="${escapeHtml(p.name)}"
+              data-tp-title="${escapeHtml(p.title)}"
+              data-tp-order="${p.displayOrder}"
+              data-tp-bio="${escapeHtml(p.bio || '')}"
+              data-tp-quote="${escapeHtml(p.quote || '')}">Edit</button>
+            <button class="btn btn-secondary" style="padding:4px 10px;font-size:0.8rem;" onclick="deleteTeamProfile('${p.id}')">Delete</button>
+          </td>
+        </tr>`).join('')}
+      </tbody></table></div>`;
+      el.querySelectorAll('[data-edit-tp]').forEach((btn) => {
+        btn.addEventListener('click', () => openEditTp(btn.dataset.editTp, btn.dataset.tpRole, btn.dataset.tpName, btn.dataset.tpTitle, btn.dataset.tpOrder, btn.dataset.tpBio, btn.dataset.tpQuote));
+      });
+    }
+
+    async function deleteTeamProfile(id) {
+      if (!await ltqConfirm('Delete this team profile? This cannot be undone.', { title: 'Delete Profile', danger: true })) return;
+      const res = await authFetch(`/api/team-profiles/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      document.getElementById('tpAlert').innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) loadTeamProfiles();
+    }
+
+    document.getElementById('tpAddForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('tpAlert');
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true; btn.textContent = 'Adding…';
+      const fd = new FormData();
+      fd.append('roleTag',      document.getElementById('tpRoleTag').value);
+      fd.append('name',         document.getElementById('tpName').value.trim());
+      fd.append('title',        document.getElementById('tpTitle').value.trim());
+      fd.append('bio',          document.getElementById('tpBio').value.trim());
+      fd.append('quote',        document.getElementById('tpQuote').value.trim());
+      fd.append('displayOrder', document.getElementById('tpOrder').value);
+      const photoFile = document.getElementById('tpPhoto').files[0];
+      if (photoFile) fd.append('file', photoFile);
+      const res  = await authFetch('/api/team-profiles', { method: 'POST', body: fd, headers: {} });
+      const data = await res.json();
+      btn.disabled = false; btn.textContent = 'Add Profile';
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { e.target.reset(); loadTeamProfiles(); }
+    });
+
+    // ── Event Photos ──────────────────────────────────────────────────
+    async function loadEventPhotos() {
+      const el = document.getElementById('epList');
+      const photos = await authFetch('/api/event-photos?season=all').then((r) => r.json()).catch(() => []);
+      if (!photos.length) { el.innerHTML = '<p class="empty-state">No event photos yet.</p>'; return; }
+      el.innerHTML = `<div class="table-wrap"><table class="app-table"><thead><tr><th>Preview</th><th>Caption</th><th>Wide</th><th>Order</th><th></th></tr></thead><tbody>
+        ${photos.map((p) => `<tr>
+          <td>${p.mediaType === 'video'
+            ? `<video src="${escapeHtml(p.filePath)}" preload="metadata" muted style="width:64px;height:42px;object-fit:cover;border-radius:4px;"></video>`
+            : `<img src="${escapeHtml(p.filePath)}" style="width:64px;height:42px;object-fit:cover;border-radius:4px;" alt="" />`
+          }</td>
+          <td style="font-size:0.85rem;">${escapeHtml(p.caption || '—')}</td>
+          <td style="text-align:center;">${p.wide ? '✓' : '—'}</td>
+          <td style="text-align:center;">${p.displayOrder}</td>
+          <td style="display:flex;gap:6px;">
+            <button class="btn btn-secondary" style="padding:4px 10px;font-size:0.8rem;"
+              data-edit-ep="${p.id}"
+              data-ep-caption="${escapeHtml(p.caption || '')}"
+              data-ep-wide="${p.wide}"
+              data-ep-order="${p.displayOrder}">Edit</button>
+            <button class="btn btn-secondary" style="padding:4px 10px;font-size:0.8rem;" onclick="deleteEventPhoto('${p.id}')">Delete</button>
+          </td>
+        </tr>`).join('')}
+      </tbody></table></div>`;
+      el.querySelectorAll('[data-edit-ep]').forEach((btn) => {
+        btn.addEventListener('click', () => openEditEp(btn.dataset.editEp, btn.dataset.epCaption, btn.dataset.epWide, btn.dataset.epOrder));
+      });
+    }
+
+    async function deleteEventPhoto(id) {
+      if (!await ltqConfirm('Delete this photo or video? This cannot be undone.', { title: 'Delete Media', danger: true })) return;
+      const res = await authFetch(`/api/event-photos/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      document.getElementById('epAlert').innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) loadEventPhotos();
+    }
+
+    document.getElementById('epUploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('epAlert');
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true; btn.textContent = 'Uploading…';
+      const fd = new FormData();
+      fd.append('file',         document.getElementById('epFile').files[0]);
+      fd.append('caption',      document.getElementById('epCaption').value.trim());
+      fd.append('wide',         document.getElementById('epWide').value);
+      fd.append('displayOrder', document.getElementById('epOrder').value);
+      const res  = await authFetch('/api/event-photos', { method: 'POST', body: fd, headers: {} });
+      const data = await res.json();
+      btn.disabled = false; btn.textContent = 'Upload Photo';
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { e.target.reset(); loadEventPhotos(); }
+    });
+
+    // ── Sponsor Page Content ──────────────────────────────────────────
+    function loadSponsorContent() {
+      loadSpProposal();
+      loadSpTestimonials();
+      loadSpBenefits();
+      loadSpTiers();
+    }
+
+    async function loadSpProposal() {
+      const statusEl = document.getElementById('spProposalStatus');
+      const removeBtn = document.getElementById('spProposalRemoveBtn');
+      try {
+        const s = await fetch('/api/settings').then((r) => r.json());
+        if (s.proposalFileUrl) {
+          statusEl.innerHTML = `<div class="alert alert-success" style="margin:0;">Current proposal: <a href="${escapeHtml(s.proposalFileUrl)}" target="_blank" rel="noopener">View / Download</a></div>`;
+          removeBtn.style.display = '';
+        } else {
+          statusEl.innerHTML = '<p style="color:var(--muted); font-size:0.85rem; margin:0;">No proposal PDF uploaded yet.</p>';
+          removeBtn.style.display = 'none';
+        }
+      } catch { statusEl.innerHTML = ''; }
+    }
+
+    document.getElementById('spProposalForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('spProposalAlert');
+      const file = document.getElementById('spProposalFile').files[0];
+      if (!file) return;
+      const fd = new FormData();
+      fd.append('file', file);
+      const res  = await authFetch('/api/settings/proposal', { method: 'POST', body: fd, headers: {} });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { e.target.reset(); loadSpProposal(); }
+    });
+    document.getElementById('spProposalRemoveBtn').addEventListener('click', async () => {
+      if (!await ltqConfirm('Remove the sponsorship proposal PDF?', { title: 'Remove Proposal', danger: true })) return;
+      const res = await authFetch('/api/settings/proposal', { method: 'DELETE' });
+      const data = await res.json();
+      document.getElementById('spProposalAlert').innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) loadSpProposal();
+    });
+
+    // Testimonials
+    async function loadSpTestimonials() {
+      const el = document.getElementById('spTestiList');
+      const items = await authFetch('/api/sponsor-content/testimonials').then((r) => r.json());
+      if (!items.length) { el.innerHTML = '<p class="empty-state">No testimonials yet.</p>'; return; }
+      el.innerHTML = `<div class="table-wrap"><table class="app-table"><thead><tr><th>Author</th><th>Role</th><th>Quote (preview)</th><th>Order</th><th></th></tr></thead><tbody>
+        ${items.map((t) => `<tr>
+          <td>${escapeHtml(t.authorName)} <span style="color:var(--muted); font-size:0.8rem;">(${escapeHtml(t.initials)})</span></td>
+          <td>${escapeHtml(t.authorRole)}</td>
+          <td style="max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">"${escapeHtml(t.quote.slice(0, 80))}${t.quote.length > 80 ? '…' : ''}"</td>
+          <td>${t.displayOrder}</td>
+          <td><button class="btn btn-danger btn-sm" data-del-testi="${t.id}">Remove</button></td>
+        </tr>`).join('')}
+      </tbody></table></div>`;
+      el.querySelectorAll('[data-del-testi]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!await ltqConfirm('Remove this testimonial?', { title: 'Remove Testimonial', danger: true })) return;
+          const res = await authFetch(`/api/sponsor-content/testimonials/${btn.dataset.delTesti}`, { method: 'DELETE' });
+          if (res.ok) loadSpTestimonials(); else { const d = await res.json(); ltqToast(d.error || 'Could not remove.', 'error'); }
+        });
+      });
+    }
+    document.getElementById('spTestiForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('spTestiAlert');
+      const res = await authFetch('/api/sponsor-content/testimonials', { method: 'POST', body: JSON.stringify({
+        quote: document.getElementById('spTestiQuote').value.trim(),
+        authorName: document.getElementById('spTestiName').value.trim(),
+        authorRole: document.getElementById('spTestiRole').value.trim(),
+        initials: document.getElementById('spTestiInitials').value.trim(),
+        displayOrder: Number(document.getElementById('spTestiOrder').value) || 0,
+      }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { e.target.reset(); loadSpTestimonials(); }
+    });
+
+    // Benefits
+    async function loadSpBenefits() {
+      const el = document.getElementById('spBenefitList');
+      const items = await authFetch('/api/sponsor-content/benefits').then((r) => r.json());
+      if (!items.length) { el.innerHTML = '<p class="empty-state">No benefits yet.</p>'; return; }
+      el.innerHTML = `<div class="table-wrap"><table class="app-table"><thead><tr><th>Icon</th><th>Title</th><th>Description</th><th>Order</th><th></th></tr></thead><tbody>
+        ${items.map((b) => `<tr>
+          <td>${escapeHtml(b.iconName)}</td>
+          <td>${escapeHtml(b.title)}</td>
+          <td style="max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(b.description)}</td>
+          <td>${b.displayOrder}</td>
+          <td><button class="btn btn-danger btn-sm" data-del-benefit="${b.id}">Remove</button></td>
+        </tr>`).join('')}
+      </tbody></table></div>`;
+      el.querySelectorAll('[data-del-benefit]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!await ltqConfirm('Remove this benefit?', { title: 'Remove Benefit', danger: true })) return;
+          const res = await authFetch(`/api/sponsor-content/benefits/${btn.dataset.delBenefit}`, { method: 'DELETE' });
+          if (res.ok) loadSpBenefits(); else { const d = await res.json(); ltqToast(d.error || 'Could not remove.', 'error'); }
+        });
+      });
+    }
+    document.getElementById('spBenefitForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('spBenefitAlert');
+      const res = await authFetch('/api/sponsor-content/benefits', { method: 'POST', body: JSON.stringify({
+        iconName: document.getElementById('spBenefitIcon').value,
+        title: document.getElementById('spBenefitTitle').value.trim(),
+        description: document.getElementById('spBenefitDesc').value.trim(),
+        displayOrder: Number(document.getElementById('spBenefitOrder').value) || 0,
+      }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { e.target.reset(); loadSpBenefits(); }
+    });
+
+    // Tiers
+    async function loadSpTiers() {
+      const el = document.getElementById('spTierList');
+      const items = await authFetch('/api/sponsor-content/tiers').then((r) => r.json());
+      if (!items.length) { el.innerHTML = '<p class="empty-state">No tiers yet.</p>'; return; }
+      el.innerHTML = `<div class="table-wrap"><table class="app-table"><thead><tr><th>Name</th><th>Subtitle</th><th>Style</th><th>Featured</th><th>Features</th><th>Order</th><th></th></tr></thead><tbody>
+        ${items.map((t) => `<tr>
+          <td>${escapeHtml(t.name)}</td>
+          <td>${escapeHtml(t.subtitle)}</td>
+          <td>${escapeHtml(t.styleVariant)}</td>
+          <td>${t.featured ? '✓' : '—'}</td>
+          <td style="font-size:0.8rem; color:var(--muted);">${(t.features || []).length} items</td>
+          <td>${t.displayOrder}</td>
+          <td><button class="btn btn-danger btn-sm" data-del-tier="${t.id}">Remove</button></td>
+        </tr>`).join('')}
+      </tbody></table></div>`;
+      el.querySelectorAll('[data-del-tier]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!await ltqConfirm('Remove this tier?', { title: 'Remove Tier', danger: true })) return;
+          const res = await authFetch(`/api/sponsor-content/tiers/${btn.dataset.delTier}`, { method: 'DELETE' });
+          if (res.ok) loadSpTiers(); else { const d = await res.json(); ltqToast(d.error || 'Could not remove.', 'error'); }
+        });
+      });
+    }
+    document.getElementById('spTierForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('spTierAlert');
+      const res = await authFetch('/api/sponsor-content/tiers', { method: 'POST', body: JSON.stringify({
+        name: document.getElementById('spTierName').value.trim(),
+        subtitle: document.getElementById('spTierSubtitle').value.trim(),
+        features: document.getElementById('spTierFeatures').value,
+        featured: document.getElementById('spTierFeatured').checked,
+        styleVariant: document.getElementById('spTierStyle').value,
+        displayOrder: Number(document.getElementById('spTierOrder').value) || 0,
+      }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { e.target.reset(); loadSpTiers(); }
+    });
+
+    // ── Edit Announcement ─────────────────────────────────────────────
+    function openEditAnn(id, title, msg, seasonId) {
+      document.getElementById('editAnnId').value    = id;
+      document.getElementById('editAnnTitle').value = title;
+      document.getElementById('editAnnMsg').value   = msg;
+      document.getElementById('editAnnSeasonSpecific').checked = !seasonId;
+      document.getElementById('editAnnAlert').innerHTML = '';
+      document.getElementById('editAnnModal').classList.add('open');
+    }
+    document.getElementById('closeEditAnnModal').addEventListener('click', () => document.getElementById('editAnnModal').classList.remove('open'));
+    document.getElementById('editAnnModal').addEventListener('click', (e) => { if (e.target === document.getElementById('editAnnModal')) document.getElementById('editAnnModal').classList.remove('open'); });
+    document.getElementById('editAnnForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('editAnnAlert');
+      const id = document.getElementById('editAnnId').value;
+      const res  = await authFetch(`/api/announcements/${id}`, { method: 'PATCH', body: JSON.stringify({ title: document.getElementById('editAnnTitle').value.trim(), message: document.getElementById('editAnnMsg').value.trim(), seasonSpecific: document.getElementById('editAnnSeasonSpecific').checked }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { setTimeout(() => { document.getElementById('editAnnModal').classList.remove('open'); renderAnnouncements(); }, 900); }
+    });
+
+    // ── Edit Schedule ─────────────────────────────────────────────────
+    function openEditSched(id, title, dt, loc, notes, seasonId) {
+      document.getElementById('editSchedId').value    = id;
+      document.getElementById('editSchedTitle').value = title;
+      document.getElementById('editSchedDt').value    = dt ? new Date(dt).toISOString().slice(0, 16) : '';
+      document.getElementById('editSchedLoc').value   = loc || '';
+      document.getElementById('editSchedNotes').value = notes || '';
+      document.getElementById('editSchedSeasonSpecific').checked = !seasonId;
+      document.getElementById('editSchedAlert').innerHTML = '';
+      document.getElementById('editSchedModal').classList.add('open');
+    }
+    document.getElementById('closeEditSchedModal').addEventListener('click', () => document.getElementById('editSchedModal').classList.remove('open'));
+    document.getElementById('editSchedModal').addEventListener('click', (e) => { if (e.target === document.getElementById('editSchedModal')) document.getElementById('editSchedModal').classList.remove('open'); });
+    document.getElementById('editSchedForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('editSchedAlert');
+      const id = document.getElementById('editSchedId').value;
+      const res  = await authFetch(`/api/schedule/${id}`, { method: 'PATCH', body: JSON.stringify({ title: document.getElementById('editSchedTitle').value.trim(), datetime: document.getElementById('editSchedDt').value, location: document.getElementById('editSchedLoc').value.trim() || null, notes: document.getElementById('editSchedNotes').value.trim() || null, seasonSpecific: document.getElementById('editSchedSeasonSpecific').checked }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { setTimeout(() => { document.getElementById('editSchedModal').classList.remove('open'); renderSchedule(); }, 900); }
+    });
+
+    // ── Edit Sponsor ──────────────────────────────────────────────────
+    function openEditSpon(id, name, tier, web, order, seasonId) {
+      document.getElementById('editSponId').value    = id;
+      document.getElementById('editSponName').value  = name;
+      document.getElementById('editSponTier').value  = tier;
+      document.getElementById('editSponWeb').value   = web || '';
+      document.getElementById('editSponOrder').value = order || 0;
+      document.getElementById('editSponLogo').value  = '';
+      document.getElementById('editSponSeasonSpecific').checked = !seasonId;
+      document.getElementById('editSponAlert').innerHTML = '';
+      document.getElementById('editSponModal').classList.add('open');
+    }
+    document.getElementById('closeEditSponModal').addEventListener('click', () => document.getElementById('editSponModal').classList.remove('open'));
+    document.getElementById('editSponModal').addEventListener('click', (e) => { if (e.target === document.getElementById('editSponModal')) document.getElementById('editSponModal').classList.remove('open'); });
+    document.getElementById('editSponForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('editSponAlert');
+      const id = document.getElementById('editSponId').value;
+      const fd = new FormData();
+      fd.append('name',             document.getElementById('editSponName').value.trim());
+      fd.append('tier',             document.getElementById('editSponTier').value);
+      fd.append('websiteUrl',       document.getElementById('editSponWeb').value.trim());
+      fd.append('display_order',    document.getElementById('editSponOrder').value);
+      fd.append('seasonSpecific',   document.getElementById('editSponSeasonSpecific').checked);
+      const logoFile = document.getElementById('editSponLogo').files[0];
+      if (logoFile) fd.append('file', logoFile);
+      const res  = await authFetch(`/api/sponsors/${id}`, { method: 'PATCH', body: fd, headers: {} });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { setTimeout(() => { document.getElementById('editSponModal').classList.remove('open'); renderSponsors(); }, 900); }
+    });
+
+    // ── Edit Team Profile ─────────────────────────────────────────────
+    function openEditTp(id, roleTag, name, title, order, bio, quote) {
+      document.getElementById('editTpId').value     = id;
+      document.getElementById('editTpRole').value   = roleTag;
+      document.getElementById('editTpName').value   = name;
+      document.getElementById('editTpTitle2').value = title;
+      document.getElementById('editTpOrder').value  = order || 0;
+      document.getElementById('editTpBio').value    = bio || '';
+      document.getElementById('editTpQuote').value  = quote || '';
+      document.getElementById('editTpPhoto').value  = '';
+      document.getElementById('editTpAlert').innerHTML = '';
+      document.getElementById('editTpModal').classList.add('open');
+    }
+    document.getElementById('closeEditTpModal').addEventListener('click', () => document.getElementById('editTpModal').classList.remove('open'));
+    document.getElementById('editTpModal').addEventListener('click', (e) => { if (e.target === document.getElementById('editTpModal')) document.getElementById('editTpModal').classList.remove('open'); });
+    document.getElementById('editTpForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('editTpAlert');
+      const id = document.getElementById('editTpId').value;
+      const fd = new FormData();
+      fd.append('roleTag',      document.getElementById('editTpRole').value);
+      fd.append('name',         document.getElementById('editTpName').value.trim());
+      fd.append('title',        document.getElementById('editTpTitle2').value.trim());
+      fd.append('displayOrder', document.getElementById('editTpOrder').value);
+      fd.append('bio',          document.getElementById('editTpBio').value.trim());
+      fd.append('quote',        document.getElementById('editTpQuote').value.trim());
+      const photoFile = document.getElementById('editTpPhoto').files[0];
+      if (photoFile) fd.append('file', photoFile);
+      const res  = await authFetch(`/api/team-profiles/${id}`, { method: 'PUT', body: fd, headers: {} });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { setTimeout(() => { document.getElementById('editTpModal').classList.remove('open'); loadTeamProfiles(); }, 900); }
+    });
+
+    // ── Edit Event Photo ──────────────────────────────────────────────
+    function openEditEp(id, caption, wide, order) {
+      document.getElementById('editEpId').value      = id;
+      document.getElementById('editEpCaption').value = caption || '';
+      document.getElementById('editEpWide').value    = wide === 'true' || wide === true ? 'true' : 'false';
+      document.getElementById('editEpOrder').value   = order || 0;
+      document.getElementById('editEpAlert').innerHTML = '';
+      document.getElementById('editEpModal').classList.add('open');
+    }
+    document.getElementById('closeEditEpModal').addEventListener('click', () => document.getElementById('editEpModal').classList.remove('open'));
+    document.getElementById('editEpModal').addEventListener('click', (e) => { if (e.target === document.getElementById('editEpModal')) document.getElementById('editEpModal').classList.remove('open'); });
+    document.getElementById('editEpForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('editEpAlert');
+      const id = document.getElementById('editEpId').value;
+      const res  = await authFetch(`/api/event-photos/${id}`, { method: 'PATCH', body: JSON.stringify({ caption: document.getElementById('editEpCaption').value.trim() || null, wide: document.getElementById('editEpWide').value === 'true', displayOrder: Number(document.getElementById('editEpOrder').value) }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { setTimeout(() => { document.getElementById('editEpModal').classList.remove('open'); loadEventPhotos(); }, 900); }
+    });
+
+    if (auth) {
+      document.getElementById('topbarName').textContent = auth.name;
+      document.getElementById('welcomeHeading').textContent = `Welcome, ${auth.name}`;
+      renderTemplates();
+      loadChannelStatus();
+      loadContestantsForNotif();
+      renderOverview();
+    }
+  </script>
+
+</body>
+</html>

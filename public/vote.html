@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon-vote.png" />
+  <title>Vote — Support Your Favorite Performer | Liberia Talent Quest</title>
+  <meta name="description" content="Cast your vote for your favorite performer in Liberia Talent Quest Season Two. Use your voting code to support talented Liberians from all 15 counties." />
+  <meta name="keywords" content="vote Liberia Talent Quest, LTQ voting, support your favorite contestant, Liberia talent vote" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://liberiatq.com/vote.html" /><!-- TODO: update domain -->
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Liberia Talent Quest" />
+  <meta property="og:title" content="Vote — Support Your Favorite Performer | Liberia Talent Quest" />
+  <meta property="og:description" content="Use your voting code to support your favorite performer in Liberia Talent Quest Season Two." />
+  <meta property="og:image" content="https://liberiatq.com/assets/og-image.png" /><!-- TODO: update domain -->
+  <meta property="og:url" content="https://liberiatq.com/vote.html" /><!-- TODO: update domain -->
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Vote — Support Your Favorite Performer | Liberia Talent Quest" />
+  <meta name="twitter:description" content="Use your voting code to support your favorite performer in Liberia Talent Quest Season Two." />
+  <meta name="twitter:image" content="https://liberiatq.com/assets/og-image.png" /><!-- TODO: update domain -->
+
+  <!-- Google Analytics GA4 — replace G-XXXXXXXXXX with your Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("ltq_theme")||"dark");}catch(e){}</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="assets/logo-icon.png" alt="Liberia Talent Quest" /> Liberia Talent Quest</a>
+      <button class="nav-toggle" aria-label="Toggle menu">Menu</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="register.html">Register</a></li>
+        <li><a href="vote.html" class="active">Vote</a></li>
+        <li><a href="leaderboard.html">Leaderboard</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="sponsors.html">Sponsors</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth" id="navAuth"></div>
+    </div>
+  </nav>
+
+  <section class="section" style="border-top:none; padding-top:56px;">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Audience vote</span>
+        <h2>Back your favorite.</h2>
+        <p>Each vote costs $1. Pay via Orange Money or MTN Mobile Money, get a voting code, enter it below to cast your vote.</p>
+      </div>
+
+      <div id="closedBanner" class="hidden" style="margin-bottom:32px;">
+        <div class="alert alert-error" style="text-align:center; font-size:1rem; padding:20px;">
+          Voting is currently closed. Follow our social media for updates on when voting opens.
+        </div>
+      </div>
+
+      <div id="comingSoonBanner" class="hidden" style="margin-bottom:32px;">
+        <div class="alert alert-info" style="text-align:center; font-size:1rem; padding:28px 20px;">
+          <strong>Voting for <span class="season-label">the new season</span> opens soon.</strong><br />
+          <span style="color:var(--muted); font-size:0.9rem;">Registration is still open — contestants will appear here once the competition begins.</span>
+        </div>
+      </div>
+
+      <div id="voteContent">
+        <div class="tabs" id="categoryTabs">
+          <button class="tab active" data-category="">All categories</button>
+        </div>
+        <div id="grid" class="contestant-grid"><p class="empty-state">Loading contestants…</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer footer-premium">
+    <div class="footer-glow"></div>
+    <div class="wrap footer-top">
+      <div class="footer-col">
+        <h4>Socials</h4>
+        <div class="footer-social" id="footerSocial"></div>
+      </div>
+      <div class="footer-col"><h4>Explore</h4><ul><li><a href="index.html">Home</a></li><li><a href="vote.html">Vote</a></li><li><a href="leaderboard.html">Leaderboard</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
+      <div class="footer-col"><h4>Get Involved</h4><ul><li><a href="register.html">Register</a></li><li><a href="about.html">About</a></li><li><a href="sponsors.html">Sponsors</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul class="footer-contact-list" id="footerContact"><li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Paynesville, Liberia</li><li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span> <a href="tel:+231778747441">+231 77-874-7441</a></li><li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span> <a href="mailto:legacyhubinc@gmail.com">legacyhubinc@gmail.com</a></li></ul></div>
+    </div>
+    <div class="wrap footer-strip"><span class="footer-strip-label">In partnership with</span><div class="footer-logos" id="footerLogos"></div></div>
+    <div class="wrap footer-bottom"><span>&copy; <span id="footerYear"></span> Legacy Hub Incorporated &middot; Liberia Talent Quest. All rights reserved.</span><div class="footer-bottom-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="sponsors.html">Sponsors</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy Policy</a></div></div>
+  </footer>
+
+  <!-- Vote modal -->
+  <div class="modal-overlay" id="voteModal">
+    <div class="modal">
+      <h3 id="modalName">Vote for —</h3>
+      <p id="modalCategory" style="color:var(--muted); margin-bottom:16px;"></p>
+      <div id="modalAlert"></div>
+      <div class="field">
+        <label for="votingCode">Your voting code</label>
+        <input type="text" id="votingCode" placeholder="e.g. LTQAB3RK7" style="letter-spacing:0.1em; text-transform:uppercase;" />
+        <span class="hint">Pay $1 via Orange Money or MTN Mobile Money to get a voting code. Each code is single-use.</span>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="cancelVote" style="flex:1;">Cancel</button>
+        <button class="btn btn-primary" id="confirmVote" style="flex:1;">Cast vote</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const CATEGORY_CLASS = {
+      dancing: 'gel--dancing', singing: 'gel--singing', rapping: 'gel--rapping',
+      comedy: 'gel--comedy', 'creative-arts': 'gel--creative-arts', 'spoken-words': 'gel--spoken-words'
+    };
+
+    let activeCategory    = '';
+    let activeContestantId = null;
+
+    const grid       = document.getElementById('grid');
+    const tabsEl     = document.getElementById('categoryTabs');
+    const modal      = document.getElementById('voteModal');
+    const modalAlert = document.getElementById('modalAlert');
+    const closedBanner     = document.getElementById('closedBanner');
+    const comingSoonBanner = document.getElementById('comingSoonBanner');
+    const voteContent      = document.getElementById('voteContent');
+
+    async function init() {
+      const [settings, categories] = await Promise.all([
+        fetch('/api/settings').then((r) => r.json()),
+        fetch('/api/categories').then((r) => r.json())
+      ]);
+
+      if (!settings.voting_open) {
+        closedBanner.classList.remove('hidden');
+        voteContent.style.display = 'none';
+        return;
+      }
+
+      // Build category tabs from DB
+      categories.forEach((cat) => {
+        const btn = document.createElement('button');
+        btn.className    = 'tab';
+        btn.dataset.category = cat.slug;
+        btn.textContent  = cat.name;
+        tabsEl.appendChild(btn);
+      });
+
+      tabsEl.querySelectorAll('.tab').forEach((tab) => {
+        tab.addEventListener('click', () => {
+          tabsEl.querySelectorAll('.tab').forEach((t) => t.classList.remove('active'));
+          tab.classList.add('active');
+          activeCategory = tab.dataset.category || '';
+          loadContestants();
+        });
+      });
+
+      loadContestants();
+    }
+
+    async function loadContestants() {
+      grid.innerHTML = '<p class="empty-state">Loading contestants…</p>';
+      const url = activeCategory ? `/api/contestants?category=${activeCategory}` : '/api/contestants';
+      const res = await fetch(url);
+
+      // If the server fell back to a previous season it means the current season
+      // has no contestants yet — hide the grid and show a "coming soon" notice.
+      if (res.headers.get('X-Season-Fallback') === 'true') {
+        voteContent.style.display = 'none';
+        comingSoonBanner.classList.remove('hidden');
+        return;
+      }
+
+      const contestants = await res.json();
+
+      if (!contestants.length) {
+        grid.innerHTML = '<p class="empty-state">No contestants in this category yet.</p>';
+        return;
+      }
+
+      grid.innerHTML = contestants.map((c) => `
+        <div class="card ${CATEGORY_CLASS[c.category] || ''}">
+          ${c.photoUrl ? `<img class="card-photo" src="${c.photoUrl}" alt="${escapeHtml(c.name)}" />` : ''}
+          <span class="gel-label">${escapeHtml(c.categoryLabel)}</span>
+          ${c.entryType === 'group' ? `<span class="badge badge-info" style="font-size:0.7rem;margin-bottom:6px;display:inline-block;">Group${c.memberCount ? ' · ' + c.memberCount + ' members' : ''}</span>` : ''}
+          <h3>${escapeHtml(c.name)}</h3>
+          ${c.competitionId ? `<p style="font-size:0.7rem;font-weight:700;letter-spacing:0.07em;color:rgba(246,211,116,0.75);margin:-6px 0 6px;">${escapeHtml(c.competitionId)}</p>` : ''}
+          ${c.stage_name ? `<p style="color:var(--gold-bright); font-size:0.9rem; margin:-8px 0 8px;">"${escapeHtml(c.stage_name)}"</p>` : ''}
+          <p class="town">${escapeHtml(c.county || '')}</p>
+          <p class="talent">${escapeHtml(c.short_bio || c.talent || '')}</p>
+          <div class="vote-count">${c.votes}<span class="label">votes</span></div>
+          <button class="btn btn-primary btn-block" data-id="${c.id}" data-name="${escapeHtml(c.name)}" data-category="${escapeHtml(c.categoryLabel)}">Vote</button>
+        </div>
+      `).join('');
+
+      grid.querySelectorAll('button[data-id]').forEach((btn) => {
+        btn.addEventListener('click', () => openModal(btn.dataset.id, btn.dataset.name, btn.dataset.category));
+      });
+    }
+
+    function openModal(id, name, cat) {
+      activeContestantId = id;
+      document.getElementById('modalName').textContent = `Vote for ${name}`;
+      document.getElementById('modalCategory').textContent = cat;
+      document.getElementById('votingCode').value = '';
+      modalAlert.innerHTML = '';
+      modal.classList.add('open');
+    }
+    function closeModal() { modal.classList.remove('open'); }
+
+    document.getElementById('cancelVote').addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+    document.getElementById('confirmVote').addEventListener('click', async () => {
+      const code = document.getElementById('votingCode').value.trim().toUpperCase();
+      if (!code) { modalAlert.innerHTML = '<div class="alert alert-error">Enter your voting code.</div>'; return; }
+
+      const confirmBtn = document.getElementById('confirmVote');
+      confirmBtn.disabled = true;
+      confirmBtn.textContent = 'Casting…';
+
+      try {
+        const res  = await fetch('/api/votes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contestantId: activeContestantId, code })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          modalAlert.innerHTML = `<div class="alert alert-error">${data.error}</div>`;
+        } else {
+          modalAlert.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'vote_cast', { event_category: 'engagement', event_label: 'public_vote' });
+          }
+          await loadContestants();
+          setTimeout(closeModal, 1400);
+        }
+      } catch {
+        modalAlert.innerHTML = '<div class="alert alert-error">Could not reach the server. Try again.</div>';
+      } finally {
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = 'Cast vote';
+      }
+    });
+
+    initSeasonLabel();
+    init();
+  </script>
+</body>
+</html>

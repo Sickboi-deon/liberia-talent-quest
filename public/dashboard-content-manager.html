@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Content Manager — Liberia Talent Quest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.setAttribute("data-theme",localStorage.getItem("ltq_theme")||"dark");}catch(e){}</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="admin-shell">
+
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-brand"><img src="assets/logo-icon.png" alt="LTQ" /> Liberia Talent Quest</div>
+      <nav class="sidebar-nav" aria-label="Content Manager navigation">
+        <span class="sidebar-section">Content Manager</span>
+        <a href="#sec-announcements" class="sidebar-sublink">Announcements</a>
+        <a href="#sec-schedule"      class="sidebar-sublink">Schedule</a>
+        <a href="#sec-sponsors"      class="sidebar-sublink">Sponsors</a>
+        <a href="#sec-team-profiles" class="sidebar-sublink">Team Profiles</a>
+        <a href="#sec-event-photos"  class="sidebar-sublink">Event Photos</a>
+        <div class="sidebar-divider"></div>
+        <span class="sidebar-section">Public site</span>
+        <a href="index.html" class="sidebar-link">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Home
+        </a>
+        <a href="vote.html" class="sidebar-link">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Vote
+        </a>
+        <a href="leaderboard.html" class="sidebar-link">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="4"/><line x1="12" y1="20" x2="12" y2="10"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+          Leaderboard
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="sidebar-link" id="sidebarLogout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;font-family:var(--font-body);">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Log out
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <div class="admin-main">
+      <header class="admin-topbar">
+        <button class="topbar-toggle" id="topbarToggle" aria-label="Toggle sidebar">&#9776;</button>
+        <span class="topbar-title">Content Manager <span id="cmSeasonBadge" style="display:none; background:var(--brand-gold,#c8960c); color:#000; font-size:0.72rem; font-weight:700; padding:2px 10px; border-radius:20px; margin-left:10px; vertical-align:middle;"></span></span>
+        <div class="topbar-user">
+          <strong id="topbarName"></strong>
+          <button class="topbar-logout" id="topbarLogout">Log out</button>
+        </div>
+      </header>
+
+      <div class="admin-content">
+
+        <div class="admin-section active" id="sec-announcements">
+        <!-- ── Announcements ── -->
+        <div class="section-head">
+          <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px; color:var(--brand-blue);">Announcements</h2>
+          <p>Messages posted here appear on contestant dashboards and the public website.</p>
+        </div>
+        <div class="form-card" style="margin-bottom:24px;">
+          <div id="announceAlert"></div>
+          <form id="announceForm">
+            <div class="field"><label for="aTitle">Title</label><input type="text" id="aTitle" required placeholder="e.g. Important update for all contestants" /></div>
+            <div class="field"><label for="aMessage">Message</label><textarea id="aMessage" required rows="4" placeholder="Write your announcement here…"></textarea></div>
+            <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+              <input type="checkbox" id="annSeasonSpecific" style="width:auto; margin:0;" />
+              <label for="annSeasonSpecific" style="margin:0;">Global / all seasons <span style="color:var(--muted); font-size:0.8rem;">(uncheck to tie to current season only)</span></label>
+            </div>
+            <button type="submit" class="btn btn-primary">Post announcement</button>
+          </form>
+        </div>
+        <div id="announceList" style="margin-bottom:24px;"></div>
+        </div><!-- /sec-announcements -->
+
+        <div class="admin-section" id="sec-schedule">
+        <!-- ── Schedule ── -->
+        <div class="section-head">
+          <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px; color:var(--brand-blue);">Schedule</h2>
+          <p>Upcoming events shown on the public schedule page and contestant dashboard.</p>
+        </div>
+        <div class="form-card" style="margin-bottom:24px;">
+          <div id="scheduleAlert"></div>
+          <form id="scheduleForm">
+            <div class="field"><label for="sTitle">Event title</label><input type="text" id="sTitle" required placeholder="e.g. Live Show — Week 1" /></div>
+            <div class="field-row">
+              <div class="field"><label for="sDatetime">Date &amp; time</label><input type="datetime-local" id="sDatetime" required /></div>
+              <div class="field"><label for="sLocation">Location</label><input type="text" id="sLocation" placeholder="e.g. Unity Conference Center, Monrovia" /></div>
+            </div>
+            <div class="field"><label for="sNotes">Notes (optional)</label><input type="text" id="sNotes" placeholder="e.g. Doors open at 5 PM" /></div>
+            <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+              <input type="checkbox" id="schedSeasonSpecific" style="width:auto; margin:0;" />
+              <label for="schedSeasonSpecific" style="margin:0;">Global / all seasons <span style="color:var(--muted); font-size:0.8rem;">(uncheck to tie to current season only)</span></label>
+            </div>
+            <button type="submit" class="btn btn-primary">Add to schedule</button>
+          </form>
+        </div>
+        <div id="scheduleList" style="margin-bottom:24px;"></div>
+        </div><!-- /sec-schedule -->
+
+        <div class="admin-section" id="sec-sponsors">
+        <!-- ── Sponsors ── -->
+        <div class="section-head">
+          <h2 style="font-family:var(--font-display); font-size:1.5rem; margin:0 0 8px; color:var(--brand-blue);">Sponsors</h2>
+          <p>Sponsors shown in the footer and on the Sponsors page.</p>
+        </div>
+        <div class="form-card" style="margin-bottom:24px;">
+          <div id="sponsorAlert"></div>
+          <form id="sponsorForm">
+            <div class="field-row">
+              <div class="field"><label for="spName">Sponsor name</label><input type="text" id="spName" required placeholder="e.g. Orange Liberia" /></div>
+              <div class="field"><label for="spTier">Tier / level</label>
+                <select id="spTier">
+                  <option value="Platinum">Platinum — Title Sponsor</option>
+                  <option value="Gold">Gold — Official Partner</option>
+                  <option value="Silver">Silver — Community Partner</option>
+                  <option value="Media Partner">Media Partner</option>
+                  <option value="Community Partner">Community Partner (grassroots)</option>
+                  <option value="Partner" selected>General Partner</option>
+                </select>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="spLogo">Logo (image file, optional)</label><input type="file" id="spLogo" accept="image/jpeg,image/png,image/webp" /></div>
+              <div class="field"><label for="spWebsite">Website (optional)</label><input type="url" id="spWebsite" placeholder="https://…" /></div>
+            </div>
+            <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+              <input type="checkbox" id="spSeasonSpecific" style="width:auto; margin:0;" />
+              <label for="spSeasonSpecific" style="margin:0;">Global / all seasons <span style="color:var(--muted); font-size:0.8rem;">(uncheck to tie to current season only)</span></label>
+            </div>
+            <button type="submit" class="btn btn-primary">Add sponsor</button>
+          </form>
+        </div>
+        <div id="sponsorList" style="margin-bottom:24px;"></div>
+        </div><!-- /sec-sponsors -->
+
+        <!-- ── Team Profiles ── -->
+        <div class="admin-section" id="sec-team-profiles">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display);font-size:1.5rem;margin:0 0 8px;color:var(--brand-blue);">Team Profiles</h2>
+            <p>Manage the leadership, MC, and judges shown on the About page.</p>
+          </div>
+          <div id="tpAlert" style="margin-bottom:12px;"></div>
+          <div class="form-card" style="margin-bottom:28px;">
+            <h4 style="margin:0 0 16px;">Add Profile</h4>
+            <form id="tpAddForm">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+                <div class="field">
+                  <label>Role</label>
+                  <select id="tpRoleTag">
+                    <option value="chairman">Executive Chairman</option>
+                    <option value="ceo">CEO / Leadership</option>
+                    <option value="mc">Master of Ceremony</option>
+                    <option value="judge" selected>Judge</option>
+                    <option value="head_judge">Head Judge</option>
+                  </select>
+                </div>
+                <div class="field"><label>Display Order</label><input type="number" id="tpOrder" value="10" min="0" /></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+                <div class="field"><label>Full Name</label><input type="text" id="tpName" required placeholder="e.g. Erica L. Dunbar" /></div>
+                <div class="field"><label>Title / Speciality</label><input type="text" id="tpTitle" required placeholder="e.g. Vocal &amp; Songwriting" /></div>
+              </div>
+              <div class="field" style="margin-bottom:14px;"><label>Photo (image file, optional)</label><input type="file" id="tpPhoto" accept="image/jpeg,image/png,image/webp" /></div>
+              <div class="field" style="margin-bottom:14px;"><label>Bio</label><textarea id="tpBio" rows="3" placeholder="Short biography…"></textarea></div>
+              <div class="field" style="margin-bottom:14px;"><label>Quote (optional)</label><input type="text" id="tpQuote" placeholder="Inspiring quote…" /></div>
+              <button type="submit" class="btn btn-primary">Add Profile</button>
+            </form>
+          </div>
+          <div id="tpList"><p class="empty-state">Loading profiles…</p></div>
+        </div>
+
+        <!-- ── Event Photos ── -->
+        <div class="admin-section" id="sec-event-photos">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display);font-size:1.5rem;margin:0 0 8px;color:var(--brand-blue);">Event / Stage Photos</h2>
+            <p>Photos shown in the Gallery page's "Event Photos" tab. Upload new stage photos or remove existing ones.</p>
+          </div>
+          <div id="epAlert" style="margin-bottom:12px;"></div>
+          <div class="form-card" style="margin-bottom:28px;">
+            <h4 style="margin:0 0 16px;">Upload Event Photo or Video</h4>
+            <form id="epUploadForm" enctype="multipart/form-data">
+              <div class="field" style="margin-bottom:14px;"><label>Photo or Video file</label><input type="file" id="epFile" accept="image/jpeg,image/png,image/webp,video/mp4,video/quicktime,video/webm,video/x-msvideo" required /></div>
+              <div class="field" style="margin-bottom:14px;"><label>Caption</label><input type="text" id="epCaption" placeholder="e.g. Season Two opening night on the main stage." /></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+                <div class="field"><label>Wide tile?</label>
+                  <select id="epWide"><option value="false">No — portrait / square</option><option value="true">Yes — landscape wide</option></select>
+                </div>
+                <div class="field"><label>Display Order</label><input type="number" id="epOrder" value="10" min="0" /></div>
+              </div>
+              <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+          </div>
+          <div id="epList"><p class="empty-state">Loading event photos…</p></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Announcement Modal -->
+  <div class="modal-overlay" id="editAnnModal">
+    <div class="modal" style="max-width:520px;">
+      <h3>Edit Announcement</h3>
+      <div id="editAnnAlert"></div>
+      <form id="editAnnForm">
+        <input type="hidden" id="editAnnId" />
+        <div class="field"><label>Title</label><input type="text" id="editAnnTitle" required /></div>
+        <div class="field"><label>Message</label><textarea id="editAnnMsg" rows="4" required></textarea></div>
+        <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+          <input type="checkbox" id="editAnnSeasonSpecific" style="width:auto; margin:0;" />
+          <label for="editAnnSeasonSpecific" style="margin:0;">Global / all seasons <span style="color:var(--muted); font-size:0.8rem;">(uncheck to tie to current season only)</span></label>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="closeEditAnnModal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1;">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Schedule Modal -->
+  <div class="modal-overlay" id="editSchedModal">
+    <div class="modal" style="max-width:520px;">
+      <h3>Edit Schedule Entry</h3>
+      <div id="editSchedAlert"></div>
+      <form id="editSchedForm">
+        <input type="hidden" id="editSchedId" />
+        <div class="field"><label>Title</label><input type="text" id="editSchedTitle" required /></div>
+        <div class="field"><label>Date &amp; Time</label><input type="datetime-local" id="editSchedDt" required /></div>
+        <div class="field"><label>Location</label><input type="text" id="editSchedLoc" /></div>
+        <div class="field"><label>Notes</label><input type="text" id="editSchedNotes" /></div>
+        <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+          <input type="checkbox" id="editSchedSeasonSpecific" style="width:auto; margin:0;" />
+          <label for="editSchedSeasonSpecific" style="margin:0;">Global / all seasons <span style="color:var(--muted); font-size:0.8rem;">(uncheck to tie to current season only)</span></label>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="closeEditSchedModal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1;">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Sponsor Modal -->
+  <div class="modal-overlay" id="editSponModal">
+    <div class="modal" style="max-width:520px;">
+      <h3>Edit Sponsor</h3>
+      <div id="editSponAlert"></div>
+      <form id="editSponForm">
+        <input type="hidden" id="editSponId" />
+        <div class="field"><label>Name</label><input type="text" id="editSponName" required /></div>
+        <div class="field"><label>Tier / level</label>
+          <select id="editSponTier">
+            <option value="Platinum">Platinum — Title Sponsor</option>
+            <option value="Gold">Gold — Official Partner</option>
+            <option value="Silver">Silver — Community Partner</option>
+            <option value="Media Partner">Media Partner</option>
+            <option value="Community Partner">Community Partner (grassroots)</option>
+            <option value="Partner">General Partner</option>
+          </select>
+        </div>
+        <div class="field"><label>Website (optional)</label><input type="url" id="editSponWeb" placeholder="https://…" /></div>
+        <div class="field"><label>Display order</label><input type="number" id="editSponOrder" min="0" /></div>
+        <div class="field"><label>New logo (leave empty to keep current)</label><input type="file" id="editSponLogo" accept="image/jpeg,image/png,image/webp" /></div>
+        <div class="field" style="display:flex; gap:8px; align-items:center; margin-bottom:4px;">
+          <input type="checkbox" id="editSponSeasonSpecific" style="width:auto; margin:0;" />
+          <label for="editSponSeasonSpecific" style="margin:0;">Global / all seasons <span style="color:var(--muted); font-size:0.8rem;">(uncheck to tie to current season only)</span></label>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="closeEditSponModal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1;">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Team Profile Modal -->
+  <div class="modal-overlay" id="editTpModal">
+    <div class="modal" style="max-width:520px;">
+      <h3>Edit Profile</h3>
+      <div id="editTpAlert"></div>
+      <form id="editTpForm">
+        <input type="hidden" id="editTpId" />
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+          <div class="field"><label>Role</label>
+            <select id="editTpRole">
+              <option value="chairman">Executive Chairman</option>
+              <option value="ceo">CEO / Leadership</option>
+              <option value="mc">Master of Ceremony</option>
+              <option value="judge">Judge</option>
+              <option value="head_judge">Head Judge</option>
+            </select>
+          </div>
+          <div class="field"><label>Display Order</label><input type="number" id="editTpOrder" min="0" /></div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;">
+          <div class="field"><label>Full Name</label><input type="text" id="editTpName" required /></div>
+          <div class="field"><label>Title / Speciality</label><input type="text" id="editTpTitle2" required /></div>
+        </div>
+        <div class="field"><label>New Photo (leave empty to keep current)</label><input type="file" id="editTpPhoto" accept="image/jpeg,image/png,image/webp" /></div>
+        <div class="field"><label>Bio</label><textarea id="editTpBio" rows="2"></textarea></div>
+        <div class="field"><label>Quote</label><input type="text" id="editTpQuote" /></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="closeEditTpModal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1;">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Event Photo Modal -->
+  <div class="modal-overlay" id="editEpModal">
+    <div class="modal" style="max-width:480px;">
+      <h3>Edit Event Photo</h3>
+      <div id="editEpAlert"></div>
+      <form id="editEpForm">
+        <input type="hidden" id="editEpId" />
+        <div class="field"><label>Caption</label><input type="text" id="editEpCaption" /></div>
+        <div class="field"><label>Wide tile?</label>
+          <select id="editEpWide"><option value="false">No</option><option value="true">Yes — landscape</option></select>
+        </div>
+        <div class="field"><label>Display Order</label><input type="number" id="editEpOrder" min="0" /></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-secondary" id="closeEditEpModal" style="flex:1;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:1;">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const auth = guardRole(['content_manager', 'superuser']);
+
+    function doLogout() { clearAuth(); window.location.href = 'index.html'; }
+    document.getElementById('sidebarLogout').addEventListener('click', doLogout);
+    document.getElementById('topbarLogout').addEventListener('click', doLogout);
+
+    // ── Announcements ──────────────────────────────────────────────────
+    async function renderAnnouncements() {
+      const list  = document.getElementById('announceList');
+      const items = await fetch('/api/announcements?season=all').then((r) => r.json());
+      if (!items.length) { list.innerHTML = '<p class="empty-state">No announcements yet.</p>'; return; }
+      list.innerHTML = items.map((a) => `
+        <div class="queue-item">
+          <div class="queue-item-head">
+            <h3 style="flex:1;">${escapeHtml(a.title)}</h3>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-secondary btn-sm" data-edit-announce="${a.id}" data-ann-title="${escapeHtml(a.title)}" data-ann-msg="${escapeHtml(a.message || a.body || '')}" data-ann-season="${a.seasonId || ''}">Edit</button>
+              <button class="btn btn-danger btn-sm" data-del-announce="${a.id}">Remove</button>
+            </div>
+          </div>
+          <p class="queue-talent">${escapeHtml(a.message || a.body || '')}</p>
+          <p class="queue-meta">${new Date(a.createdAt || a.created_at).toLocaleString()} — ${escapeHtml(a.postedBy || '')}</p>
+        </div>
+      `).join('');
+      list.querySelectorAll('[data-edit-announce]').forEach((btn) => {
+        btn.addEventListener('click', () => openEditAnn(btn.dataset.editAnnounce, btn.dataset.annTitle, btn.dataset.annMsg, btn.dataset.annSeason));
+      });
+      list.querySelectorAll('[data-del-announce]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!await ltqConfirm('Remove this announcement?', { title: 'Remove Announcement', danger: true })) return;
+          const res = await authFetch(`/api/announcements/${btn.dataset.delAnnounce}`, { method: 'DELETE' });
+          if (!res.ok) { const d = await res.json(); ltqToast(d.error || 'Could not delete announcement.', 'error'); return; }
+          renderAnnouncements();
+        });
+      });
+    }
+
+    document.getElementById('announceForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('announceAlert');
+      const res     = await authFetch('/api/announcements', { method: 'POST', body: JSON.stringify({ title: document.getElementById('aTitle').value, message: document.getElementById('aMessage').value, seasonSpecific: document.getElementById('annSeasonSpecific').checked }) });
+      const data    = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${res.ok ? 'Posted.' : data.error}</div>`;
+      if (res.ok) { e.target.reset(); renderAnnouncements(); }
+    });
+
+    // ── Schedule ───────────────────────────────────────────────────────
+    async function renderSchedule() {
+      const list  = document.getElementById('scheduleList');
+      const items = await fetch('/api/schedule?season=all').then((r) => r.json());
+      if (!items.length) { list.innerHTML = '<p class="empty-state">No schedule entries yet.</p>'; return; }
+      list.innerHTML = items.map((e) => `
+        <div class="queue-item">
+          <div class="queue-item-head">
+            <h3 style="flex:1;">${escapeHtml(e.title)}</h3>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-secondary btn-sm"
+                data-edit-schedule="${e.id}"
+                data-sched-title="${escapeHtml(e.title)}"
+                data-sched-dt="${e.datetime}"
+                data-sched-loc="${escapeHtml(e.location || '')}"
+                data-sched-notes="${escapeHtml(e.notes || '')}"
+                data-sched-season="${e.seasonId || ''}">Edit</button>
+              <button class="btn btn-danger btn-sm" data-del-schedule="${e.id}">Remove</button>
+            </div>
+          </div>
+          <p class="queue-meta">${new Date(e.datetime).toLocaleString()}${e.location ? ' · ' + escapeHtml(e.location) : ''}</p>
+          ${e.notes ? `<p class="queue-talent">${escapeHtml(e.notes)}</p>` : ''}
+        </div>
+      `).join('');
+      list.querySelectorAll('[data-edit-schedule]').forEach((btn) => {
+        btn.addEventListener('click', () => openEditSched(btn.dataset.editSchedule, btn.dataset.schedTitle, btn.dataset.schedDt, btn.dataset.schedLoc, btn.dataset.schedNotes, btn.dataset.schedSeason));
+      });
+      list.querySelectorAll('[data-del-schedule]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!await ltqConfirm('Remove this schedule entry?', { title: 'Remove Entry', danger: true })) return;
+          await authFetch(`/api/schedule/${btn.dataset.delSchedule}`, { method: 'DELETE' });
+          renderSchedule();
+        });
+      });
+    }
+
+    document.getElementById('scheduleForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('scheduleAlert');
+      const res     = await authFetch('/api/schedule', { method: 'POST', body: JSON.stringify({ title: document.getElementById('sTitle').value, datetime: document.getElementById('sDatetime').value, location: document.getElementById('sLocation').value, notes: document.getElementById('sNotes').value, seasonSpecific: document.getElementById('schedSeasonSpecific').checked }) });
+      const data    = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${res.ok ? 'Added.' : data.error}</div>`;
+      if (res.ok) { e.target.reset(); renderSchedule(); }
+    });
+
+    // ── Sponsors ───────────────────────────────────────────────────────
+    async function renderSponsors() {
+      const list  = document.getElementById('sponsorList');
+      const items = await fetch('/api/sponsors?season=all').then((r) => r.json());
+      if (!items.length) { list.innerHTML = '<p class="empty-state">No sponsors yet.</p>'; return; }
+      list.innerHTML = items.map((s) => `
+        <div class="queue-item">
+          <div class="queue-item-head">
+            <div style="display:flex; gap:12px; align-items:center; flex:1;">
+              ${s.logoUrl ? `<img src="${s.logoUrl}" alt="${escapeHtml(s.name)}" style="height:40px; object-fit:contain; border-radius:6px;" />` : ''}
+              <div>
+                <h3 style="margin:0;">${escapeHtml(s.name)}</h3>
+                <p class="queue-meta" style="margin:0;">${escapeHtml(s.tier || '')}${s.websiteUrl ? ` · <a href="${s.websiteUrl}" target="_blank" rel="noopener">${escapeHtml(s.websiteUrl)}</a>` : ''} <span style="color:var(--muted); font-size:0.75rem;">${s.seasonId ? '(season only)' : '(global)'}</span></p>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;">
+              <button class="btn btn-secondary btn-sm"
+                data-edit-spon="${s.id}"
+                data-spon-name="${escapeHtml(s.name)}"
+                data-spon-tier="${escapeHtml(s.tier || 'Partner')}"
+                data-spon-web="${escapeHtml(s.websiteUrl || '')}"
+                data-spon-order="${s.displayOrder || 0}"
+                data-spon-season="${s.seasonId || ''}">Edit</button>
+              <button class="btn btn-danger btn-sm" data-del-sponsor="${s.id}">Remove</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      list.querySelectorAll('[data-edit-spon]').forEach((btn) => {
+        btn.addEventListener('click', () => openEditSpon(btn.dataset.editSpon, btn.dataset.sponName, btn.dataset.sponTier, btn.dataset.sponWeb, btn.dataset.sponOrder, btn.dataset.sponSeason));
+      });
+      list.querySelectorAll('[data-del-sponsor]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!await ltqConfirm('Remove this sponsor?', { title: 'Remove Sponsor', danger: true })) return;
+          await authFetch(`/api/sponsors/${btn.dataset.delSponsor}`, { method: 'DELETE' });
+          renderSponsors();
+        });
+      });
+    }
+
+    document.getElementById('sponsorForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('sponsorAlert');
+      const submitBtn = e.submitter || e.target.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+      const fd = new FormData();
+      fd.append('name',           document.getElementById('spName').value.trim());
+      fd.append('tier',           document.getElementById('spTier').value);
+      fd.append('websiteUrl',     document.getElementById('spWebsite').value.trim());
+      fd.append('seasonSpecific', document.getElementById('spSeasonSpecific').checked);
+      const logoFile = document.getElementById('spLogo').files[0];
+      if (logoFile) fd.append('file', logoFile);
+      try {
+        const res  = await authFetch('/api/sponsors', { method: 'POST', body: fd, headers: {} });
+        const data = await res.json();
+        alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${res.ok ? 'Added.' : data.error}</div>`;
+        if (res.ok) { e.target.reset(); renderSponsors(); }
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+
+    // ── Team Profiles ─────────────────────────────────────────────────
+    const ROLE_LABELS = { chairman:'Executive Chairman', ceo:'CEO / Leadership', mc:'Master of Ceremony', judge:'Judge', head_judge:'Head Judge' };
+
+    async function loadTeamProfiles() {
+      const el = document.getElementById('tpList');
+      const profiles = await authFetch('/api/team-profiles').then((r) => r.json()).catch(() => []);
+      if (!profiles.length) { el.innerHTML = '<p class="empty-state">No profiles yet.</p>'; return; }
+      el.innerHTML = `<div class="table-wrap"><table class="app-table"><thead><tr><th>Role</th><th>Name</th><th>Title</th><th>Photo</th><th>Order</th><th></th></tr></thead><tbody>
+        ${profiles.map((p) => `<tr>
+          <td><span class="badge badge-info" style="font-size:0.72rem;">${escapeHtml(ROLE_LABELS[p.roleTag] || p.roleTag)}</span></td>
+          <td>${escapeHtml(p.name)}</td>
+          <td style="font-size:0.85rem;color:var(--muted);">${escapeHtml(p.title)}</td>
+          <td>${p.photoUrl ? `<img src="${escapeHtml(p.photoUrl)}" style="width:38px;height:38px;object-fit:cover;border-radius:50%;" alt="" />` : '—'}</td>
+          <td style="text-align:center;">${p.displayOrder}</td>
+          <td style="display:flex;gap:6px;">
+            <button class="btn btn-secondary" style="padding:4px 10px;font-size:0.8rem;"
+              data-edit-tp="${p.id}"
+              data-tp-role="${p.roleTag}"
+              data-tp-name="${escapeHtml(p.name)}"
+              data-tp-title="${escapeHtml(p.title)}"
+              data-tp-order="${p.displayOrder}"
+              data-tp-bio="${escapeHtml(p.bio || '')}"
+              data-tp-quote="${escapeHtml(p.quote || '')}">Edit</button>
+            <button class="btn btn-secondary" style="padding:4px 10px;font-size:0.8rem;" onclick="deleteTeamProfile('${p.id}')">Delete</button>
+          </td>
+        </tr>`).join('')}
+      </tbody></table></div>`;
+      el.querySelectorAll('[data-edit-tp]').forEach((btn) => {
+        btn.addEventListener('click', () => openEditTp(btn.dataset.editTp, btn.dataset.tpRole, btn.dataset.tpName, btn.dataset.tpTitle, btn.dataset.tpOrder, btn.dataset.tpBio, btn.dataset.tpQuote));
+      });
+    }
+
+    async function deleteTeamProfile(id) {
+      if (!await ltqConfirm('Are you sure you want to delete this profile? This cannot be undone.', { title: 'Delete Profile', danger: true })) return;
+      const res = await authFetch(`/api/team-profiles/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      document.getElementById('tpAlert').innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) loadTeamProfiles();
+    }
+
+    document.getElementById('tpAddForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('tpAlert');
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true; btn.textContent = 'Adding…';
+      const fd = new FormData();
+      fd.append('roleTag',      document.getElementById('tpRoleTag').value);
+      fd.append('name',         document.getElementById('tpName').value.trim());
+      fd.append('title',        document.getElementById('tpTitle').value.trim());
+      fd.append('bio',          document.getElementById('tpBio').value.trim());
+      fd.append('quote',        document.getElementById('tpQuote').value.trim());
+      fd.append('displayOrder', document.getElementById('tpOrder').value);
+      const photoFile = document.getElementById('tpPhoto').files[0];
+      if (photoFile) fd.append('file', photoFile);
+      const res  = await authFetch('/api/team-profiles', { method: 'POST', body: fd, headers: {} });
+      const data = await res.json();
+      btn.disabled = false; btn.textContent = 'Add Profile';
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { e.target.reset(); loadTeamProfiles(); }
+    });
+
+    // ── Event Photos ──────────────────────────────────────────────────
+    async function loadEventPhotos() {
+      const el = document.getElementById('epList');
+      const photos = await authFetch('/api/event-photos?season=all').then((r) => r.json()).catch(() => []);
+      if (!photos.length) { el.innerHTML = '<p class="empty-state">No event photos yet.</p>'; return; }
+      el.innerHTML = `<div class="table-wrap"><table class="app-table"><thead><tr><th>Preview</th><th>Caption</th><th>Wide</th><th>Order</th><th></th></tr></thead><tbody>
+        ${photos.map((p) => `<tr>
+          <td>${p.mediaType === 'video'
+            ? `<video src="${escapeHtml(p.filePath)}" preload="metadata" muted style="width:64px;height:42px;object-fit:cover;border-radius:4px;"></video>`
+            : `<img src="${escapeHtml(p.filePath)}" style="width:64px;height:42px;object-fit:cover;border-radius:4px;" alt="" />`
+          }</td>
+          <td style="font-size:0.85rem;">${escapeHtml(p.caption || '—')}</td>
+          <td style="text-align:center;">${p.wide ? '✓' : '—'}</td>
+          <td style="text-align:center;">${p.displayOrder}</td>
+          <td style="display:flex;gap:6px;">
+            <button class="btn btn-secondary" style="padding:4px 10px;font-size:0.8rem;"
+              data-edit-ep="${p.id}"
+              data-ep-caption="${escapeHtml(p.caption || '')}"
+              data-ep-wide="${p.wide}"
+              data-ep-order="${p.displayOrder}">Edit</button>
+            <button class="btn btn-secondary" style="padding:4px 10px;font-size:0.8rem;" onclick="deleteEventPhoto('${p.id}')">Delete</button>
+          </td>
+        </tr>`).join('')}
+      </tbody></table></div>`;
+      el.querySelectorAll('[data-edit-ep]').forEach((btn) => {
+        btn.addEventListener('click', () => openEditEp(btn.dataset.editEp, btn.dataset.epCaption, btn.dataset.epWide, btn.dataset.epOrder));
+      });
+    }
+
+    async function deleteEventPhoto(id) {
+      if (!await ltqConfirm('Are you sure you want to delete this photo or video? This cannot be undone.', { title: 'Delete Media', danger: true })) return;
+      const res = await authFetch(`/api/event-photos/${id}`, { method: 'DELETE' });
+      const data = await res.json();
+      document.getElementById('epAlert').innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) loadEventPhotos();
+    }
+
+    document.getElementById('epUploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('epAlert');
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true; btn.textContent = 'Uploading…';
+      const fd = new FormData();
+      fd.append('file',         document.getElementById('epFile').files[0]);
+      fd.append('caption',      document.getElementById('epCaption').value.trim());
+      fd.append('wide',         document.getElementById('epWide').value);
+      fd.append('displayOrder', document.getElementById('epOrder').value);
+      try {
+        const res  = await authFetch('/api/event-photos', { method: 'POST', body: fd, headers: {} });
+        const data = await res.json();
+        alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+        if (res.ok) { e.target.reset(); loadEventPhotos(); }
+      } finally {
+        btn.disabled = false; btn.textContent = 'Upload Photo';
+      }
+    });
+
+    // ── Section navigation ─────────────────────────────────────────────
+    (function() {
+      var panels = document.querySelectorAll('.admin-section');
+      var links  = document.querySelectorAll('.sidebar-sublink');
+      function showSection(id) {
+        panels.forEach(function(p) { p.classList.toggle('active', p.id === id); });
+        links.forEach(function(l) { l.classList.toggle('active', l.getAttribute('href') === '#' + id); });
+        if (id === 'sec-announcements') renderAnnouncements();
+        if (id === 'sec-schedule')      renderSchedule();
+        if (id === 'sec-sponsors')      renderSponsors();
+        if (id === 'sec-team-profiles') loadTeamProfiles();
+        if (id === 'sec-event-photos')  loadEventPhotos();
+      }
+      links.forEach(function(l) {
+        l.addEventListener('click', function(e) {
+          e.preventDefault();
+          showSection(l.getAttribute('href').slice(1));
+        });
+      });
+      showSection('sec-announcements');
+    })();
+
+    // ── Edit Announcement ─────────────────────────────────────────────
+    function openEditAnn(id, title, msg, seasonId) {
+      document.getElementById('editAnnId').value    = id;
+      document.getElementById('editAnnTitle').value = title;
+      document.getElementById('editAnnMsg').value   = msg;
+      document.getElementById('editAnnSeasonSpecific').checked = !seasonId;
+      document.getElementById('editAnnAlert').innerHTML = '';
+      document.getElementById('editAnnModal').classList.add('open');
+    }
+    document.getElementById('closeEditAnnModal').addEventListener('click', () => document.getElementById('editAnnModal').classList.remove('open'));
+    document.getElementById('editAnnModal').addEventListener('click', (e) => { if (e.target === document.getElementById('editAnnModal')) document.getElementById('editAnnModal').classList.remove('open'); });
+    document.getElementById('editAnnForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('editAnnAlert');
+      const id = document.getElementById('editAnnId').value;
+      const res  = await authFetch(`/api/announcements/${id}`, { method: 'PATCH', body: JSON.stringify({ title: document.getElementById('editAnnTitle').value.trim(), message: document.getElementById('editAnnMsg').value.trim(), seasonSpecific: document.getElementById('editAnnSeasonSpecific').checked }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { setTimeout(() => { document.getElementById('editAnnModal').classList.remove('open'); renderAnnouncements(); }, 900); }
+    });
+
+    // ── Edit Schedule ─────────────────────────────────────────────────
+    function openEditSched(id, title, dt, loc, notes, seasonId) {
+      document.getElementById('editSchedId').value    = id;
+      document.getElementById('editSchedTitle').value = title;
+      document.getElementById('editSchedDt').value    = dt ? new Date(dt).toISOString().slice(0, 16) : '';
+      document.getElementById('editSchedLoc').value   = loc || '';
+      document.getElementById('editSchedNotes').value = notes || '';
+      document.getElementById('editSchedSeasonSpecific').checked = !seasonId;
+      document.getElementById('editSchedAlert').innerHTML = '';
+      document.getElementById('editSchedModal').classList.add('open');
+    }
+    document.getElementById('closeEditSchedModal').addEventListener('click', () => document.getElementById('editSchedModal').classList.remove('open'));
+    document.getElementById('editSchedModal').addEventListener('click', (e) => { if (e.target === document.getElementById('editSchedModal')) document.getElementById('editSchedModal').classList.remove('open'); });
+    document.getElementById('editSchedForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('editSchedAlert');
+      const id = document.getElementById('editSchedId').value;
+      const res  = await authFetch(`/api/schedule/${id}`, { method: 'PATCH', body: JSON.stringify({ title: document.getElementById('editSchedTitle').value.trim(), datetime: document.getElementById('editSchedDt').value, location: document.getElementById('editSchedLoc').value.trim() || null, notes: document.getElementById('editSchedNotes').value.trim() || null, seasonSpecific: document.getElementById('editSchedSeasonSpecific').checked }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { setTimeout(() => { document.getElementById('editSchedModal').classList.remove('open'); renderSchedule(); }, 900); }
+    });
+
+    // ── Edit Sponsor ──────────────────────────────────────────────────
+    function openEditSpon(id, name, tier, web, order, seasonId) {
+      document.getElementById('editSponId').value    = id;
+      document.getElementById('editSponName').value  = name;
+      document.getElementById('editSponTier').value  = tier;
+      document.getElementById('editSponWeb').value   = web || '';
+      document.getElementById('editSponOrder').value = order || 0;
+      document.getElementById('editSponLogo').value  = '';
+      document.getElementById('editSponSeasonSpecific').checked = !seasonId;
+      document.getElementById('editSponAlert').innerHTML = '';
+      document.getElementById('editSponModal').classList.add('open');
+    }
+    document.getElementById('closeEditSponModal').addEventListener('click', () => document.getElementById('editSponModal').classList.remove('open'));
+    document.getElementById('editSponModal').addEventListener('click', (e) => { if (e.target === document.getElementById('editSponModal')) document.getElementById('editSponModal').classList.remove('open'); });
+    document.getElementById('editSponForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('editSponAlert');
+      const id = document.getElementById('editSponId').value;
+      const fd = new FormData();
+      fd.append('name',             document.getElementById('editSponName').value.trim());
+      fd.append('tier',             document.getElementById('editSponTier').value);
+      fd.append('websiteUrl',       document.getElementById('editSponWeb').value.trim());
+      fd.append('display_order',    document.getElementById('editSponOrder').value);
+      fd.append('seasonSpecific',   document.getElementById('editSponSeasonSpecific').checked);
+      const logoFile = document.getElementById('editSponLogo').files[0];
+      if (logoFile) fd.append('file', logoFile);
+      const res  = await authFetch(`/api/sponsors/${id}`, { method: 'PATCH', body: fd, headers: {} });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { setTimeout(() => { document.getElementById('editSponModal').classList.remove('open'); renderSponsors(); }, 900); }
+    });
+
+    // ── Edit Team Profile ─────────────────────────────────────────────
+    function openEditTp(id, roleTag, name, title, order, bio, quote) {
+      document.getElementById('editTpId').value     = id;
+      document.getElementById('editTpRole').value   = roleTag;
+      document.getElementById('editTpName').value   = name;
+      document.getElementById('editTpTitle2').value = title;
+      document.getElementById('editTpOrder').value  = order || 0;
+      document.getElementById('editTpBio').value    = bio || '';
+      document.getElementById('editTpQuote').value  = quote || '';
+      document.getElementById('editTpPhoto').value  = '';
+      document.getElementById('editTpAlert').innerHTML = '';
+      document.getElementById('editTpModal').classList.add('open');
+    }
+    document.getElementById('closeEditTpModal').addEventListener('click', () => document.getElementById('editTpModal').classList.remove('open'));
+    document.getElementById('editTpModal').addEventListener('click', (e) => { if (e.target === document.getElementById('editTpModal')) document.getElementById('editTpModal').classList.remove('open'); });
+    document.getElementById('editTpForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('editTpAlert');
+      const id = document.getElementById('editTpId').value;
+      const fd = new FormData();
+      fd.append('roleTag',      document.getElementById('editTpRole').value);
+      fd.append('name',         document.getElementById('editTpName').value.trim());
+      fd.append('title',        document.getElementById('editTpTitle2').value.trim());
+      fd.append('displayOrder', document.getElementById('editTpOrder').value);
+      fd.append('bio',          document.getElementById('editTpBio').value.trim());
+      fd.append('quote',        document.getElementById('editTpQuote').value.trim());
+      const photoFile = document.getElementById('editTpPhoto').files[0];
+      if (photoFile) fd.append('file', photoFile);
+      const res  = await authFetch(`/api/team-profiles/${id}`, { method: 'PUT', body: fd, headers: {} });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { setTimeout(() => { document.getElementById('editTpModal').classList.remove('open'); loadTeamProfiles(); }, 900); }
+    });
+
+    // ── Edit Event Photo ──────────────────────────────────────────────
+    function openEditEp(id, caption, wide, order) {
+      document.getElementById('editEpId').value      = id;
+      document.getElementById('editEpCaption').value = caption || '';
+      document.getElementById('editEpWide').value    = wide === 'true' || wide === true ? 'true' : 'false';
+      document.getElementById('editEpOrder').value   = order || 0;
+      document.getElementById('editEpAlert').innerHTML = '';
+      document.getElementById('editEpModal').classList.add('open');
+    }
+    document.getElementById('closeEditEpModal').addEventListener('click', () => document.getElementById('editEpModal').classList.remove('open'));
+    document.getElementById('editEpModal').addEventListener('click', (e) => { if (e.target === document.getElementById('editEpModal')) document.getElementById('editEpModal').classList.remove('open'); });
+    document.getElementById('editEpForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('editEpAlert');
+      const id = document.getElementById('editEpId').value;
+      const res  = await authFetch(`/api/event-photos/${id}`, { method: 'PATCH', body: JSON.stringify({ caption: document.getElementById('editEpCaption').value.trim() || null, wide: document.getElementById('editEpWide').value === 'true', displayOrder: Number(document.getElementById('editEpOrder').value) }) });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { setTimeout(() => { document.getElementById('editEpModal').classList.remove('open'); loadEventPhotos(); }, 900); }
+    });
+
+    if (auth) {
+      document.getElementById('topbarName').textContent = auth.name;
+      // Show which season content will be posted to
+      fetch('/api/seasons/current').then((r) => r.json()).then((season) => {
+        if (!season) return;
+        const badge = document.getElementById('cmSeasonBadge');
+        badge.textContent = season.name;
+        badge.style.display = 'inline-block';
+      }).catch(() => {});
+      renderAnnouncements();
+      renderSchedule();
+      renderSponsors();
+    }
+  </script>
+
+</body>
+</html>

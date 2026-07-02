@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manage Content — Liberia Talent Quest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.setAttribute("data-theme", localStorage.getItem("ltq_theme") || "dark");}catch(e){}</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="admin-shell">
+
+    <!-- ── Sidebar ── -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-brand">
+        <img src="assets/logo-icon.png" alt="LTQ" />
+        Liberia Talent Quest
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Content navigation">
+
+        <span class="sidebar-section" id="sidebarRoleLabel">Admin</span>
+
+        <a href="#" id="dashboardLink" class="sidebar-link">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+          Overview
+        </a>
+
+        <a href="manage-content.html" class="sidebar-link active">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Manage Content
+        </a>
+        <a href="#sec-report" class="sidebar-sublink">
+          <svg width="5" height="5" viewBox="0 0 5 5" fill="currentColor" aria-hidden="true"><circle cx="2.5" cy="2.5" r="2.5"/></svg>
+          Score Report
+        </a>
+        <a href="#sec-announcements" class="sidebar-sublink">
+          <svg width="5" height="5" viewBox="0 0 5 5" fill="currentColor" aria-hidden="true"><circle cx="2.5" cy="2.5" r="2.5"/></svg>
+          Announcements
+        </a>
+        <a href="#sec-schedule" class="sidebar-sublink">
+          <svg width="5" height="5" viewBox="0 0 5 5" fill="currentColor" aria-hidden="true"><circle cx="2.5" cy="2.5" r="2.5"/></svg>
+          Schedule
+        </a>
+        <a href="#sec-sponsors" class="sidebar-sublink">
+          <svg width="5" height="5" viewBox="0 0 5 5" fill="currentColor" aria-hidden="true"><circle cx="2.5" cy="2.5" r="2.5"/></svg>
+          Sponsors
+        </a>
+
+        <div class="sidebar-divider"></div>
+        <span class="sidebar-section">Public site</span>
+
+        <a href="index.html" class="sidebar-link">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Home
+        </a>
+
+        <a href="vote.html" class="sidebar-link">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+          Vote
+        </a>
+
+        <a href="leaderboard.html" class="sidebar-link">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="4"/><line x1="12" y1="20" x2="12" y2="10"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+          Leaderboard
+        </a>
+
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="sidebar-link" id="sidebarLogout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;font-family:var(--font-body);">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Log out
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile backdrop -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- ── Main area ── -->
+    <div class="admin-main">
+
+      <header class="admin-topbar">
+        <button class="topbar-toggle" id="topbarToggle" aria-label="Toggle sidebar">&#9776;</button>
+        <span class="topbar-title">Manage Content</span>
+        <div class="topbar-user">
+          <strong id="topbarName"></strong>
+          <button class="topbar-logout" id="topbarLogout">Log out</button>
+        </div>
+      </header>
+
+      <div class="admin-content">
+
+        <div class="form-card" id="sec-report" style="margin-bottom:24px; text-align:center;">
+          <p style="color:var(--muted); margin:0 0 16px;">Download every judge score submitted so far as a spreadsheet.</p>
+          <a class="btn btn-secondary" id="reportLink" href="#">Download score report (CSV)</a>
+        </div>
+
+        <!-- Announcements -->
+        <div class="section-head" id="sec-announcements"><h2 style="font-family:var(--font-display); font-size:1.4rem; color:var(--brand-blue); margin:0 0 8px;">Announcements</h2></div>
+        <div class="form-card" style="margin-bottom:24px;">
+          <div id="announceAlert"></div>
+          <form id="announceForm">
+            <div class="field"><label for="aTitle">Title</label><input type="text" id="aTitle" required /></div>
+            <div class="field"><label for="aMessage">Message</label><textarea id="aMessage" required></textarea></div>
+            <button type="submit" class="btn btn-primary">Post announcement</button>
+          </form>
+        </div>
+        <div id="announceList" style="margin-bottom:48px;"></div>
+
+        <!-- Schedule -->
+        <div class="section-head" id="sec-schedule"><h2 style="font-family:var(--font-display); font-size:1.4rem; color:var(--brand-blue); margin:0 0 8px;">Schedule</h2></div>
+        <div class="form-card" style="margin-bottom:24px;">
+          <div id="scheduleAlert"></div>
+          <form id="scheduleForm">
+            <div class="field"><label for="sTitle">Event title</label><input type="text" id="sTitle" required placeholder="e.g. Live Show — Week 1" /></div>
+            <div class="field-row">
+              <div class="field"><label for="sDatetime">Date &amp; time</label><input type="datetime-local" id="sDatetime" required /></div>
+              <div class="field"><label for="sLocation">Location</label><input type="text" id="sLocation" /></div>
+            </div>
+            <div class="field"><label for="sNotes">Notes (optional)</label><input type="text" id="sNotes" /></div>
+            <button type="submit" class="btn btn-primary">Add to schedule</button>
+          </form>
+        </div>
+        <div id="scheduleList" style="margin-bottom:48px;"></div>
+
+        <!-- Sponsors -->
+        <div class="section-head" id="sec-sponsors"><h2 style="font-family:var(--font-display); font-size:1.4rem; color:var(--brand-blue); margin:0 0 8px;">Sponsors</h2></div>
+        <div class="form-card" style="margin-bottom:24px;">
+          <div id="sponsorAlert"></div>
+          <form id="sponsorForm">
+            <div class="field-row">
+              <div class="field"><label for="spName">Sponsor name</label><input type="text" id="spName" required /></div>
+              <div class="field"><label for="spTier">Tier</label><input type="text" id="spTier" placeholder="e.g. Title Sponsor" /></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="spLogo">Logo (image file, optional)</label><input type="file" id="spLogo" accept="image/jpeg,image/png,image/webp" /></div>
+              <div class="field"><label for="spLink">Website link (optional)</label><input type="url" id="spLink" /></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Add sponsor</button>
+          </form>
+        </div>
+        <div id="sponsorList" style="margin-bottom:48px;"></div>
+
+      </div><!-- /.admin-content -->
+    </div><!-- /.admin-main -->
+  </div><!-- /.admin-shell -->
+
+  <script src="app.js"></script>
+  <script>
+    const auth = guardRole(['admin', 'superuser', 'content_manager', 'communications_manager']);
+
+    // ── sidebar toggle (mobile) ──
+    const sidebar  = document.getElementById('adminSidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
+    const togBtn   = document.getElementById('topbarToggle');
+
+    function openSidebar()  { sidebar.classList.add('open');    backdrop.classList.add('open'); }
+    function closeSidebar() { sidebar.classList.remove('open'); backdrop.classList.remove('open'); }
+    togBtn.addEventListener('click', () => sidebar.classList.contains('open') ? closeSidebar() : openSidebar());
+    backdrop.addEventListener('click', closeSidebar);
+
+    // ── logout ──
+    function doLogout() { clearAuth(); window.location.href = 'index.html'; }
+    document.getElementById('sidebarLogout').addEventListener('click', doLogout);
+    document.getElementById('topbarLogout').addEventListener('click', doLogout);
+
+    // ── role-aware sidebar ──
+    if (auth) {
+      document.getElementById('topbarName').textContent = auth.name;
+      const isSU = auth.role === 'superuser';
+      document.getElementById('sidebarRoleLabel').textContent = isSU ? 'Super User' : 'Admin';
+      document.getElementById('dashboardLink').href = isSU ? 'dashboard-superuser.html' : 'dashboard-admin.html';
+    }
+
+    // ── Score report ──
+    document.getElementById('reportLink').addEventListener('click', async (e) => {
+      e.preventDefault();
+      const res  = await authFetch('/api/audition-scores/report');
+      const blob = await res.blob();
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href     = url;
+      a.download = 'liberia-talent-quest-scores.csv';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    // ── Announcements ──
+    async function renderAnnouncements() {
+      const list = document.getElementById('announceList');
+      const res  = await fetch('/api/announcements?season=all');
+      const items = await res.json();
+      if (!items.length) { list.innerHTML = '<p class="empty-state">No announcements yet.</p>'; return; }
+      list.innerHTML = items.map((a) => `
+        <div class="queue-item">
+          <div class="queue-item-head">
+            <h3>${escapeHtml(a.title)}</h3>
+            <button class="btn btn-danger btn-sm" data-del-announce="${a.id}">Remove</button>
+          </div>
+          <p class="queue-talent">${escapeHtml(a.message)}</p>
+          <p class="queue-meta">${new Date(a.createdAt).toLocaleString()} — ${escapeHtml(a.postedBy)}</p>
+        </div>
+      `).join('');
+      list.querySelectorAll('[data-del-announce]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          await authFetch(`/api/announcements/${btn.dataset.delAnnounce}`, { method: 'DELETE' });
+          renderAnnouncements();
+        });
+      });
+    }
+
+    document.getElementById('announceForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('announceAlert');
+      const title   = document.getElementById('aTitle').value;
+      const message = document.getElementById('aMessage').value;
+      try {
+        const res  = await authFetch('/api/announcements', { method: 'POST', body: JSON.stringify({ title, message }) });
+        const data = await res.json();
+        if (!res.ok) { alertEl.innerHTML = `<div class="alert alert-error">${data.error}</div>`; return; }
+        alertEl.innerHTML = `<div class="alert alert-success">Posted.</div>`;
+        e.target.reset();
+        renderAnnouncements();
+      } catch (err) {
+        alertEl.innerHTML = '<div class="alert alert-error">Could not reach the server.</div>';
+      }
+    });
+
+    // ── Schedule ──
+    async function renderSchedule() {
+      const list  = document.getElementById('scheduleList');
+      const res   = await fetch('/api/schedule');
+      const items = await res.json();
+      if (!items.length) { list.innerHTML = '<p class="empty-state">No schedule entries yet.</p>'; return; }
+      list.innerHTML = items.map((e) => `
+        <div class="queue-item">
+          <div class="queue-item-head">
+            <h3>${escapeHtml(e.title)}</h3>
+            <button class="btn btn-danger btn-sm" data-del-schedule="${e.id}">Remove</button>
+          </div>
+          <p class="queue-meta">${new Date(e.datetime).toLocaleString()} ${e.location ? '· ' + escapeHtml(e.location) : ''}</p>
+          ${e.notes ? `<p class="queue-talent">${escapeHtml(e.notes)}</p>` : ''}
+        </div>
+      `).join('');
+      list.querySelectorAll('[data-del-schedule]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          await authFetch(`/api/schedule/${btn.dataset.delSchedule}`, { method: 'DELETE' });
+          renderSchedule();
+        });
+      });
+    }
+
+    document.getElementById('scheduleForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl  = document.getElementById('scheduleAlert');
+      const title    = document.getElementById('sTitle').value;
+      const datetime = document.getElementById('sDatetime').value;
+      const location = document.getElementById('sLocation').value;
+      const notes    = document.getElementById('sNotes').value;
+      try {
+        const res  = await authFetch('/api/schedule', { method: 'POST', body: JSON.stringify({ title, datetime, location, notes }) });
+        const data = await res.json();
+        if (!res.ok) { alertEl.innerHTML = `<div class="alert alert-error">${data.error}</div>`; return; }
+        alertEl.innerHTML = `<div class="alert alert-success">Added.</div>`;
+        e.target.reset();
+        renderSchedule();
+      } catch (err) {
+        alertEl.innerHTML = '<div class="alert alert-error">Could not reach the server.</div>';
+      }
+    });
+
+    // ── Sponsors ──
+    async function renderSponsors() {
+      const list  = document.getElementById('sponsorList');
+      const res   = await fetch('/api/sponsors?season=all');
+      const items = await res.json();
+      if (!items.length) { list.innerHTML = '<p class="empty-state">No sponsors yet.</p>'; return; }
+      list.innerHTML = items.map((s) => `
+        <div class="queue-item">
+          <div class="queue-item-head">
+            <h3>${escapeHtml(s.name)}</h3>
+            <button class="btn btn-danger btn-sm" data-del-sponsor="${s.id}">Remove</button>
+          </div>
+          <p class="queue-meta">${escapeHtml(s.tier)}${s.websiteUrl ? ' · ' + escapeHtml(s.websiteUrl) : ''}</p>
+        </div>
+      `).join('');
+      list.querySelectorAll('[data-del-sponsor]').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          if (!await ltqConfirm('Remove this sponsor?', { title: 'Remove Sponsor', danger: true })) return;
+          await authFetch(`/api/sponsors/${btn.dataset.delSponsor}`, { method: 'DELETE' });
+          renderSponsors();
+        });
+      });
+    }
+
+    document.getElementById('sponsorForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('sponsorAlert');
+      const fd = new FormData();
+      fd.append('name',       document.getElementById('spName').value.trim());
+      fd.append('tier',       document.getElementById('spTier').value.trim());
+      fd.append('websiteUrl', document.getElementById('spLink').value.trim());
+      const logoFile = document.getElementById('spLogo').files[0];
+      if (logoFile) fd.append('file', logoFile);
+      try {
+        const res  = await authFetch('/api/sponsors', { method: 'POST', body: fd, headers: {} });
+        const data = await res.json();
+        if (!res.ok) { alertEl.innerHTML = `<div class="alert alert-error">${data.error}</div>`; return; }
+        alertEl.innerHTML = `<div class="alert alert-success">Added.</div>`;
+        e.target.reset();
+        renderSponsors();
+      } catch (err) {
+        alertEl.innerHTML = '<div class="alert alert-error">Could not reach the server.</div>';
+      }
+    });
+
+    if (auth) {
+      renderAnnouncements();
+      renderSchedule();
+      renderSponsors();
+    }
+  </script>
+</body>
+</html>

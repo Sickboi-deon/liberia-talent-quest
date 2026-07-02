@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Liberia Talent Quest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.setAttribute("data-theme", localStorage.getItem("ltq_theme") || "dark");}catch(e){}</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="assets/logo-icon.png" alt="Liberia Talent Quest" /> Liberia Talent Quest</a>
+      <button class="nav-toggle" aria-label="Toggle menu">Menu</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="register.html">Register</a></li>
+        <li><a href="vote.html">Vote</a></li>
+        <li><a href="leaderboard.html">Leaderboard</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="sponsors.html">Sponsors</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth" id="navAuth"></div>
+    </div>
+  </nav>
+
+  <section class="register-hero" style="padding: 64px 0;">
+    <div class="register-hero-bg">
+      <img class="register-hero-watermark register-hero-watermark-left" src="assets/logo-full.png" alt="" />
+      <img class="register-hero-watermark" src="assets/logo-full.png" alt="" />
+    </div>
+    <div class="wrap" style="position:relative; z-index:2;">
+      <div class="auth-card">
+        <h2>Log in</h2>
+        <p class="sub">For Super Users, Admins, Judges, and staff members.</p>
+        <div id="loginAlert"></div>
+        <form id="loginForm">
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" required placeholder="you@example.com" />
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="pass-input-wrap">
+              <input type="password" id="password" required placeholder="••••••••" />
+              <button type="button" class="pass-toggle" aria-label="Show password" data-for="password">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" id="loginBtn">Log in</button>
+        </form>
+        <p class="form-note"><a href="forgot-password.html">Forgot your password?</a></p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer footer-premium">
+    <div class="footer-glow"></div>
+    <div class="wrap footer-top">
+      <div class="footer-col">
+        <h4>Socials</h4>
+        <div class="footer-social" id="footerSocial"></div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+            <li><a href="vote.html">Vote</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="sponsors.html">Sponsors</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul class="footer-contact-list" id="footerContact">
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Paynesville, Liberia</li>
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span> <a href="tel:+231778747441">+231 77-874-7441</a></li>
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span> <a href="mailto:legacyhubinc@gmail.com">legacyhubinc@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="wrap footer-strip">
+      <span class="footer-strip-label">In partnership with</span>
+      <div class="footer-logos" id="footerLogos"></div>
+    </div>
+
+    <div class="wrap footer-bottom">
+      <span>&copy; <span id="footerYear"></span> Legacy Hub Incorporated &middot; Liberia Talent Quest. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="sponsors.html">Sponsors</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    const form = document.getElementById('loginForm');
+    const alertBox = document.getElementById('loginAlert');
+    const loginBtn = document.getElementById('loginBtn');
+
+    document.querySelectorAll('.pass-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const inp = document.getElementById(btn.dataset.for);
+        const show = inp.type === 'password';
+        inp.type = show ? 'text' : 'password';
+        btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+        btn.innerHTML = show
+          ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+          : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+      });
+    });
+
+    // Already logged in? Skip straight to the dashboard.
+    const existing = getAuth();
+    if (existing && existing.role) {
+      window.location.href = dashboardUrlForRole(existing.role);
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      alertBox.innerHTML = '';
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Logging in…';
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          alertBox.innerHTML = `<div class="alert alert-error">${data.error}</div>`;
+        } else {
+          setAuth(data);
+          if (data.mustChangePassword) {
+            window.location.href = 'change-password.html';
+          } else {
+            window.location.href = dashboardUrlForRole(data.role);
+          }
+        }
+      } catch (err) {
+        alertBox.innerHTML = '<div class="alert alert-error">Could not reach the server. Try again.</div>';
+      } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Log in';
+      }
+    });
+  </script>
+</body>
+</html>

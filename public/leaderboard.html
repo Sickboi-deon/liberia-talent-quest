@@ -1,0 +1,404 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon-leaderboard.png" />
+  <title>Live Leaderboard — Rankings | Liberia Talent Quest</title>
+  <meta name="description" content="See the live rankings and vote standings for Liberia Talent Quest Season Two. Updated instantly when votes are cast — check who's leading the competition right now." />
+  <meta name="keywords" content="Liberia Talent Quest leaderboard, LTQ rankings, live vote standings, who is winning LTQ" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://liberiatq.com/leaderboard.html" /><!-- TODO: update domain -->
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Liberia Talent Quest" />
+  <meta property="og:title" content="Live Leaderboard — Rankings | Liberia Talent Quest" />
+  <meta property="og:description" content="Live vote rankings for Liberia Talent Quest Season Two. Updates instantly when votes are cast." />
+  <meta property="og:image" content="https://liberiatq.com/assets/og-image.png" /><!-- TODO: update domain -->
+  <meta property="og:url" content="https://liberiatq.com/leaderboard.html" /><!-- TODO: update domain -->
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Live Leaderboard — Liberia Talent Quest" />
+  <meta name="twitter:description" content="Live vote rankings for Liberia Talent Quest Season Two. Updates instantly when votes are cast." />
+  <meta name="twitter:image" content="https://liberiatq.com/assets/og-image.png" /><!-- TODO: update domain -->
+
+  <!-- Google Analytics GA4 — replace G-XXXXXXXXXX with your Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.setAttribute("data-theme", localStorage.getItem("ltq_theme") || "dark");}catch(e){}</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="assets/logo-icon.png" alt="Liberia Talent Quest" /> Liberia Talent Quest</a>
+      <button class="nav-toggle" aria-label="Toggle menu">Menu</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="register.html">Register</a></li>
+        <li><a href="vote.html">Vote</a></li>
+        <li><a href="leaderboard.html" class="active">Leaderboard</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="sponsors.html">Sponsors</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth" id="navAuth"></div>
+    </div>
+  </nav>
+
+  <section class="lb-page">
+    <div class="wrap">
+      <div class="lb-head" id="lbHead">
+        <span class="eyebrow" id="lbEyebrow">Live standings</span>
+        <h2 id="lbTitle">Leaderboard</h2>
+        <p id="lbSubtitle">Ranked by votes cast this round, updated live. See who's leading the chase for the crown.</p>
+      </div>
+
+      <!-- Final Results label — shown automatically after the finale is complete -->
+      <div id="resultsPanel" style="display:none; margin-bottom:20px;">
+        <div class="lb-section-label" style="display:flex; align-items:center; gap:10px; color:var(--gold-bright);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 17l2.5-9 4 4.5L12 4l3.5 8.5 4-4.5L22 17H2z"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+          Official Final Placements
+        </div>
+      </div>
+
+      <div id="votesSection">
+        <div class="lb-section-label" id="voteHistoryLabel" style="display:none; align-items:center; gap:10px; margin-bottom:20px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Vote History
+        </div>
+        <div class="lb-tabs" id="categoryTabs">
+          <button class="lb-tab active" data-category="">Overall</button>
+        </div>
+
+        <div id="podium"></div>
+        <div id="audienceChoice"></div>
+
+        <div class="lb-section-label" id="restLabel" style="display:none;">More contestants</div>
+        <div id="board"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer footer-premium">
+    <div class="footer-glow"></div>
+    <div class="wrap footer-top">
+      <div class="footer-col">
+        <h4>Socials</h4>
+        <div class="footer-social" id="footerSocial"></div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+            <li><a href="vote.html">Vote</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="sponsors.html">Sponsors</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul class="footer-contact-list" id="footerContact">
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Paynesville, Liberia</li>
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span> <a href="tel:+231778747441">+231 77-874-7441</a></li>
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span> <a href="mailto:legacyhubinc@gmail.com">legacyhubinc@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="wrap footer-strip">
+      <span class="footer-strip-label">In partnership with</span>
+      <div class="footer-logos" id="footerLogos"></div>
+    </div>
+
+    <div class="wrap footer-bottom">
+      <span>&copy; <span id="footerYear"></span> Legacy Hub Incorporated &middot; Liberia Talent Quest. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="sponsors.html">Sponsors</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    let activeCategory = '';
+    let refreshTimer = null;
+
+    const board     = document.getElementById('board');
+    const podiumEl  = document.getElementById('podium');
+    const audienceEl = document.getElementById('audienceChoice');
+    const restLabel  = document.getElementById('restLabel');
+    const tabs       = document.getElementById('categoryTabs');
+
+    // ── Leaderboard vote icons ───────────────────────────────────────
+    const CROWNS = [
+      `<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 17l2.5-9 4 4.5L12 4l3.5 8.5 4-4.5L22 17H2z"/><line x1="2" y1="20" x2="22" y2="20"/></svg>`,
+      `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+      `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M8.56 13.63L7 22l5-3 5 3-1.56-8.37"/></svg>`,
+    ];
+    const PODIUM_ORDER = [1, 0, 2]; // visual order: 2nd, 1st, 3rd
+
+    function initials(name) {
+      return name.split(' ').filter(Boolean).slice(0, 2).map((p) => p[0].toUpperCase()).join('');
+    }
+
+    function avatarHtml(c, sizeClass) {
+      if (c.photoUrl) {
+        return `<img class="${sizeClass}" src="${escapeHtml(c.photoUrl)}" alt="${escapeHtml(c.name)}" />`;
+      }
+      return `<div class="${sizeClass} initials">${escapeHtml(initials(c.name))}</div>`;
+    }
+
+    function trendKey() {
+      return `ltq_lb_trend_${activeCategory || 'overall'}`;
+    }
+
+    function loadPrevRanks() {
+      try { return JSON.parse(localStorage.getItem(trendKey())) || {}; } catch (e) { return {}; }
+    }
+
+    function saveRanks(contestants) {
+      const ranks = {};
+      contestants.forEach((c, i) => { ranks[c.id] = i + 1; });
+      try { localStorage.setItem(trendKey(), JSON.stringify(ranks)); } catch (e) {}
+    }
+
+    function trendHtml(prevRanks, c, currentRank) {
+      const prev = prevRanks[c.id];
+      if (!prev) return '<span class="lb-trend same">— new</span>';
+      if (prev > currentRank) return `<span class="lb-trend up">▲ ${prev - currentRank}</span>`;
+      if (prev < currentRank) return `<span class="lb-trend down">▼ ${currentRank - prev}</span>`;
+      return '<span class="lb-trend same">— even</span>';
+    }
+
+    function renderPodium(top3, maxVotes) {
+      if (!top3.length) { podiumEl.innerHTML = ''; return; }
+      const cards = top3.map((c, i) => {
+        const pct = maxVotes ? Math.round((c.votes / maxVotes) * 100) : 0;
+        // Podium slot (1st/2nd/3rd visual styling) is positional, but the badge NUMBER
+        // must be the contestant's true overall rank — one competition, not per-category.
+        const rank = c.rank || (i + 1);
+        return `
+          <div class="lb-podium-card lb-podium-rank-${i + 1}">
+            <span class="lb-podium-crown">${CROWNS[i]}</span>
+            <div class="lb-podium-avatar-wrap">
+              ${avatarHtml(c, 'lb-podium-avatar')}
+              <span class="lb-podium-rankbadge">${rank}</span>
+            </div>
+            <div class="lb-podium-name">${escapeHtml(c.name)}${c.entryType === 'group' ? ' <span class="badge badge-info" style="font-size:0.6rem;vertical-align:middle;">Group</span>' : ''}</div>
+            ${c.competitionId ? `<div style="font-size:0.65rem;font-weight:700;letter-spacing:0.07em;color:rgba(246,211,116,0.75);margin-top:2px;">${escapeHtml(c.competitionId)}</div>` : ''}
+            <div class="lb-podium-meta">${escapeHtml(c.categoryLabel)}${c.county ? ' · ' + escapeHtml(c.county) : ''}</div>
+            <div class="lb-podium-votes">${c.votes.toLocaleString()}<span class="unit">votes</span></div>
+            <div class="lb-podium-bar-track"><div class="lb-podium-bar-fill" data-pct="${pct}"></div></div>
+          </div>
+        `;
+      }).join('');
+      podiumEl.innerHTML = `<div class="lb-podium">${cards}</div>`;
+
+      requestAnimationFrame(() => {
+        podiumEl.querySelectorAll('.lb-podium-bar-fill').forEach((el) => {
+          el.style.width = el.dataset.pct + '%';
+        });
+      });
+    }
+
+    function renderAudienceChoice(contestants) {
+      if (contestants.length < 2) { audienceEl.innerHTML = ''; return; }
+      const runnerUp = contestants.slice(1).reduce((best, c) => (c.votes > (best ? best.votes : -1) ? c : best), null);
+      if (!runnerUp || runnerUp.votes === 0) { audienceEl.innerHTML = ''; return; }
+      audienceEl.innerHTML = `
+        <div class="lb-audience">
+          <span class="lb-audience-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+          <div class="lb-audience-text">
+            <div class="label">Audience choice · rising fast</div>
+            <div class="name">${escapeHtml(runnerUp.name)}</div>
+            <div class="sub">${escapeHtml(runnerUp.categoryLabel)}${runnerUp.county ? ' · ' + escapeHtml(runnerUp.county) : ''}</div>
+          </div>
+          <div class="lb-audience-votes">${runnerUp.votes.toLocaleString()}</div>
+        </div>
+      `;
+    }
+
+    function renderGrid(rest, maxVotes, prevRanks, rankOffset) {
+      if (!rest.length) { board.innerHTML = ''; restLabel.style.display = 'none'; return; }
+      restLabel.style.display = 'flex';
+      board.innerHTML = `<div class="lb-grid">${rest.map((c, i) => {
+        // Always prefer the contestant's true overall rank from the API over the
+        // array position — a category filter must never re-number from 1.
+        const rank = c.rank || (i + 1 + rankOffset);
+        const pct = maxVotes ? Math.round((c.votes / maxVotes) * 100) : 0;
+        return `
+          <div class="lb-card">
+            <div class="lb-card-top">
+              <span class="lb-card-rank">#${rank}</span>
+              ${avatarHtml(c, 'lb-card-avatar')}
+              <div class="lb-card-id">
+                <div class="lb-card-name">${escapeHtml(c.name)}${c.entryType === 'group' ? ' <span class="badge badge-info" style="font-size:0.6rem;vertical-align:middle;">Group</span>' : ''}</div>
+                ${c.competitionId ? `<div style="font-size:0.65rem;font-weight:700;letter-spacing:0.07em;color:rgba(246,211,116,0.7);margin-bottom:1px;">${escapeHtml(c.competitionId)}</div>` : ''}
+                <div class="lb-card-meta">${escapeHtml(c.categoryLabel)}${c.county ? ' · ' + escapeHtml(c.county) : ''}</div>
+              </div>
+              ${trendHtml(prevRanks, c, rank)}
+            </div>
+            <div class="lb-card-votes-row">
+              <span class="lb-card-votes">${c.votes.toLocaleString()}<span class="unit">votes</span></span>
+            </div>
+            <div class="lb-card-bar-track"><div class="lb-card-bar-fill" data-pct="${pct}"></div></div>
+          </div>
+        `;
+      }).join('')}</div>`;
+
+      requestAnimationFrame(() => {
+        board.querySelectorAll('.lb-card-bar-fill').forEach((el) => {
+          el.style.width = el.dataset.pct + '%';
+        });
+      });
+    }
+
+    async function loadLeaderboard() {
+      podiumEl.innerHTML = '';
+      audienceEl.innerHTML = '';
+      board.innerHTML = '<p class="empty-state">Loading standings…</p>';
+      restLabel.style.display = 'none';
+
+      const url = activeCategory ? `/api/votes/leaderboard?category=${activeCategory}` : '/api/votes/leaderboard';
+      const res = await fetch(url);
+      let contestants = await res.json();
+
+      if (!contestants.length) {
+        board.innerHTML = '<p class="empty-state">No votes yet — be the first to cast one.</p>';
+        return;
+      }
+
+      // One overall competition — Overall and every category tab render the exact
+      // same way (real top-3 podium + rest grid). Category tabs are a browsing filter
+      // only; the API already guarantees each contestant's rank reflects their true
+      // overall position, never a re-numbered "#1 in this category".
+      restLabel.textContent = 'More contestants';
+      const prevRanks = loadPrevRanks();
+      const maxVotes = contestants[0].votes || 0;
+      const top3 = contestants.slice(0, 3);
+      const rest = contestants.slice(3);
+
+      renderPodium(top3, maxVotes);
+      renderAudienceChoice(contestants);
+      renderGrid(rest, maxVotes, prevRanks, 3);
+      saveRanks(contestants);
+    }
+
+    async function initCategoryTabs() {
+      try {
+        const categories = await fetch('/api/categories').then((r) => r.json());
+        const tabs = document.getElementById('categoryTabs');
+        categories.forEach((cat) => {
+          const btn = document.createElement('button');
+          btn.className = 'lb-tab';
+          btn.dataset.category = cat.slug;
+          btn.textContent = cat.name;
+          tabs.appendChild(btn);
+        });
+        tabs.querySelectorAll('.lb-tab').forEach((tab) => {
+          tab.addEventListener('click', () => {
+            tabs.querySelectorAll('.lb-tab').forEach((t) => t.classList.remove('active'));
+            tab.classList.add('active');
+            activeCategory = tab.dataset.category;
+            loadLeaderboard();
+          });
+        });
+      } catch {}
+    }
+
+    // ── Placements / finale results ──────────────────────────────────
+    // One overall competition — GET /api/contestants/placements now returns a single
+    // flat { placements: [{rank,label,name,category,...}] } list (4 entries total:
+    // Champion, Runner Up, 2nd Runner Up, Finalist), spanning every category.
+    function renderResults(placements, seasonName) {
+      if (!placements.length) return;
+
+      document.getElementById('lbEyebrow').textContent  = seasonName ? `${seasonName} · Grand Finale` : 'Grand Finale';
+      document.getElementById('lbEyebrow').style.color  = 'var(--gold-bright)';
+      document.getElementById('lbTitle').textContent    = 'Final Results';
+      document.getElementById('lbSubtitle').textContent = 'The official placements for this season — one champion, from every category.';
+
+      document.getElementById('resultsPanel').style.display     = 'block';
+      document.getElementById('voteHistoryLabel').style.display = 'none';
+
+      // No category tabs for results — it's one overall podium, not one per category.
+      document.getElementById('categoryTabs').style.display = 'none';
+
+      const sorted   = [...placements].sort((a, b) => a.rank - b.rank);
+      const top3     = sorted.slice(0, 3);
+      const rest     = sorted.slice(3);
+      const maxVotes = Math.max(...sorted.map((p) => Number(p.votes) || 0), 1);
+
+      renderPodium(top3, maxVotes);
+      audienceEl.innerHTML  = '';
+      restLabel.textContent = 'Finalist';
+      renderGrid(rest, maxVotes, {}, 3);
+    }
+
+    async function fetchPlacements() {
+      try {
+        const res = await fetch('/api/contestants/placements');
+        if (!res.ok) return [];
+        const data = await res.json();
+        return data.placements || [];
+      } catch { return []; }
+    }
+
+    async function init() {
+      // Check once for finale results — they're permanent, no need to re-poll
+      const [placements, seasonData] = await Promise.all([
+        fetchPlacements(),
+        fetch('/api/seasons/current').then((r) => r.json()).catch(() => null),
+      ]);
+
+      if (placements.length) {
+        // Finale is done: render the one overall result, no need to listen for updates
+        renderResults(placements, seasonData?.name || '');
+      } else {
+        // Active competition: load once, then refresh only when the server pushes an update
+        await loadLeaderboard();
+
+        const sse = new EventSource('/api/events/leaderboard');
+        sse.addEventListener('update', () => loadLeaderboard());
+
+        // Fallback poll every 5 minutes in case SSE silently drops (mobile, proxy, etc.)
+        refreshTimer = setInterval(loadLeaderboard, 300000);
+
+        // Clean up when the page is navigated away
+        window.addEventListener('pagehide', () => {
+          sse.close();
+          clearInterval(refreshTimer);
+        }, { once: true });
+      }
+    }
+
+    initSeasonLabel();
+    initCategoryTabs();
+    init();
+  </script>
+</body>
+</html>

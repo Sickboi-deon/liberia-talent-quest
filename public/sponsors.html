@@ -1,0 +1,582 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon-sponsors.png" />
+  <title>Sponsors &amp; Partners — Support Liberia's Next Star | Liberia Talent Quest</title>
+  <meta name="description" content="Partner with Liberia Talent Quest and reach thousands of engaged young Liberians. Explore Silver, Gold, and Platinum sponsorship tiers and the benefits of supporting Season Two." />
+  <meta name="keywords" content="sponsor Liberia Talent Quest, LTQ partnership, sponsor talent show Liberia, Legacy Hub sponsorship" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://liberiatq.com/sponsors.html" /><!-- TODO: update domain -->
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Liberia Talent Quest" />
+  <meta property="og:title" content="Sponsors &amp; Partners — Liberia Talent Quest" />
+  <meta property="og:description" content="Partner with Liberia Talent Quest and reach thousands of engaged young Liberians. Silver, Gold, and Platinum tiers available." />
+  <meta property="og:image" content="https://liberiatq.com/assets/og-image.png" /><!-- TODO: update domain -->
+  <meta property="og:url" content="https://liberiatq.com/sponsors.html" /><!-- TODO: update domain -->
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Sponsors &amp; Partners — Liberia Talent Quest" />
+  <meta name="twitter:description" content="Partner with Liberia Talent Quest and reach thousands of engaged young Liberians." />
+  <meta name="twitter:image" content="https://liberiatq.com/assets/og-image.png" /><!-- TODO: update domain -->
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Sponsors &amp; Partners — Liberia Talent Quest",
+    "url": "https://liberiatq.com/sponsors.html",
+    "description": "Sponsorship opportunities for Liberia Talent Quest Season Two.",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Legacy Hub Incorporated",
+      "url": "https://liberiatq.com/"
+    }
+  }
+  </script>
+
+  <!-- Google Analytics GA4 — replace G-XXXXXXXXXX with your Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.setAttribute("data-theme", localStorage.getItem("ltq_theme") || "dark");}catch(e){}</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="assets/logo-icon.png" alt="Liberia Talent Quest" /> Liberia Talent Quest</a>
+      <button class="nav-toggle" aria-label="Toggle menu">Menu</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="register.html">Register</a></li>
+        <li><a href="vote.html">Vote</a></li>
+        <li><a href="leaderboard.html">Leaderboard</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="sponsors.html" class="active">Sponsors</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth" id="navAuth"></div>
+    </div>
+  </nav>
+
+  <div class="sp-page">
+    <div class="wrap">
+
+      <!-- Hero -->
+      <div class="sp-hero">
+        <div class="sp-hero-bg"></div>
+        <div class="sp-hero-content">
+          <span class="eyebrow">Sponsors &amp; Partners</span>
+          <h1>Put your brand on the biggest stage in Liberia.</h1>
+          <p>Liberia Talent Quest <span class="season-label">Season Two</span> reaches hundreds of thousands of viewers, voters, and live attendees. Partner with us to reach an engaged, nationwide audience while championing Liberian talent.</p>
+          <div class="sp-hero-actions">
+            <a class="btn btn-primary" href="#sp-inquiry">Become a Sponsor</a>
+            <a class="btn btn-secondary" href="#sp-proposal">Download Proposal</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Impact stats -->
+    <section class="section" style="border-top:none;">
+      <div class="wrap">
+        <div class="ct-section-label" style="margin-top:0;">Our reach</div>
+        <div class="sp-stats" id="spStats">
+          <div class="sp-stat-card"><div class="sp-stat-num" data-count="250000" data-suffix="+">0</div><div class="sp-stat-label">Audience Reach</div></div>
+          <div class="sp-stat-card"><div class="sp-stat-num" id="spStatContestants" data-count="0" data-suffix="+">0</div><div class="sp-stat-label">Registered Contestants</div></div>
+          <div class="sp-stat-card"><div class="sp-stat-num" data-count="15" data-suffix="">0</div><div class="sp-stat-label">Counties Represented</div></div>
+          <div class="sp-stat-card"><div class="sp-stat-num" id="spStatVotes" data-count="0" data-suffix="+">0</div><div class="sp-stat-label">Votes Cast</div></div>
+          <div class="sp-stat-card"><div class="sp-stat-num" data-count="40" data-suffix="+">0</div><div class="sp-stat-label">Media Mentions</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sponsorship tiers (dynamic) -->
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head" style="text-align:center; margin-inline:auto;">
+          <span class="eyebrow">Partnership packages</span>
+          <h2>Sponsorship Tiers.</h2>
+          <p style="margin-inline:auto;">Choose the level of visibility and engagement that fits your brand's goals for <span class="season-label">Season Two</span>.</p>
+        </div>
+        <div class="sp-tier-grid" id="spTierGrid"><p class="empty-state">Loading…</p></div>
+      </div>
+    </section>
+
+    <!-- Featured partner (dynamic — shows top-tier sponsor from DB) -->
+    <section class="section" id="spFeaturedSection" style="display:none;">
+      <div class="wrap">
+        <div class="ct-section-label" style="margin-top:0;">Spotlight</div>
+        <div id="spFeatured"></div>
+      </div>
+    </section>
+
+    <!-- Current sponsors logo grid -->
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head" style="text-align:center; margin-inline:auto;">
+          <span class="eyebrow">Confirmed partners</span>
+          <h2>Our Sponsors.</h2>
+          <p style="margin-inline:auto;">Liberia Talent Quest <span class="season-label">Season Two</span> is made possible with support from these partners.</p>
+        </div>
+        <div id="sponsorGrid" class="sp-logo-grid"><p class="empty-state">Loading sponsors…</p></div>
+      </div>
+    </section>
+
+    <!-- Media partners (dynamic from DB) -->
+    <section class="section" id="spMediaSection" style="display:none;">
+      <div class="wrap">
+        <div class="ct-section-label" style="margin-top:0;">Press &amp; broadcast</div>
+        <div class="sp-logo-grid" id="spMediaGrid"></div>
+      </div>
+    </section>
+
+    <!-- Community partners (dynamic from DB) -->
+    <section class="section" id="spCommunitySection" style="display:none;">
+      <div class="wrap">
+        <div class="ct-section-label" style="margin-top:0;">Grassroots &amp; community</div>
+        <div class="sp-logo-grid" id="spCommunityGrid"></div>
+      </div>
+    </section>
+
+    <!-- Benefits (dynamic) -->
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head" style="text-align:center; margin-inline:auto;">
+          <span class="eyebrow">Why partner with us</span>
+          <h2>Sponsorship Benefits.</h2>
+          <p style="margin-inline:auto;">A national platform, an engaged audience, and a cause worth standing behind.</p>
+        </div>
+        <div class="sp-benefits-grid" id="spBenefitsGrid"><p class="empty-state">Loading…</p></div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section">
+      <div class="wrap">
+        <div class="section-head" style="text-align:center; margin-inline:auto;">
+          <span class="eyebrow">What partners say</span>
+          <h2>Trusted by Brands.</h2>
+        </div>
+        <div class="sp-testi" id="spTesti">
+          <div class="sp-testi-track" id="spTestiTrack"></div>
+          <div class="sp-testi-controls">
+            <button class="sp-testi-arrow" id="spTestiPrev" aria-label="Previous testimonial">‹</button>
+            <div class="sp-testi-dots" id="spTestiDots"></div>
+            <button class="sp-testi-arrow" id="spTestiNext" aria-label="Next testimonial">›</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Proposal download (dynamic — only shown when admin has uploaded a PDF) -->
+    <section class="section" id="sp-proposal" style="display:none;">
+      <div class="wrap">
+        <div class="sp-proposal">
+          <div class="sp-proposal-text">
+            <h3><span class="sp-proposal-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="vertical-align:-3px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></span> Get the Full Sponsorship Proposal</h3>
+            <p>Download our detailed deck with audience demographics, package pricing, and activation ideas — or have it emailed straight to your team.</p>
+          </div>
+          <a class="btn btn-primary" id="spProposalBtn" href="#" download>Download Proposal (PDF)</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA (single, merged) -->
+    <section class="section" style="border-top:none;">
+      <div class="wrap">
+        <div class="sp-cta">
+          <div class="sp-cta-content">
+            <h3>Ready to put your brand center stage and become part of Liberia's biggest talent story?</h3>
+            <p>Join Legacy Hub Incorporated and our partners in shaping the next generation of Liberian stars. Our partnerships desk responds within 1–2 business days with a tailored package recommendation.</p>
+            <div class="sp-cta-actions">
+              <a class="btn btn-primary" href="#sp-inquiry">Start a Conversation</a>
+              <a class="btn btn-secondary" href="tel:+231778747441">Call +231 77-874-7441</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sponsor inquiry form -->
+    <section class="section" id="sp-inquiry">
+      <div class="wrap">
+        <div class="ct-section-label" style="margin-top:0;">Sponsor inquiry</div>
+        <div class="ct-form-card" style="max-width:680px; margin:0 auto;">
+          <h3>Tell us about your brand</h3>
+          <p class="sub">Share a few details and our partnerships team will follow up with a tailored proposal.</p>
+          <div id="spFormAlert"></div>
+          <form id="spInquiryForm">
+            <div class="field-row">
+              <div class="ct-field">
+                <input type="text" id="spCompany" required placeholder=" " />
+                <label for="spCompany">Company / brand name</label>
+              </div>
+              <div class="ct-field">
+                <input type="text" id="spContact" required placeholder=" " />
+                <label for="spContact">Contact person</label>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="ct-field">
+                <input type="email" id="spEmail" required placeholder=" " />
+                <label for="spEmail">Email address</label>
+              </div>
+              <div class="ct-field">
+                <input type="tel" id="spPhone" placeholder=" " />
+                <label for="spPhone">Phone number</label>
+              </div>
+            </div>
+            <div class="ct-field">
+              <select id="spTier" required>
+                <option value="" disabled selected hidden></option>
+                <option value="Platinum">Platinum — Title Sponsor</option>
+                <option value="Gold">Gold — Official Partner</option>
+                <option value="Silver">Silver — Community Partner</option>
+                <option value="Media">Media Partnership</option>
+                <option value="Custom">Custom package</option>
+              </select>
+              <label for="spTier">Interested in…</label>
+              <span class="select-arrow">▾</span>
+            </div>
+            <div class="ct-field">
+              <textarea id="spMessage" required placeholder=" "></textarea>
+              <label for="spMessage">Tell us about your goals</label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block" id="spSubmit">Send Inquiry</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+
+  </div>
+
+  <footer class="site-footer footer-premium">
+    <div class="footer-glow"></div>
+    <div class="wrap footer-top">
+      <div class="footer-col">
+        <h4>Socials</h4>
+        <div class="footer-social" id="footerSocial"></div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+            <li><a href="vote.html">Vote</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="sponsors.html">Sponsors</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul class="footer-contact-list" id="footerContact">
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Paynesville, Liberia</li>
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span> <a href="tel:+231778747441">+231 77-874-7441</a></li>
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span> <a href="mailto:legacyhubinc@gmail.com">legacyhubinc@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="wrap footer-strip">
+      <span class="footer-strip-label">In partnership with</span>
+      <div class="footer-logos" id="footerLogos"></div>
+    </div>
+
+    <div class="wrap footer-bottom">
+      <span>&copy; <span id="footerYear"></span> Legacy Hub Incorporated &middot; Liberia Talent Quest. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="sponsors.html">Sponsors</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    // Animated count-up stats
+    function initStatCounters() {
+      const nums = document.querySelectorAll('.sp-stat-num');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const animate = (el) => {
+        const target = parseInt(el.getAttribute('data-count'), 10) || 0;
+        const suffix = el.getAttribute('data-suffix') || '';
+        if (reduceMotion) { el.textContent = target.toLocaleString() + suffix; return; }
+        const duration = 1400;
+        const start = performance.now();
+        const step = (now) => {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = Math.round(eased * target).toLocaleString() + suffix;
+          if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      };
+
+      if (typeof IntersectionObserver === 'undefined') { nums.forEach(animate); return; }
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) { animate(entry.target); observer.unobserve(entry.target); }
+        });
+      }, { threshold: 0.4 });
+      nums.forEach((el) => observer.observe(el));
+    }
+
+    // Icon map for sponsor benefits
+    const BENEFIT_ICONS = {
+      screen:  `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>`,
+      target:  `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+      users:   `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+      chart:   `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+      mic:     `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 10a7 7 0 0 0 14 0M12 19v4M8 23h8"/></svg>`,
+      globe:   `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+      star:    `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+      award:   `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>`,
+      zap:     `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+      heart:   `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+      shield:  `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+      gift:    `<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>`,
+    };
+
+    // Tier crown SVGs by style variant
+    const TIER_CROWNS = {
+      silver:   `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+      gold:     `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 17l2.5-9 4 4.5L12 4l3.5 8.5 4-4.5L22 17H2z"/><line x1="2" y1="20" x2="22" y2="20"/></svg>`,
+      platinum: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 17 5.5 7 10 12 12 5l2 7 4.5-5L22 17H2z"/><path d="M2 17h20"/></svg>`,
+      custom:   `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+    };
+
+    async function loadBenefits() {
+      const grid = document.getElementById('spBenefitsGrid');
+      const benefits = await fetch('/api/sponsor-content/benefits').then((r) => r.json());
+      if (!benefits.length) { grid.innerHTML = '<p class="empty-state">Benefits coming soon.</p>'; return; }
+      grid.innerHTML = benefits.map((b) => `
+        <div class="sp-benefit-card">
+          <div class="sp-benefit-icon">${BENEFIT_ICONS[b.iconName] || BENEFIT_ICONS.star}</div>
+          <h4>${escapeHtml(b.title)}</h4>
+          <p>${escapeHtml(b.description)}</p>
+        </div>
+      `).join('');
+    }
+
+    async function loadTiers() {
+      const grid = document.getElementById('spTierGrid');
+      const tiers = await fetch('/api/sponsor-content/tiers').then((r) => r.json());
+      if (!tiers.length) { grid.innerHTML = '<p class="empty-state">Sponsorship tiers coming soon.</p>'; return; }
+      grid.innerHTML = tiers.map((t) => {
+        const cls = `sp-tier-card ${escapeHtml(t.styleVariant || 'silver')}${t.featured ? ' featured' : ''}`;
+        const crown = TIER_CROWNS[t.styleVariant] || TIER_CROWNS.silver;
+        const btnCls = t.featured ? 'btn btn-primary' : 'btn btn-secondary';
+        return `
+          <div class="${cls}">
+            ${t.featured ? '<span class="sp-tier-badge">Most Popular</span>' : ''}
+            <span class="sp-tier-crown">${crown}</span>
+            <h3 class="sp-tier-name">${escapeHtml(t.name)}</h3>
+            <div class="sp-tier-price">${escapeHtml(t.subtitle)}</div>
+            <ul class="sp-tier-list">
+              ${(t.features || []).map((f) => `<li>${escapeHtml(f)}</li>`).join('')}
+            </ul>
+            <a class="${btnCls}" href="#sp-inquiry">Enquire as ${escapeHtml(t.name)}</a>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Testimonial carousel (dynamic from API)
+    async function initTestimonials() {
+      const testimonials = await fetch('/api/sponsor-content/testimonials').then((r) => r.json());
+      const track = document.getElementById('spTestiTrack');
+      const dotsWrap = document.getElementById('spTestiDots');
+      const prevBtn = document.getElementById('spTestiPrev');
+      const nextBtn = document.getElementById('spTestiNext');
+
+      if (!testimonials.length) {
+        document.getElementById('spTesti').style.display = 'none';
+        return;
+      }
+
+      let active = 0;
+      let timer = null;
+
+      track.innerHTML = testimonials.map((t) => `
+        <div class="sp-testi-slide">
+          <p class="sp-testi-quote">"${escapeHtml(t.quote)}"</p>
+          <div class="sp-testi-avatar">${escapeHtml(t.initials)}</div>
+          <div class="sp-testi-name">${escapeHtml(t.authorName)}</div>
+          <div class="sp-testi-role">${escapeHtml(t.authorRole)}</div>
+        </div>
+      `).join('');
+      dotsWrap.innerHTML = testimonials.map((_, i) => `<button class="sp-testi-dot" data-i="${i}" aria-label="Go to testimonial ${i + 1}"></button>`).join('');
+
+      const slides = track.querySelectorAll('.sp-testi-slide');
+      const dots = dotsWrap.querySelectorAll('.sp-testi-dot');
+
+      function show(i) {
+        active = (i + slides.length) % slides.length;
+        slides.forEach((s, idx) => s.classList.toggle('active', idx === active));
+        dots.forEach((d, idx) => d.classList.toggle('active', idx === active));
+      }
+
+      function startAutoplay() {
+        clearInterval(timer);
+        timer = setInterval(() => show(active + 1), 6000);
+      }
+
+      prevBtn.addEventListener('click', () => { show(active - 1); startAutoplay(); });
+      nextBtn.addEventListener('click', () => { show(active + 1); startAutoplay(); });
+      dots.forEach((d) => d.addEventListener('click', () => { show(parseInt(d.getAttribute('data-i'), 10)); startAutoplay(); }));
+      document.getElementById('spTesti').addEventListener('mouseenter', () => clearInterval(timer));
+      document.getElementById('spTesti').addEventListener('mouseleave', startAutoplay);
+
+      show(0);
+      startAutoplay();
+    }
+
+    // Floating-label select needs a manual "has value" flag since :placeholder-shown doesn't apply to <select>.
+    const spTierSelect = document.getElementById('spTier');
+    spTierSelect.addEventListener('change', () => {
+      spTierSelect.classList.toggle('has-value', !!spTierSelect.value);
+    });
+
+    document.getElementById('spInquiryForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const company = document.getElementById('spCompany').value.trim();
+      const contact = document.getElementById('spContact').value.trim();
+      const email   = document.getElementById('spEmail').value.trim();
+      const phone   = document.getElementById('spPhone').value.trim();
+      const tier    = spTierSelect.value;
+      const message = document.getElementById('spMessage').value.trim();
+
+      const text = `*Sponsorship Inquiry — Liberia Talent Quest*\n\n*Company:* ${company}\n*Contact:* ${contact}\n*Email:* ${email}${phone ? `\n*Phone:* ${phone}` : ''}\n*Interested in:* ${tier}\n\n*Goals / Message:*\n${message}`;
+      window.open(`https://wa.me/231778747441?text=${encodeURIComponent(text)}`, '_blank');
+
+      document.getElementById('spFormAlert').innerHTML = '<div class="alert alert-success">Opening WhatsApp to send your inquiry…</div>';
+      const btn = document.getElementById('spSubmit');
+      btn.disabled = true;
+      setTimeout(() => { btn.disabled = false; document.getElementById('spFormAlert').innerHTML = ''; }, 3000);
+    });
+
+    async function loadLiveStats() {
+      try {
+        const res = await fetch('/api/contestants');
+        const contestants = await res.json();
+        const totalVotes = contestants.reduce((sum, c) => sum + (c.votes || 0), 0);
+
+        const contestantsEl = document.getElementById('spStatContestants');
+        const votesEl       = document.getElementById('spStatVotes');
+        if (contestantsEl) contestantsEl.setAttribute('data-count', contestants.length);
+        if (votesEl)       votesEl.setAttribute('data-count', totalVotes);
+      } catch {}
+    }
+
+    function sponsorTileHtml(s) {
+      const inner = `
+        <img src="${s.logoUrl || 'assets/Sponsor_1.jpg'}" alt="${escapeHtml(s.name)}" />
+        <span class="name">${escapeHtml(s.name)}</span>
+        <span class="tag">${escapeHtml(s.tier || 'Partner')}</span>
+      `;
+      return s.websiteUrl
+        ? `<a href="${escapeHtml(s.websiteUrl)}" target="_blank" rel="noopener" class="sp-logo-tile">${inner}</a>`
+        : `<div class="sp-logo-tile">${inner}</div>`;
+    }
+
+    async function loadAllSponsorSections() {
+      const res      = await fetch('/api/sponsors');
+      const sponsors = await res.json();
+
+      // Confirmed sponsors grid (existing)
+      const grid = document.getElementById('sponsorGrid');
+      if (!sponsors.length) {
+        grid.innerHTML = '<p class="empty-state">Sponsors will be announced here as partnerships are confirmed.</p>';
+      } else {
+        grid.innerHTML = sponsors.map(sponsorTileHtml).join('');
+      }
+
+      // Featured partner — pick highest-tier sponsor with a logo
+      const TIER_ORDER = ['Platinum', 'Gold', 'Silver'];
+      let featured = null;
+      for (const tier of TIER_ORDER) {
+        featured = sponsors.find((s) => s.tier === tier && s.logoUrl);
+        if (featured) break;
+      }
+      if (featured) {
+        const bgUrl = featured.logoUrl || 'assets/Partner_1.jpg';
+        document.getElementById('spFeatured').innerHTML = `
+          <div class="sp-featured">
+            <div class="sp-featured-bg" style="background-image:url('${escapeHtml(bgUrl)}');"></div>
+            <div class="sp-featured-overlay"></div>
+            <div class="sp-featured-content">
+              <img class="sp-featured-logo" src="${escapeHtml(bgUrl)}" alt="${escapeHtml(featured.name)}" />
+              <div class="sp-featured-text">
+                <span class="sp-featured-tag">Featured Partner</span>
+                <h3>${escapeHtml(featured.name)}</h3>
+                <p>${escapeHtml(featured.tier || '')} sponsor supporting Liberia Talent Quest from auditions to the season finale.</p>
+              </div>
+            </div>
+          </div>
+        `;
+        document.getElementById('spFeaturedSection').style.display = '';
+      }
+
+      // Media partners
+      const mediaPartners = sponsors.filter((s) => s.tier === 'Media Partner');
+      if (mediaPartners.length) {
+        document.getElementById('spMediaGrid').innerHTML = mediaPartners.map(sponsorTileHtml).join('');
+        document.getElementById('spMediaSection').style.display = '';
+      }
+
+      // Community partners only — Silver stays in the main confirmed grid
+      const communityPartners = sponsors.filter((s) => s.tier === 'Community Partner');
+      if (communityPartners.length) {
+        document.getElementById('spCommunityGrid').innerHTML = communityPartners.map(sponsorTileHtml).join('');
+        document.getElementById('spCommunitySection').style.display = '';
+      }
+    }
+
+    async function loadProposal() {
+      try {
+        const s = await fetch('/api/settings').then((r) => r.json());
+        if (s.proposalFileUrl) {
+          document.getElementById('spProposalBtn').href = s.proposalFileUrl;
+          document.getElementById('sp-proposal').style.display = '';
+        }
+      } catch {}
+    }
+
+    initSeasonLabel();
+    loadLiveStats().then(initStatCounters);
+    loadAllSponsorSections();
+    loadBenefits();
+    loadTiers();
+    initTestimonials();
+    loadProposal();
+  </script>
+</body>
+</html>

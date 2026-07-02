@@ -1,0 +1,493 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/png" href="favicon-gallery.png" />
+  <title>Gallery — Contestant Photos &amp; Performances | Liberia Talent Quest</title>
+  <meta name="description" content="Browse photos and performance highlights from Liberia Talent Quest Season Two contestants. Discover talented performers from all 15 Liberian counties." />
+  <meta name="keywords" content="Liberia Talent Quest gallery, LTQ contestant photos, performer highlights Liberia" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://liberiatq.com/gallery.html" /><!-- TODO: update domain -->
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Liberia Talent Quest" />
+  <meta property="og:title" content="Gallery — Contestant Photos &amp; Performances | Liberia Talent Quest" />
+  <meta property="og:description" content="Browse photos and performance highlights from Liberia Talent Quest Season Two contestants." />
+  <meta property="og:image" content="https://liberiatq.com/assets/og-image.png" /><!-- TODO: update domain -->
+  <meta property="og:url" content="https://liberiatq.com/gallery.html" /><!-- TODO: update domain -->
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Gallery — Liberia Talent Quest" />
+  <meta name="twitter:description" content="Browse photos and performance highlights from Liberia Talent Quest Season Two contestants." />
+  <meta name="twitter:image" content="https://liberiatq.com/assets/og-image.png" /><!-- TODO: update domain -->
+
+  <!-- Google Analytics GA4 — replace G-XXXXXXXXXX with your Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script>try{document.documentElement.setAttribute("data-theme", localStorage.getItem("ltq_theme") || "dark");}catch(e){}</script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="wrap">
+      <a class="brand" href="index.html"><img src="assets/logo-icon.png" alt="Liberia Talent Quest" /> Liberia Talent Quest</a>
+      <button class="nav-toggle" aria-label="Toggle menu">Menu</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="register.html">Register</a></li>
+        <li><a href="vote.html">Vote</a></li>
+        <li><a href="leaderboard.html">Leaderboard</a></li>
+        <li><a href="gallery.html" class="active">Gallery</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="sponsors.html">Sponsors</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-auth" id="navAuth"></div>
+    </div>
+  </nav>
+
+  <section class="gal-page">
+    <div class="wrap">
+      <div class="gal-head">
+        <span class="eyebrow">Media Gallery</span>
+        <h2>The stage, the stars.</h2>
+        <p>Event photography and contestant profiles from <span class="season-label">Season Two</span>. Tap any frame for the full view.</p>
+      </div>
+
+      <div id="seasonTabsWrap" style="display:none; margin-bottom:8px;">
+        <div class="gal-tabs" id="seasonTabs"></div>
+      </div>
+
+      <div id="featured"></div>
+
+      <div class="gal-tabs" id="categoryTabs">
+        <button class="gal-tab active" data-category="">All</button>
+        <button class="gal-tab" data-category="stage">Event Photos</button>
+      </div>
+
+      <div id="grid"><p class="empty-state">Loading the gallery…</p></div>
+    </div>
+  </section>
+
+  <div class="gal-lightbox" id="lightbox">
+    <div class="gal-lightbox-frame">
+      <button class="gal-lightbox-close" id="lbClose" aria-label="Close">✕</button>
+      <button class="gal-lightbox-nav prev" id="lbPrev" aria-label="Previous">‹</button>
+      <button class="gal-lightbox-nav next" id="lbNext" aria-label="Next">›</button>
+      <div class="gal-lightbox-img-wrap" id="lbImgWrap"></div>
+      <div class="gal-lightbox-info" id="lbInfo"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer footer-premium">
+    <div class="footer-glow"></div>
+    <div class="wrap footer-top">
+      <div class="footer-col">
+        <h4>Socials</h4>
+        <div class="footer-social" id="footerSocial"></div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+            <li><a href="vote.html">Vote</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="sponsors.html">Sponsors</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul class="footer-contact-list" id="footerContact">
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span> Paynesville, Liberia</li>
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></span> <a href="tel:+231778747441">+231 77-874-7441</a></li>
+          <li><span class="ico"><svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span> <a href="mailto:legacyhubinc@gmail.com">legacyhubinc@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="wrap footer-strip">
+      <span class="footer-strip-label">In partnership with</span>
+      <div class="footer-logos" id="footerLogos"></div>
+    </div>
+
+    <div class="wrap footer-bottom">
+      <span>&copy; <span id="footerYear"></span> Legacy Hub Incorporated &middot; Liberia Talent Quest. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="sponsors.html">Sponsors</a>
+        <a href="terms.html">Terms</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    const CATEGORY_GEL = { dancing: 'var(--brand-blue)', singing: 'var(--brand-red)', rapping: 'var(--brand-orange, #e07b2a)', comedy: 'var(--teal)', 'creative-arts': 'var(--violet)', 'spoken-words': 'var(--gold)' };
+    const STAGE_PHOTOS_FALLBACK = [
+      { id: 'stage-1', src: 'assets/Reg_background.png', wide: true,  caption: 'Opening night on the main stage.' },
+      { id: 'stage-2', src: 'assets/hero-singer.png',    wide: false, caption: 'A contestant performing during live auditions.' }
+    ];
+    let stagePhotos = STAGE_PHOTOS_FALLBACK;
+    let mediaItems  = [];   // contestant_media uploads
+
+    let activeCategory = '';
+    let items = [];      // flattened, filtered, render-ready items
+    let lbIndex = -1;
+
+    function initials(name) {
+      return name.split(' ').filter(Boolean).slice(0, 2).map((p) => p[0].toUpperCase()).join('');
+    }
+
+    function buildItems(contestants) {
+      const stageItems = stagePhotos.map((p) => ({ type: 'stage', ...p }));
+      // Contestant media uploads — exclude primary profile photos (already shown in contestant tile)
+      const uploadedItems = mediaItems
+        .filter((m) => !m.isPrimary || m.mediaType === 'video')
+        .map((m) => ({ type: 'media', data: m }));
+      const contestantItems = contestants.map((c) => ({ type: 'contestant', data: c }));
+      // Interleave: contestant tile → every 4th insert a stage/uploaded media item
+      const extras = [...stageItems, ...uploadedItems];
+      const merged = [];
+      let e = 0;
+      contestantItems.forEach((item, i) => {
+        merged.push(item);
+        if ((i + 1) % 4 === 0 && e < extras.length) {
+          merged.push(extras[e]);
+          e += 1;
+        }
+      });
+      while (e < extras.length) { merged.push(extras[e]); e += 1; }
+      return merged;
+    }
+
+    function tileHtml(item) {
+      if (item.type === 'stage') {
+        const isVideo = item.mediaType === 'video';
+        const media = isVideo
+          ? `<video class="gal-tile-img ${item.wide ? 'gal-stage-wide' : 'gal-photo'}" src="${item.src}" muted preload="metadata" playsinline></video>
+             <div class="gal-tile-play-btn" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>`
+          : `<img class="gal-tile-img ${item.wide ? 'gal-stage-wide' : 'gal-photo'}" src="${item.src}" alt="Event photo" loading="lazy" />`;
+        return `
+          <div class="gal-tile${isVideo ? ' gal-tile-video' : ''}" data-idx-key="${item.id}">
+            <div class="gal-tile-img-wrap">
+              ${media}
+            </div>
+            <div class="gal-tile-caption">
+              <p class="name">${isVideo ? '▶ Video' : 'From the stage'}</p>
+              <p class="meta">${escapeHtml(item.caption)}</p>
+            </div>
+          </div>
+        `;
+      }
+      if (item.type === 'media') {
+        const m = item.data;
+        const isVideo = m.mediaType === 'video';
+        const displayName = m.stageName ? `${m.contestantName} "${m.stageName}"` : m.contestantName;
+        const mediaSrc = escapeHtml(m.filePath);
+        const mediaEl = isVideo
+          ? `<video class="gal-tile-img gal-photo" src="${mediaSrc}" muted preload="metadata" playsinline></video>
+             <div class="gal-tile-play-btn" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></div>`
+          : `<img class="gal-tile-img gal-photo" src="${mediaSrc}" alt="${escapeHtml(m.title || displayName)}" loading="lazy" />`;
+        return `
+          <div class="gal-tile${isVideo ? ' gal-tile-video' : ''}" data-idx-key="media-${m.id}">
+            <div class="gal-tile-img-wrap">
+              ${mediaEl}
+            </div>
+            <div class="gal-tile-caption">
+              <p class="name">${escapeHtml(m.title || (isVideo ? '▶ Performance' : 'Photo'))}</p>
+              <p class="meta">${escapeHtml(displayName)}</p>
+            </div>
+          </div>
+        `;
+      }
+      const c = item.data;
+      const isGroup = c.entryType === 'group';
+      const gel = CATEGORY_GEL[c.category] || 'var(--brand-blue)';
+      const img = c.photoUrl
+        ? `<img class="gal-tile-img gal-photo" src="${escapeHtml(c.photoUrl)}" alt="${escapeHtml(c.name)}" loading="lazy" />`
+        : `<div class="gal-tile-initials">${escapeHtml(initials(c.name))}</div>`;
+      const groupBadge = isGroup
+        ? `<span class="badge badge-info" style="position:absolute;top:8px;left:8px;font-size:0.65rem;padding:2px 7px;z-index:2;">Group${c.memberCount ? ' · ' + c.memberCount : ''}</span>`
+        : '';
+      return `
+        <div class="gal-tile" data-idx-key="${c.id}">
+          <div class="gal-tile-img-wrap" style="--gel-color:${gel};position:relative;">
+            ${groupBadge}
+            ${img}
+            <span class="gal-tile-gel" style="--gel-color:${gel};">${escapeHtml(c.categoryLabel)}</span>
+            <span class="gal-tile-rank">#${c.rank}</span>
+            <div class="gal-tile-overlay">
+              <p class="name">${escapeHtml(c.name)}</p>
+              ${c.competitionId ? `<p style="font-size:0.65rem;font-weight:700;letter-spacing:0.07em;color:rgba(246,211,116,0.85);margin:1px 0 3px;">${escapeHtml(c.competitionId)}</p>` : ''}
+              <p class="meta">${c.county ? escapeHtml(c.county) + ' · ' : ''}${isGroup ? (c.memberCount ? c.memberCount + ' members · ' : 'Group · ') : ''}${c.votes} votes</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderGrid() {
+      const grid = document.getElementById('grid');
+      const filtered = activeCategory
+        ? items.filter((it) => (it.type === 'stage' ? activeCategory === 'stage' : it.data.category === activeCategory))
+        : items;
+
+      if (!filtered.length) {
+        grid.innerHTML = '<p class="empty-state">Nothing in this category yet.</p>';
+        return;
+      }
+      grid.innerHTML = `<div class="gal-masonry">${filtered.map(tileHtml).join('')}</div>`;
+
+      grid.querySelectorAll('.gal-tile').forEach((el, i) => {
+        el.addEventListener('click', () => openLightbox(filtered, i));
+      });
+    }
+
+    function renderFeatured(contestants) {
+      const featuredEl = document.getElementById('featured');
+      const top = contestants.find((c) => c.rank === 1);
+      if (!top) { featuredEl.innerHTML = ''; return; }
+      const avatar = top.photoUrl
+        ? `<img class="gal-featured-avatar" src="${escapeHtml(top.photoUrl)}" alt="${escapeHtml(top.name)}" />`
+        : `<div class="gal-featured-avatar initials">${escapeHtml(initials(top.name))}</div>`;
+      featuredEl.innerHTML = `
+        <div class="gal-featured">
+          <div class="gal-featured-bg" style="background-image:url('assets/Reg_background.png');"></div>
+          <div class="gal-featured-overlay"></div>
+          <div class="gal-featured-content">
+            ${avatar}
+            <div class="gal-featured-text">
+              <div class="gal-featured-tag">Featured performance</div>
+              <h3>${escapeHtml(top.name)}</h3>
+              <p>${escapeHtml(top.talent)}</p>
+            </div>
+            <div class="gal-featured-stats">
+              <div class="gal-featured-stat"><span class="num">${top.votes}</span><span class="lbl">Votes</span></div>
+              <div class="gal-featured-stat"><span class="num">#1</span><span class="lbl">Overall</span></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function lbContentFor(item) {
+      if (item.type === 'stage') {
+        const isVideo = item.mediaType === 'video';
+        return {
+          imgHtml: isVideo
+            ? `<video src="${item.src}" controls autoplay playsinline style="max-width:100%;max-height:70vh;border-radius:8px;background:#000;"></video>`
+            : `<img src="${item.src}" alt="Event photo" />`,
+          infoHtml: `
+            <div class="gal-lightbox-info-text">
+              <span class="eyebrow" style="margin-bottom:0;">${isVideo ? 'Event video' : 'Event photo'}</span>
+              <h3>${isVideo ? 'From the stage' : 'From the stage'}</h3>
+              <p>${escapeHtml(item.caption)}</p>
+            </div>
+          `
+        };
+      }
+      if (item.type === 'media') {
+        const m = item.data;
+        const isVideo = m.mediaType === 'video';
+        const displayName = m.stageName ? `${m.contestantName} "${m.stageName}"` : m.contestantName;
+        return {
+          imgHtml: isVideo
+            ? `<video src="${escapeHtml(m.filePath)}" controls autoplay playsinline style="max-width:100%;max-height:70vh;border-radius:8px;background:#000;"></video>`
+            : `<img src="${escapeHtml(m.filePath)}" alt="${escapeHtml(m.title || displayName)}" />`,
+          infoHtml: `
+            <div class="gal-lightbox-info-text">
+              <span class="eyebrow" style="margin-bottom:0;">${escapeHtml(m.category || (isVideo ? 'Performance video' : 'Photo'))}</span>
+              <h3>${escapeHtml(m.title || displayName)}</h3>
+              <p>${escapeHtml(displayName)}</p>
+            </div>
+          `
+        };
+      }
+      const c = item.data;
+      const isGroup = c.entryType === 'group';
+      const gel = CATEGORY_GEL[c.category] || 'var(--brand-blue)';
+      const imgHtml = c.photoUrl
+        ? `<img src="${escapeHtml(c.photoUrl)}" alt="${escapeHtml(c.name)}" />`
+        : `<div class="gal-lightbox-initials">${escapeHtml(initials(c.name))}</div>`;
+      return {
+        imgHtml,
+        infoHtml: `
+          <span class="gal-tile-gel" style="--gel-color:${gel};">${escapeHtml(c.categoryLabel)}</span>
+          ${isGroup ? `<span class="badge badge-info" style="font-size:0.7rem;margin-bottom:4px;display:inline-block;">Group${c.memberCount ? ' · ' + c.memberCount + ' members' : ''}</span>` : ''}
+          <div class="gal-lightbox-info-text">
+            <h3>${escapeHtml(c.name)}</h3>
+            ${c.competitionId ? `<p style="font-size:0.7rem;font-weight:700;letter-spacing:0.07em;color:rgba(246,211,116,0.8);margin:2px 0 6px;">${escapeHtml(c.competitionId)}</p>` : ''}
+            <p>${c.county ? escapeHtml(c.county) + ' — ' : ''}${escapeHtml(c.talent)}</p>
+          </div>
+          <div class="gal-lightbox-info-stats">
+            <div><span class="num">#${c.rank}</span><span class="lbl">Rank</span></div>
+            <div><span class="num">${c.votes}</span><span class="lbl">Votes</span></div>
+          </div>
+        `
+      };
+    }
+
+    let lbSet = [];
+    const lightbox = document.getElementById('lightbox');
+    const lbImgWrap = document.getElementById('lbImgWrap');
+    const lbInfo = document.getElementById('lbInfo');
+
+    function openLightbox(filteredSet, index) {
+      lbSet = filteredSet;
+      lbIndex = index;
+      renderLightbox();
+      lightbox.classList.add('open');
+    }
+
+    function renderLightbox() {
+      const prev = lbImgWrap.querySelector('video');
+      if (prev) { prev.pause(); prev.currentTime = 0; }
+      const item = lbSet[lbIndex];
+      const { imgHtml, infoHtml } = lbContentFor(item);
+      lbImgWrap.innerHTML = imgHtml;
+      lbInfo.innerHTML = infoHtml;
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      const vid = lbImgWrap.querySelector('video');
+      if (vid) { vid.pause(); vid.currentTime = 0; }
+    }
+    function lbStep(delta) {
+      if (!lbSet.length) return;
+      lbIndex = (lbIndex + delta + lbSet.length) % lbSet.length;
+      renderLightbox();
+    }
+
+    document.getElementById('lbClose').addEventListener('click', closeLightbox);
+    document.getElementById('lbPrev').addEventListener('click', () => lbStep(-1));
+    document.getElementById('lbNext').addEventListener('click', () => lbStep(1));
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft') lbStep(-1);
+      if (e.key === 'ArrowRight') lbStep(1);
+    });
+
+    function bindTabClicks() {
+      document.getElementById('categoryTabs').querySelectorAll('.gal-tab').forEach((tab) => {
+        tab.addEventListener('click', () => {
+          document.getElementById('categoryTabs').querySelectorAll('.gal-tab').forEach((t) => t.classList.remove('active'));
+          tab.classList.add('active');
+          activeCategory = tab.dataset.category;
+          renderGrid();
+        });
+      });
+    }
+
+    async function initCategoryTabs() {
+      try {
+        const categories = await fetch('/api/categories').then((r) => r.json());
+        const tabsEl = document.getElementById('categoryTabs');
+        categories.forEach((cat) => {
+          const btn = document.createElement('button');
+          btn.className = 'gal-tab';
+          btn.dataset.category = cat.slug;
+          btn.textContent = cat.name;
+          tabsEl.appendChild(btn);
+        });
+      } catch {}
+      bindTabClicks();
+    }
+
+    let currentViewSeasonId = null;  // null = current season
+
+    async function loadGallery(seasonId, isPastSeason) {
+      const url = seasonId ? `/api/event-photos?season=${seasonId}` : '/api/event-photos';
+      try {
+        const eventPhotos = await fetch(url).then((r) => r.json());
+        if (Array.isArray(eventPhotos) && eventPhotos.length) {
+          stagePhotos = eventPhotos.map((p, i) => ({
+            id: `stage-${i + 1}`,
+            src: p.filePath,
+            wide: p.wide,
+            caption: p.caption || '',
+            mediaType: p.mediaType || 'photo'
+          }));
+        } else {
+          stagePhotos = isPastSeason ? [] : STAGE_PHOTOS_FALLBACK;
+        }
+      } catch {
+        stagePhotos = isPastSeason ? [] : STAGE_PHOTOS_FALLBACK;
+      }
+
+      if (isPastSeason) {
+        // Past season: event photos only, no contestant tiles
+        document.getElementById('featured').innerHTML = '';
+        mediaItems = [];
+        items = stagePhotos.map((p) => ({ type: 'stage', ...p }));
+      } else {
+        const [contestants, galleryMedia] = await Promise.all([
+          fetch('/api/contestants').then((r) => r.json()),
+          fetch('/api/media/gallery').then((r) => r.json()).catch(() => [])
+        ]);
+        mediaItems = Array.isArray(galleryMedia) ? galleryMedia : [];
+        renderFeatured(contestants);
+        items = buildItems(contestants);
+      }
+      renderGrid();
+    }
+
+    async function initSeasonTabs() {
+      try {
+        const seasons = await fetch('/api/seasons/public').then((r) => r.json());
+        if (seasons.length <= 1) return;
+
+        const current = await fetch('/api/seasons/current').then((r) => r.json());
+        const wrap = document.getElementById('seasonTabsWrap');
+        const tabsEl = document.getElementById('seasonTabs');
+
+        tabsEl.innerHTML = seasons.map((s) => `
+          <button class="gal-tab${s.is_current ? ' active' : ''}" data-season-id="${s.id}" data-is-current="${s.is_current}">
+            ${escapeHtml(s.name)}
+          </button>
+        `).join('');
+
+        wrap.style.display = '';
+
+        tabsEl.querySelectorAll('[data-season-id]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            tabsEl.querySelectorAll('[data-season-id]').forEach((b) => b.classList.remove('active'));
+            btn.classList.add('active');
+            const isPast = btn.dataset.isCurrent !== 'true';
+            currentViewSeasonId = isPast ? btn.dataset.seasonId : null;
+            loadGallery(btn.dataset.seasonId, isPast);
+          });
+        });
+      } catch {}
+    }
+
+    initSeasonLabel();
+    initCategoryTabs();
+    initSeasonTabs();
+    loadGallery(null, false);
+  </script>
+</body>
+</html>

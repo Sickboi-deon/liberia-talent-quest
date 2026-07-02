@@ -1,0 +1,34 @@
+[
+  {
+    "id": "sdemo01",
+    "name": "Augustine Gbaryea",
+    "email": "augustine.demo@example.com",
+    "phone": "231775550001",
+    "age": 24,
+    "town": "Red Light",
+    "category": "spoken-words",
+    "talent": "Poet and storyteller writing on faith, family, and the future.",
+    "videoLink": "https://drive.google.com/file/d/EXAMPLE_FILE_ID_1/view?usp=sharing",
+    "status": "pending",
+    "judgeNotes": "",
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "createdAt": "2026-06-23T13:59:34.324Z"
+  },
+  {
+    "id": "sdemo02",
+    "name": "Emmanuel Voker",
+    "email": "emmanuel.demo@example.com",
+    "phone": "231775550002",
+    "age": 22,
+    "town": "Paynesville",
+    "category": "creative-arts",
+    "talent": "Lifestyle model and stylist focused on Afro-futurist looks.",
+    "videoLink": "https://drive.google.com/file/d/EXAMPLE_FILE_ID_2/view?usp=sharing",
+    "status": "pending",
+    "judgeNotes": "",
+    "reviewedBy": null,
+    "reviewedAt": null,
+    "createdAt": "2026-06-23T13:59:34.324Z"
+  }
+]

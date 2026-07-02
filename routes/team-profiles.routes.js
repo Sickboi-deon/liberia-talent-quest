@@ -3,7 +3,7 @@ const router  = express.Router();
 
 const db = require('../lib/db');
 const { requireAuth } = require('../middleware/requireAuth');
-const { photoUpload } = require('../lib/upload');
+const { photoUpload, persistPhotos } = require('../lib/upload');
 
 const EDITORS = ['superuser', 'admin', 'content_manager'];
 
@@ -31,7 +31,7 @@ router.get('/', async (_req, res) => {
 });
 
 // ── Staff: create a profile (accepts multipart/form-data for optional photo upload) ──
-router.post('/', requireAuth(EDITORS, 'manage_content'), handlePhotoUpload, async (req, res) => {
+router.post('/', requireAuth(EDITORS, 'manage_content'), handlePhotoUpload, persistPhotos, async (req, res) => {
   try {
     const { roleTag, name, title, bio, quote, displayOrder } = req.body || {};
     if (!roleTag || !name || !title) {
@@ -42,7 +42,7 @@ router.post('/', requireAuth(EDITORS, 'manage_content'), handlePhotoUpload, asyn
       return res.status(400).json({ error: `roleTag must be one of: ${VALID_TAGS.join(', ')}.` });
     }
 
-    const photoUrl = req.file ? `/uploads/photos/${req.file.filename}` : null;
+    const photoUrl = req.file ? req.file.url : null;
 
     const { rows } = await db.query(
       `INSERT INTO team_profiles (role_tag, name, title, bio, quote, photo_url, display_order)
@@ -61,10 +61,10 @@ router.post('/', requireAuth(EDITORS, 'manage_content'), handlePhotoUpload, asyn
 });
 
 // ── Staff: update a profile (accepts multipart/form-data for optional new photo) ──
-router.put('/:id', requireAuth(EDITORS, 'manage_content'), handlePhotoUpload, async (req, res) => {
+router.put('/:id', requireAuth(EDITORS, 'manage_content'), handlePhotoUpload, persistPhotos, async (req, res) => {
   try {
     const { roleTag, name, title, bio, quote, displayOrder, active } = req.body || {};
-    const newPhotoUrl = req.file ? `/uploads/photos/${req.file.filename}` : null;
+    const newPhotoUrl = req.file ? req.file.url : null;
 
     // Swap display_order if another profile already occupies the target position
     if (displayOrder !== undefined) {

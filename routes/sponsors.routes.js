@@ -4,7 +4,7 @@ const router  = express.Router();
 const db = require('../lib/db');
 const { requireAuth } = require('../middleware/requireAuth');
 const { getCurrentSeasonId, getPreviousSeason } = require('../lib/seasons');
-const { photoUpload } = require('../lib/upload');
+const { photoUpload, persistPhotos } = require('../lib/upload');
 
 // Default roles + anyone granted manage_content permission
 const EDITORS = ['superuser', 'content_manager', 'admin'];
@@ -53,7 +53,7 @@ router.get('/', async (req, res) => {
 });
 
 // POST / — add a new sponsor with optional logo file upload
-router.post('/', requireAuth(EDITORS, 'manage_content'), handlePhotoUpload, async (req, res) => {
+router.post('/', requireAuth(EDITORS, 'manage_content'), handlePhotoUpload, persistPhotos, async (req, res) => {
   const { name, websiteUrl, tier, display_order, seasonSpecific } = req.body || {};
   if (!name) return res.status(400).json({ error: 'Sponsor name is required.' });
 
@@ -63,7 +63,7 @@ router.post('/', requireAuth(EDITORS, 'manage_content'), handlePhotoUpload, asyn
       ? null : (await getCurrentSeasonId());
   }
 
-  const logoUrl = req.file ? `/uploads/photos/${req.file.filename}` : null;
+  const logoUrl = req.file ? req.file.url : null;
 
   const { rows } = await db.query(
     `INSERT INTO sponsors (name, logo_url, website_url, tier, display_order, season_id)
@@ -81,11 +81,11 @@ router.post('/', requireAuth(EDITORS, 'manage_content'), handlePhotoUpload, asyn
 });
 
 // PATCH /:id — update sponsor; new logo replaces existing if a file is uploaded
-router.patch('/:id', requireAuth(EDITORS, 'manage_content'), handlePhotoUpload, async (req, res) => {
+router.patch('/:id', requireAuth(EDITORS, 'manage_content'), handlePhotoUpload, persistPhotos, async (req, res) => {
   const { name, websiteUrl, tier, display_order, seasonSpecific } = req.body || {};
   if (!name) return res.status(400).json({ error: 'Sponsor name is required.' });
 
-  const newLogoUrl = req.file ? `/uploads/photos/${req.file.filename}` : null;
+  const newLogoUrl = req.file ? req.file.url : null;
 
   // Swap display_order if another sponsor already occupies the target position
   if (display_order !== undefined) {

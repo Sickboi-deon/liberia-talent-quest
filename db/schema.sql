@@ -72,6 +72,9 @@ CREATE TABLE IF NOT EXISTS settings (
   wa_token              TEXT,
   wa_template           VARCHAR(255) DEFAULT 'ltq_notification',
   wa_template_lang      VARCHAR(20)  DEFAULT 'en',
+  cloudinary_cloud_name VARCHAR(255),
+  cloudinary_api_key    VARCHAR(255),
+  cloudinary_api_secret TEXT,
   payment_instructions  TEXT,
   audition_video_required BOOLEAN    DEFAULT TRUE,
   max_group_members     INT          DEFAULT 6,
@@ -457,6 +460,12 @@ ALTER TABLE settings    ADD COLUMN IF NOT EXISTS max_group_members INT DEFAULT 6
 -- settings: public "impact" stats not derivable from app data (marketing figures)
 ALTER TABLE settings    ADD COLUMN IF NOT EXISTS audience_reach INT DEFAULT 250000;
 ALTER TABLE settings    ADD COLUMN IF NOT EXISTS media_mentions INT DEFAULT 40;
+-- settings: optional Cloudinary credentials — when set, uploads (photos/videos/
+-- documents) are stored on Cloudinary instead of local disk. Falls back to
+-- local disk automatically when unset. See lib/integrations.js / lib/upload.js.
+ALTER TABLE settings    ADD COLUMN IF NOT EXISTS cloudinary_cloud_name VARCHAR(255);
+ALTER TABLE settings    ADD COLUMN IF NOT EXISTS cloudinary_api_key    VARCHAR(255);
+ALTER TABLE settings    ADD COLUMN IF NOT EXISTS cloudinary_api_secret TEXT;
 
 -- ── Accounting entries ────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS accounting_entries (

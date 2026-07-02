@@ -3,7 +3,7 @@ const router  = express.Router();
 
 const db = require('../lib/db');
 const { requireAuth } = require('../middleware/requireAuth');
-const { documentUpload } = require('../lib/upload');
+const { documentUpload, persistDocument } = require('../lib/upload');
 const { logAction } = require('../lib/audit');
 
 // Public — frontend uses this for countdown, contact info, open/close flags
@@ -136,9 +136,9 @@ router.post('/proposal', requireAuth(['superuser', 'admin']), (req, res, next) =
     if (err) return res.status(400).json({ error: err.message || 'Upload failed.' });
     next();
   });
-}, async (req, res) => {
+}, persistDocument, async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'A PDF file is required.' });
-  const fileUrl = `/uploads/documents/${req.file.filename}`;
+  const fileUrl = req.file.url;
   await db.query(`UPDATE settings SET proposal_file_url = $1, updated_at = NOW() WHERE id = 1`, [fileUrl]);
   res.json({ message: 'Proposal uploaded.', url: fileUrl });
 });

@@ -134,7 +134,7 @@
   <section id="championsSection" class="section" style="display:none; border-top:1px solid rgba(255,215,0,0.18); border-bottom:1px solid rgba(255,215,0,0.12); background:linear-gradient(180deg,rgba(255,215,0,0.05) 0%,transparent 100%);">
     <div class="wrap" style="text-align:center;">
       <span class="eyebrow" id="champEyebrow" style="color:var(--gold-bright);">Grand Finale Results</span>
-      <h2 style="font-family:var(--font-display); margin:8px 0 32px;">Meet the Champions</h2>
+      <h2 style="font-family:var(--font-display); margin:8px 0 32px;">Meet the Champion</h2>
       <div id="championsGrid" style="max-width:900px; margin:0 auto 32px;"></div>
       <a href="leaderboard.html" class="btn btn-secondary">View Full Results</a>
     </div>
@@ -349,15 +349,10 @@
         }
 
         const byStatus = Object.fromEntries(placements.map((p) => [p.status, p]));
-        const top3     = ['runner_up', 'winner', 'second_runner_up'].map((s) => byStatus[s]).filter(Boolean);
-        const finalist = byStatus['finalist'];
+        const winner   = byStatus['winner'];
+        if (!winner) return;
 
-        grid.innerHTML = `
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:${finalist ? '8px' : '0'};">
-            ${top3.map((p) => champCard(p, p.status === 'winner' ? 52 : 40)).join('')}
-          </div>
-          ${finalist ? `<div style="display:flex;justify-content:center;"><div style="width:calc(33.333% - 6px);">${champCard(finalist, 38)}</div></div>` : ''}
-        `;
+        grid.innerHTML = `<div style="max-width:280px;margin:0 auto;">${champCard(winner, 80)}</div>`;
         section.style.display = 'block';
       } catch { /* fail quietly */ }
     }

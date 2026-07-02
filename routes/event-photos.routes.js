@@ -1,11 +1,9 @@
 const express = require('express');
 const router  = express.Router();
-const path    = require('path');
-const fs      = require('fs');
 
 const db = require('../lib/db');
 const { requireAuth } = require('../middleware/requireAuth');
-const { eventMediaUpload, UPLOAD_ROOT, VIDEO_MIME } = require('../lib/upload');
+const { eventMediaUpload, persistEventMedia, removeFile, VIDEO_MIME } = require('../lib/upload');
 const { getCurrentSeasonId, getPreviousSeason } = require('../lib/seasons');
 
 const MANAGERS = ['superuser', 'admin', 'content_manager', 'media_coordinator'];
@@ -79,14 +77,13 @@ router.get('/', async (req, res) => {
 });
 
 // ── Staff: upload a new event photo ──────────────────────────────────
-router.post('/', requireAuth(MANAGERS, 'manage_media'), handleUpload, async (req, res) => {
+router.post('/', requireAuth(MANAGERS, 'manage_media'), handleUpload, persistEventMedia, async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: 'No file received.' });
     const { caption, wide, displayOrder } = req.body || {};
     const isVideo   = VIDEO_MIME.includes(req.file.mimetype);
-    const subdir    = isVideo ? 'videos' : 'photos';
     const mediaType = isVideo ? 'video' : 'photo';
-    const filePath  = `/uploads/${subdir}/${req.file.filename}`;
+    const filePath  = req.file.url;
     const seasonId  = await getCurrentSeasonId();
     const { rows } = await db.query(
       `INSERT INTO event_photos (file_path, media_type, caption, wide, display_order, uploaded_by, season_id)
@@ -101,7 +98,7 @@ router.post('/', requireAuth(MANAGERS, 'manage_media'), handleUpload, async (req
     );
     res.status(201).json({ message: `Event ${mediaType} uploaded.`, photo: rows[0] });
   } catch (err) {
-    if (req.file) fs.unlink(req.file.path, () => {});
+    if (req.file?.url) removeFile(req.file.url);
     console.error('[POST /event-photos]', err);
     res.status(500).json({ error: 'Server error.' });
   }
@@ -158,11 +155,8 @@ router.delete('/:id', requireAuth(MANAGERS, 'manage_media'), async (req, res) =>
 
     // Only delete uploaded files, not seeded static assets under /assets/
     const fp = rows[0].file_path;
-    if (fp.startsWith('/uploads/photos/') || fp.startsWith('/uploads/videos/')) {
-      const absPath = path.resolve(UPLOAD_ROOT, fp.replace(/^\/uploads\//, ''));
-      if (absPath.startsWith(path.resolve(UPLOAD_ROOT) + path.sep)) {
-        fs.unlink(absPath, () => {});
-      }
+    if (fp.startsWith('/uploads/') || fp.includes('cloudinary.com')) {
+      removeFile(fp);
     }
 
     await db.query('DELETE FROM event_photos WHERE id = $1', [req.params.id]);

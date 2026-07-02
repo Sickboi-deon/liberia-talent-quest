@@ -1,11 +1,9 @@
 const express = require('express');
 const router  = express.Router();
-const path    = require('path');
-const fs      = require('fs');
 
 const db = require('../lib/db');
 const { requireAuth } = require('../middleware/requireAuth');
-const { photoUpload, videoUpload, UPLOAD_ROOT } = require('../lib/upload');
+const { photoUpload, videoUpload, persistPhotos, persistVideos, removeFile } = require('../lib/upload');
 const { getCurrentSeasonId } = require('../lib/seasons');
 
 // GET /api/media/gallery — public; all contestant_media for qualified/winner contestants in current season
@@ -67,14 +65,14 @@ router.get('/contestant/:id', requireAuth(STAFF), async (req, res) => {
 });
 
 // POST /api/media/contestant/:id/photo — upload a photo
-router.post('/contestant/:id/photo', requireAuth(MANAGERS, 'manage_media'), handleUpload(photoUpload), async (req, res) => {
+router.post('/contestant/:id/photo', requireAuth(MANAGERS, 'manage_media'), handleUpload(photoUpload), persistPhotos, async (req, res) => {
   try {
     const contestant = await findContestant(req.params.id);
-    if (!contestant) { if (req.file) fs.unlink(req.file.path, () => {}); return res.status(404).json({ error: 'Contestant not found.' }); }
+    if (!contestant) { if (req.file?.url) removeFile(req.file.url); return res.status(404).json({ error: 'Contestant not found.' }); }
     if (!req.file)   return res.status(400).json({ error: 'No photo file received.' });
 
     const { category = 'headshot', title = '', isPrimary } = req.body;
-    const filePath  = `/uploads/photos/${req.file.filename}`;
+    const filePath  = req.file.url;
     const makePrimary = isPrimary === 'true' || isPrimary === true;
 
     if (makePrimary) {
@@ -90,21 +88,21 @@ router.post('/contestant/:id/photo', requireAuth(MANAGERS, 'manage_media'), hand
     );
     res.status(201).json({ message: 'Photo uploaded.', media: rows[0] });
   } catch (err) {
-    if (req.file) fs.unlink(req.file.path, () => {});
+    if (req.file?.url) removeFile(req.file.url);
     console.error('[POST /media/contestant/:id/photo]', err);
     res.status(500).json({ error: 'Server error.' });
   }
 });
 
 // POST /api/media/contestant/:id/video — upload a video
-router.post('/contestant/:id/video', requireAuth(MANAGERS, 'manage_media'), handleUpload(videoUpload), async (req, res) => {
+router.post('/contestant/:id/video', requireAuth(MANAGERS, 'manage_media'), handleUpload(videoUpload), persistVideos, async (req, res) => {
   try {
     const contestant = await findContestant(req.params.id);
-    if (!contestant) { if (req.file) fs.unlink(req.file.path, () => {}); return res.status(404).json({ error: 'Contestant not found.' }); }
+    if (!contestant) { if (req.file?.url) removeFile(req.file.url); return res.status(404).json({ error: 'Contestant not found.' }); }
     if (!req.file)   return res.status(400).json({ error: 'No video file received.' });
 
     const { category = 'other', title = '', isPrimary } = req.body;
-    const filePath  = `/uploads/videos/${req.file.filename}`;
+    const filePath  = req.file.url;
     const makePrimary = isPrimary === 'true' || isPrimary === true;
 
     if (makePrimary && category === 'audition') {
@@ -119,7 +117,7 @@ router.post('/contestant/:id/video', requireAuth(MANAGERS, 'manage_media'), hand
     );
     res.status(201).json({ message: 'Video uploaded.', media: rows[0] });
   } catch (err) {
-    if (req.file) fs.unlink(req.file.path, () => {});
+    if (req.file?.url) removeFile(req.file.url);
     console.error('[POST /media/contestant/:id/video]', err);
     res.status(500).json({ error: 'Server error.' });
   }
@@ -155,11 +153,7 @@ router.delete('/:id', requireAuth(MANAGERS, 'manage_media'), async (req, res) =>
   try {
     const { rows } = await db.query('SELECT * FROM contestant_media WHERE id = $1', [req.params.id]);
     if (!rows.length) return res.status(404).json({ error: 'Media not found.' });
-    const absPath = path.resolve(UPLOAD_ROOT, rows[0].file_path.replace(/^\/uploads\//, ''));
-    if (!absPath.startsWith(path.resolve(UPLOAD_ROOT) + path.sep)) {
-      return res.status(400).json({ error: 'Invalid file path.' });
-    }
-    fs.unlink(absPath, () => {});
+    removeFile(rows[0].file_path);
     await db.query('DELETE FROM contestant_media WHERE id = $1', [req.params.id]);
     res.json({ message: 'Deleted.' });
   } catch (err) {

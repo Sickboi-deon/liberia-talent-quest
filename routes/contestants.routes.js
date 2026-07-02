@@ -1,7 +1,5 @@
 const express   = require('express');
 const router    = express.Router();
-const path      = require('path');
-const fs        = require('fs');
 const rateLimit = require('express-rate-limit');
 
 const db = require('../lib/db');
@@ -13,7 +11,7 @@ const {
 } = require('../lib/validate');
 const { sendMail, registrationReceivedEmail, paymentVerifiedEmail, qualifiedEmail, waitlistPromotedEmail } = require('../lib/email');
 
-const { registrationUpload } = require('../lib/upload');
+const { registrationUpload, persistRegistration, removeFile } = require('../lib/upload');
 const { logAction } = require('../lib/audit');
 const { getCurrentSeasonId, getPreviousSeason } = require('../lib/seasons');
 
@@ -26,7 +24,7 @@ function handleUpload(req, res, next) {
 
 function cleanupFiles(req) {
   const files = req.files || {};
-  Object.values(files).flat().forEach((f) => fs.unlink(f.path, () => {}));
+  Object.values(files).flat().forEach((f) => { if (f.url) removeFile(f.url); });
 }
 
 // Public, unauthenticated endpoint with large file uploads — cap submissions
@@ -46,7 +44,7 @@ const MANAGERS   = ['superuser', 'contestant_manager', 'admin'];
 const FINANCE    = ['superuser', 'finance_manager'];
 
 // ── Public: submit registration ───────────────────────────────────
-router.post('/', registrationLimiter, handleUpload, async (req, res) => {
+router.post('/', registrationLimiter, handleUpload, persistRegistration, async (req, res) => {
   try {
     // Check registration is open + fetch settings flags
     const { rows: sRows } = await db.query('SELECT registration_open, audition_video_required, max_group_members FROM settings WHERE id = 1');
@@ -122,8 +120,8 @@ router.post('/', registrationLimiter, handleUpload, async (req, res) => {
 
     const photoFile = req.files?.photo?.[0];
     const videoFile = req.files?.video?.[0];
-    const photoUrl  = photoFile ? `/uploads/photos/${photoFile.filename}` : '';
-    const videoUrl  = videoFile ? `/uploads/videos/${videoFile.filename}` : '';
+    const photoUrl  = photoFile ? photoFile.url : '';
+    const videoUrl  = videoFile ? videoFile.url : '';
 
     if (!photoUrl) { cleanupFiles(req); return res.status(400).json({ error: 'A profile photo is required.' }); }
     if (videoRequired && !videoUrl) { cleanupFiles(req); return res.status(400).json({ error: 'An audition video file is required.' }); }

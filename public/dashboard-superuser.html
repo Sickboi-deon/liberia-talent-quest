@@ -39,6 +39,7 @@
         <a href="#sec-voting-codes"  class="sidebar-sublink">Voting Codes</a>
         <a href="#sec-accounting"    class="sidebar-sublink">Accounting</a>
         <a href="#sec-integrations"  class="sidebar-sublink">Notification Channels</a>
+        <a href="#sec-storage"       class="sidebar-sublink">Media Storage</a>
         <a href="#sec-audit-log"       class="sidebar-sublink">Permission Audit Log</a>
         <a href="#sec-team-profiles"    class="sidebar-sublink">Team Profiles</a>
         <a href="#sec-event-photos"     class="sidebar-sublink">Event Photos</a>
@@ -898,6 +899,63 @@
             </div>
           </details>
         </div><!-- /sec-integrations -->
+
+        <div class="admin-section" id="sec-storage">
+          <div class="section-head">
+            <h2 style="font-family:var(--font-display);font-size:1.5rem;margin:0 0 8px;">Media Storage</h2>
+            <p>Choose where uploaded photos, videos, and documents are stored.</p>
+          </div>
+
+          <div class="form-card" style="max-width:640px;margin:0 0 24px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:rgba(139,92,246,0.12);">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--brand-purple,#8b5cf6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.5 2A4 4 0 0 0 6 20h11.5z"/></svg>
+                </span>
+                <strong style="font-size:1rem;">Cloudinary</strong>
+              </div>
+              <span id="suCloudBadge" style="font-size:0.75rem;padding:3px 10px;border-radius:99px;font-weight:600;background:rgba(107,114,128,0.15);color:var(--muted);">checking…</span>
+            </div>
+            <p class="hint" style="margin:0 0 14px;">Optional. When unset, uploads (photos/videos/documents) are stored on this server's local disk as before. When configured, new uploads go to Cloudinary instead — existing files already on local disk keep working either way.</p>
+            <div id="suCloudAlert" style="margin-bottom:12px;"></div>
+            <form id="suCloudForm">
+              <div class="field">
+                <label for="suCloudName">Cloud name</label>
+                <input type="text" id="suCloudName" placeholder="your-cloud-name" />
+              </div>
+              <div class="field">
+                <label for="suCloudKey">API key</label>
+                <input type="text" id="suCloudKey" placeholder="123456789012345" />
+              </div>
+              <div class="field">
+                <label for="suCloudSecret">API secret <span style="font-weight:400;color:var(--muted);font-size:0.78rem;">(leave blank to keep existing)</span></label>
+                <div style="display:flex;gap:8px;">
+                  <input type="password" id="suCloudSecret" placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxx" autocomplete="new-password" style="flex:1;" />
+                  <button type="button" class="btn btn-secondary" style="padding:0 12px;font-size:0.8rem;white-space:nowrap;" onclick="toggleVis('suCloudSecret',this)">Show</button>
+                </div>
+                <span class="hint">From your Cloudinary Dashboard → API Keys</span>
+              </div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px;">
+                <button type="submit" class="btn btn-primary" id="suSaveCloudBtn">Save</button>
+                <button type="button" class="btn btn-secondary" id="suTestCloudBtn">Test connection</button>
+              </div>
+            </form>
+          </div>
+
+          <details style="background:var(--panel-raised);border:1px solid var(--panel-border);border-radius:12px;padding:0;max-width:640px;">
+            <summary style="cursor:pointer;padding:14px 18px;font-weight:600;font-size:0.9rem;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+              <span>Setup guide — how to get these credentials</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </summary>
+            <div style="padding:0 18px 18px;font-size:0.87rem;line-height:1.8;color:var(--muted);">
+              <ol style="margin:12px 0 0;padding-left:20px;">
+                <li>Sign up free at <strong style="color:var(--paper);">cloudinary.com</strong></li>
+                <li>Dashboard home page shows your <strong style="color:var(--paper);">Cloud name</strong>, <strong style="color:var(--paper);">API Key</strong>, and <strong style="color:var(--paper);">API Secret</strong> — copy all three above</li>
+                <li>Leave it blank to keep storing uploads on this server instead — both work, nothing breaks either way</li>
+              </ol>
+            </div>
+          </details>
+        </div><!-- /sec-storage -->
 
         <div class="admin-section" id="sec-audit-log">
           <div class="section-head">
@@ -2374,6 +2432,11 @@
       if (data.whatsapp.template) document.getElementById('suWaTemplate').value = data.whatsapp.template;
       if (data.whatsapp.lang)     document.getElementById('suWaLang').value     = data.whatsapp.lang;
       document.getElementById('suWaToken').placeholder = data.whatsapp.tokenSet ? '••••••••••••' : 'EAAxxxxxxx…';
+
+      suSetBadge('suCloudBadge', data.cloudinary.configured);
+      if (data.cloudinary.cloudName) document.getElementById('suCloudName').value = data.cloudinary.cloudName;
+      if (data.cloudinary.apiKey)    document.getElementById('suCloudKey').value  = data.cloudinary.apiKey;
+      document.getElementById('suCloudSecret').placeholder = data.cloudinary.secretSet ? '••••••••••••••••••••••••••' : 'xxxxxxxxxxxxxxxxxxxxxxxxxxx';
     }
 
     document.getElementById('suEmailForm').addEventListener('submit', async (e) => {
@@ -2407,6 +2470,30 @@
       btn.disabled = false; btn.textContent = 'Save';
       alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
       if (res.ok) { document.getElementById('suWaToken').value = ''; loadSuIntegrations(); }
+    });
+
+    document.getElementById('suCloudForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const alertEl = document.getElementById('suCloudAlert');
+      const btn     = document.getElementById('suSaveCloudBtn');
+      btn.disabled = true; btn.textContent = 'Saving…';
+      const res  = await authFetch('/api/integrations/cloudinary', { method: 'PUT', body: JSON.stringify({
+        cloudName: document.getElementById('suCloudName').value.trim(),
+        apiKey:    document.getElementById('suCloudKey').value.trim(),
+        apiSecret: document.getElementById('suCloudSecret').value,
+      }) });
+      const data = await res.json();
+      btn.disabled = false; btn.textContent = 'Save';
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
+      if (res.ok) { document.getElementById('suCloudSecret').value = ''; loadSuIntegrations(); }
+    });
+
+    document.getElementById('suTestCloudBtn').addEventListener('click', async () => {
+      const alertEl = document.getElementById('suCloudAlert');
+      alertEl.innerHTML = '<div class="alert alert-info">Testing connection…</div>';
+      const res  = await authFetch('/api/integrations/test/cloudinary', { method: 'POST' });
+      const data = await res.json();
+      alertEl.innerHTML = `<div class="alert alert-${res.ok ? 'success' : 'error'}">${data.message || data.error}</div>`;
     });
 
     document.getElementById('suTestEmailBtn').addEventListener('click', async () => {
@@ -3123,6 +3210,7 @@
         if (id === 'sec-notifications') { loadChannelStatus(); renderNotifHistory(); }
         if (id === 'sec-qualify')      renderOverrideTable();
         if (id === 'sec-integrations') loadSuIntegrations();
+        if (id === 'sec-storage')      loadSuIntegrations();
         if (id === 'sec-audit-log')     loadAuditLog();
         if (id === 'sec-team-profiles') loadTeamProfiles();
         if (id === 'sec-event-photos')    loadEventPhotos();

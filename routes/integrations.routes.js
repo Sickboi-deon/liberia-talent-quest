@@ -3,7 +3,7 @@ const router  = express.Router();
 
 const db = require('../lib/db');
 const { requireAuth }                        = require('../middleware/requireAuth');
-const { getEmailConfig, getWaConfig,
+const { getEmailConfig, getWaConfig, getCloudinaryConfig,
         invalidateCache }                    = require('../lib/integrations');
 const { sendMail }                           = require('../lib/email');
 const { sendWhatsApp, normalizePhone }       = require('../lib/whatsapp');
@@ -12,7 +12,7 @@ const { logAction }                          = require('../lib/audit');
 // GET /api/integrations — current config (sensitive values masked)
 // Superuser always passes (wildcard). Others need configure_notifications permission.
 router.get('/', requireAuth([], 'configure_notifications'), async (_req, res) => {
-  const [email, wa] = await Promise.all([getEmailConfig(), getWaConfig()]);
+  const [email, wa, cloud] = await Promise.all([getEmailConfig(), getWaConfig(), getCloudinaryConfig()]);
   res.json({
     email: {
       user:       email.user,
@@ -26,6 +26,12 @@ router.get('/', requireAuth([], 'configure_notifications'), async (_req, res) =>
       lang:       wa.lang,
       tokenSet:   !!wa.token,
       configured: wa.configured,
+    },
+    cloudinary: {
+      cloudName:  cloud.cloudName,
+      apiKey:     cloud.apiKey,
+      secretSet:  !!cloud.apiSecret,
+      configured: cloud.configured,
     }
   });
 });
@@ -85,6 +91,33 @@ router.put('/whatsapp', requireAuth([], 'configure_notifications'), async (req, 
   res.json({ message: 'WhatsApp settings saved.', configured: cfg.configured });
 });
 
+// PUT /api/integrations/cloudinary — save Cloudinary credentials
+router.put('/cloudinary', requireAuth([], 'configure_notifications'), async (req, res) => {
+  const { cloudName, apiKey, apiSecret } = req.body || {};
+
+  const sets = [];
+  const vals = [];
+  let   idx  = 1;
+
+  if (cloudName !== undefined) { sets.push(`cloudinary_cloud_name = $${idx++}`); vals.push(cloudName.trim() || null); }
+  if (apiKey    !== undefined) { sets.push(`cloudinary_api_key = $${idx++}`);    vals.push(apiKey.trim() || null); }
+  if (apiSecret !== undefined && apiSecret.trim()) { sets.push(`cloudinary_api_secret = $${idx++}`); vals.push(apiSecret.trim()); }
+
+  if (!sets.length) return res.status(400).json({ error: 'No fields provided.' });
+
+  await db.query(`UPDATE settings SET ${sets.join(', ')}, updated_at = NOW() WHERE id = 1`, vals);
+  invalidateCache();
+
+  await logAction({
+    actorId: req.user.sub, actorRole: req.user.role, actorName: req.user.name,
+    action: 'integration_credentials_updated', entityType: 'settings', entityId: null,
+    detail: `Cloudinary credentials updated (fields: ${Object.keys(req.body || {}).join(', ')})`,
+  });
+
+  const cfg = await getCloudinaryConfig();
+  res.json({ message: 'Cloudinary settings saved.', configured: cfg.configured });
+});
+
 // POST /api/integrations/test/email — send test email to the logged-in user
 router.post('/test/email', requireAuth([], 'configure_notifications'), async (req, res) => {
   const cfg = await getEmailConfig();
@@ -129,6 +162,22 @@ router.post('/test/whatsapp', requireAuth([], 'configure_notifications'), async 
     res.json({ message: `Test WhatsApp sent to ${phone}.` });
   } catch (err) {
     res.status(500).json({ error: `Send failed: ${err.message}` });
+  }
+});
+
+// POST /api/integrations/test/cloudinary — verify credentials with a lightweight API call
+router.post('/test/cloudinary', requireAuth([], 'configure_notifications'), async (req, res) => {
+  const cfg = await getCloudinaryConfig();
+  if (!cfg.configured) {
+    return res.status(400).json({ error: 'Cloudinary is not configured yet. Save your credentials first.' });
+  }
+  try {
+    const cloudinary = require('cloudinary').v2;
+    cloudinary.config({ cloud_name: cfg.cloudName, api_key: cfg.apiKey, api_secret: cfg.apiSecret });
+    await cloudinary.api.ping();
+    res.json({ message: 'Cloudinary connection verified. New uploads will now be stored there.' });
+  } catch (err) {
+    res.status(400).json({ error: `Connection failed: ${err.message || 'Invalid credentials.'}` });
   }
 });
 

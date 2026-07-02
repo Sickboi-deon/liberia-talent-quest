@@ -1,10 +1,9 @@
 const express = require('express');
 const router  = express.Router();
-const fs      = require('fs');
 
 const db = require('../lib/db');
 const { requireAuth } = require('../middleware/requireAuth');
-const { videoUpload } = require('../lib/upload');
+const { videoUpload, persistVideos, removeFile } = require('../lib/upload');
 
 const JUDGES   = ['superuser', 'judge', 'head_judge'];
 const STAFF    = ['superuser', 'contestant_manager', 'judge', 'content_manager', 'admin', 'head_judge', 'media_coordinator', 'communications_manager', 'finance_manager'];
@@ -14,32 +13,32 @@ function handleVideoUpload(req, res, next) {
 }
 
 // Contestant Manager / Admin / Superuser: submit a performance on behalf of a contestant
-router.post('/', requireAuth(['superuser', 'contestant_manager', 'admin'], 'submit_performances'), handleVideoUpload, async (req, res) => {
+router.post('/', requireAuth(['superuser', 'contestant_manager', 'admin'], 'submit_performances'), handleVideoUpload, persistVideos, async (req, res) => {
   const { contestantId, roundId, songName, description, performanceType } = req.body || {};
 
   const VALID_TYPES = ['live', 'video'];
   const pType = performanceType || 'live';
   if (!VALID_TYPES.includes(pType)) {
-    if (req.file) fs.unlink(req.file.path, () => {});
+    if (req.file?.url) removeFile(req.file.url);
     return res.status(400).json({ error: 'performanceType must be "live" or "video".' });
   }
 
-  if (!contestantId) { if (req.file) fs.unlink(req.file.path, () => {}); return res.status(400).json({ error: 'contestantId is required.' }); }
-  if (!roundId)      { if (req.file) fs.unlink(req.file.path, () => {}); return res.status(400).json({ error: 'Round is required.' }); }
+  if (!contestantId) { if (req.file?.url) removeFile(req.file.url); return res.status(400).json({ error: 'contestantId is required.' }); }
+  if (!roundId)      { if (req.file?.url) removeFile(req.file.url); return res.status(400).json({ error: 'Round is required.' }); }
   // Video submissions require an actual file; live submissions do not
   if (pType === 'video' && !req.file) return res.status(400).json({ error: 'A video file is required for video performances.' });
 
   const { rows: rRows } = await db.query('SELECT status FROM rounds WHERE id = $1', [roundId]);
-  if (!rRows.length) { if (req.file) fs.unlink(req.file.path, () => {}); return res.status(404).json({ error: 'Round not found.' }); }
+  if (!rRows.length) { if (req.file?.url) removeFile(req.file.url); return res.status(404).json({ error: 'Round not found.' }); }
   if (!['open', 'scoring'].includes(rRows[0].status)) {
-    if (req.file) fs.unlink(req.file.path, () => {});
+    if (req.file?.url) removeFile(req.file.url);
     return res.status(403).json({ error: 'This round is not currently accepting submissions.' });
   }
 
   const { rows: cRows } = await db.query('SELECT id, full_name, status FROM contestants WHERE id = $1', [contestantId]);
-  if (!cRows.length) { if (req.file) fs.unlink(req.file.path, () => {}); return res.status(404).json({ error: 'Contestant not found.' }); }
+  if (!cRows.length) { if (req.file?.url) removeFile(req.file.url); return res.status(404).json({ error: 'Contestant not found.' }); }
   if (cRows[0].status !== 'qualified') {
-    if (req.file) fs.unlink(req.file.path, () => {});
+    if (req.file?.url) removeFile(req.file.url);
     return res.status(403).json({ error: 'Only qualified contestants can have performances submitted.' });
   }
 
@@ -47,9 +46,9 @@ router.post('/', requireAuth(['superuser', 'contestant_manager', 'admin'], 'subm
     'SELECT id FROM performances WHERE contestant_id = $1 AND round_id = $2',
     [contestantId, roundId]
   );
-  if (dup.length) { if (req.file) fs.unlink(req.file.path, () => {}); return res.status(409).json({ error: `${cRows[0].full_name} already has a performance submitted for this round.` }); }
+  if (dup.length) { if (req.file?.url) removeFile(req.file.url); return res.status(409).json({ error: `${cRows[0].full_name} already has a performance submitted for this round.` }); }
 
-  const videoUrl = req.file ? `/uploads/videos/${req.file.filename}` : null;
+  const videoUrl = req.file ? req.file.url : null;
   const { rows } = await db.query(
     `INSERT INTO performances (contestant_id, round_id, performance_type, performance_video_url, song_name, description)
      VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,

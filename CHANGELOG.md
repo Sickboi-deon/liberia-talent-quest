@@ -1,5 +1,22 @@
 # Changelog
 
+## USER-MANUAL.md still described the old per-category competition model — 2026-07-02
+
+The 2026-07-01 change to a single overall competition (see below) updated the code and most of
+the manual, but missed a few spots that kept describing the old per-category model — directly
+contradicting the correct wording elsewhere in the same document. Verified against the live code
+(`routes/rounds.routes.js`'s flat/overall ranking, confirmed live via `/api/contestants/placements`
+returning exactly 4 placements for the season, not 24) before fixing the docs: the code was
+already correct, only these manual passages were stale.
+
+- "Viewing Round Standings" (Head Judge) said standings were "for each category"
+- Reference: Contestant Statuses table described `winner`/`runner_up`/`second_runner_up`/`finalist`
+  as category-scoped placements
+- Waiting list promotion note said promotion was scoped to "the same category"
+- Reference: Competition Scoring directly contradicted the correct wording in the Round Advance
+  section a few paragraphs earlier, claiming scores were "normalised within each category — not
+  globally"
+
 ## Homepage now shows only the Champion — 2026-07-02
 
 `index.html`'s finale section previously rendered the full podium (Champion, Runner-Up, 2nd

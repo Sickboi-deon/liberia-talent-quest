@@ -290,7 +290,7 @@ The Head Judge shares this authority with the Superuser:
 
 ### Viewing Round Standings
 
-Go to **Rounds → [Round name] → Standings** to see the current combined score ranking for each category.
+Go to **Rounds → [Round name] → Standings** to see the current combined score ranking — one overall list, not one per category.
 
 ### Group Contestants
 
@@ -453,10 +453,10 @@ These are workflows experienced by the public visiting the site — not staff.
 | `waiting_list` | Did not qualify outright; may be promoted if a spot opens |
 | `rejected` | Did not pass qualification |
 | `eliminated` | Was in the competition but eliminated during a round |
-| `winner` | Category champion in the Grand Finale |
-| `runner_up` | 2nd place in their category |
-| `second_runner_up` | 3rd place in their category |
-| `finalist` | 4th place in their category (reached the finale) |
+| `winner` | Overall Champion of the season — 1st place, not one per category |
+| `runner_up` | 2nd place overall |
+| `second_runner_up` | 3rd place overall |
+| `finalist` | 4th place overall (reached the finale) |
 
 ---
 
@@ -481,7 +481,7 @@ winner | runner_up | second_runner_up | finalist  (overall — one competition, 
 remaining qualified contestants → eliminated
 ```
 
-**Waiting list promotion:** If a `qualified` contestant is eliminated or disqualified, the top `waiting_list` contestant in the same category is automatically promoted to `qualified`.
+**Waiting list promotion:** If a `qualified` contestant is eliminated or disqualified, the top `waiting_list` contestant overall — from a single season-wide waiting list, not one per category — is automatically promoted to `qualified`.
 
 ---
 
@@ -492,7 +492,7 @@ remaining qualified contestants → eliminated
 combinedScore = (judgeWeight × normalisedJudgeScore) + (voteWeight × normalisedVotes)
 ```
 
-- Scores are normalised **within each category** — not globally. A contestant in Dancing is ranked against other Dancing contestants only.
+- Scores are normalised **across all contestants in the round** — not per category. A contestant in Dancing is ranked against every other contestant in the round, regardless of category.
 - `judgeWeight` and `voteWeight` are set in Site Settings and must sum to 1.0.
 - Judge scores are averaged across all judges who have scored that contestant.
 

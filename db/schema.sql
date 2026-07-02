@@ -76,6 +76,8 @@ CREATE TABLE IF NOT EXISTS settings (
   audition_video_required BOOLEAN    DEFAULT TRUE,
   max_group_members     INT          DEFAULT 6,
   proposal_file_url     VARCHAR(500),
+  audience_reach        INT          DEFAULT 250000,
+  media_mentions        INT          DEFAULT 40,
   updated_at            TIMESTAMPTZ  DEFAULT NOW()
 );
 INSERT INTO settings (id) VALUES (1) ON CONFLICT (id) DO NOTHING;
@@ -452,6 +454,9 @@ ALTER TABLE notifications ADD COLUMN IF NOT EXISTS wa_sent_count    INT NOT NULL
 ALTER TABLE contestants ADD COLUMN IF NOT EXISTS entry_type VARCHAR(10) DEFAULT 'solo';
 -- settings: group member limit
 ALTER TABLE settings    ADD COLUMN IF NOT EXISTS max_group_members INT DEFAULT 6;
+-- settings: public "impact" stats not derivable from app data (marketing figures)
+ALTER TABLE settings    ADD COLUMN IF NOT EXISTS audience_reach INT DEFAULT 250000;
+ALTER TABLE settings    ADD COLUMN IF NOT EXISTS media_mentions INT DEFAULT 40;
 
 -- ── Accounting entries ────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS accounting_entries (

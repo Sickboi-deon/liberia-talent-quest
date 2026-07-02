@@ -18,7 +18,8 @@ router.get('/', async (_req, res) => {
             whatsapp, facebook, instagram,
             tiktok, twitter, youtube, linkedin, pinterest, snapchat, reddit, discord,
             payment_instructions, audition_video_required, max_group_members,
-            proposal_file_url AS "proposalFileUrl", updated_at
+            proposal_file_url AS "proposalFileUrl",
+            audience_reach AS "audienceReach", media_mentions AS "mediaMentions", updated_at
      FROM settings WHERE id = 1`
   );
   res.json(rows[0] || {});
@@ -53,6 +54,12 @@ router.put('/', requireAuth(['superuser']), async (req, res) => {
       return res.status(400).json({ error: `judgeScoreWeight and voteWeight must sum to 1 (got ${sum.toFixed(4)}).` });
     }
   }
+  if (b.audienceReach !== undefined && Number(b.audienceReach) < 0) {
+    return res.status(400).json({ error: 'audienceReach cannot be negative.' });
+  }
+  if (b.mediaMentions !== undefined && Number(b.mediaMentions) < 0) {
+    return res.status(400).json({ error: 'mediaMentions cannot be negative.' });
+  }
   const { rows } = await db.query(
     `UPDATE settings SET
        event_date              = COALESCE($1::timestamptz, event_date),
@@ -80,6 +87,8 @@ router.put('/', requireAuth(['superuser']), async (req, res) => {
        payment_instructions    = COALESCE($23,            payment_instructions),
        audition_video_required = COALESCE($24::boolean,   audition_video_required),
        max_group_members       = COALESCE($25::int,        max_group_members),
+       audience_reach          = COALESCE($26::int,        audience_reach),
+       media_mentions          = COALESCE($27::int,        media_mentions),
        updated_at              = NOW()
      WHERE id = 1 RETURNING *`,
     [
@@ -108,6 +117,8 @@ router.put('/', requireAuth(['superuser']), async (req, res) => {
       b.paymentInstructions     !== undefined ? (b.paymentInstructions ? String(b.paymentInstructions).trim() : null) : null,
       b.auditionVideoRequired   !== undefined ? b.auditionVideoRequired : null,
       b.maxGroupMembers         !== undefined ? Number(b.maxGroupMembers) : null,
+      b.audienceReach           !== undefined ? Number(b.audienceReach)   : null,
+      b.mediaMentions           !== undefined ? Number(b.mediaMentions)   : null,
     ]
   );
   await logAction({

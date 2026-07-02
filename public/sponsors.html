@@ -97,11 +97,11 @@
       <div class="wrap">
         <div class="ct-section-label" style="margin-top:0;">Our reach</div>
         <div class="sp-stats" id="spStats">
-          <div class="sp-stat-card"><div class="sp-stat-num" data-count="250000" data-suffix="+">0</div><div class="sp-stat-label">Audience Reach</div></div>
+          <div class="sp-stat-card"><div class="sp-stat-num" id="spStatAudience" data-count="0" data-suffix="+">0</div><div class="sp-stat-label">Audience Reach</div></div>
           <div class="sp-stat-card"><div class="sp-stat-num" id="spStatContestants" data-count="0" data-suffix="+">0</div><div class="sp-stat-label">Registered Contestants</div></div>
-          <div class="sp-stat-card"><div class="sp-stat-num" data-count="15" data-suffix="">0</div><div class="sp-stat-label">Counties Represented</div></div>
+          <div class="sp-stat-card"><div class="sp-stat-num" id="spStatCounties" data-count="0" data-suffix="">0</div><div class="sp-stat-label">Counties Represented</div></div>
           <div class="sp-stat-card"><div class="sp-stat-num" id="spStatVotes" data-count="0" data-suffix="+">0</div><div class="sp-stat-label">Votes Cast</div></div>
-          <div class="sp-stat-card"><div class="sp-stat-num" data-count="40" data-suffix="+">0</div><div class="sp-stat-label">Media Mentions</div></div>
+          <div class="sp-stat-card"><div class="sp-stat-num" id="spStatMedia" data-count="0" data-suffix="+">0</div><div class="sp-stat-label">Media Mentions</div></div>
         </div>
       </div>
     </section>
@@ -493,6 +493,20 @@
         const votesEl       = document.getElementById('spStatVotes');
         if (contestantsEl) contestantsEl.setAttribute('data-count', contestants.length);
         if (votesEl)       votesEl.setAttribute('data-count', totalVotes);
+      } catch {}
+
+      try {
+        const stats = await fetch('/api/stats').then((r) => r.json());
+        const countiesEl = document.getElementById('spStatCounties');
+        if (countiesEl) countiesEl.setAttribute('data-count', stats.counties);
+      } catch {}
+
+      try {
+        const settings = await fetch('/api/settings').then((r) => r.json());
+        const audienceEl = document.getElementById('spStatAudience');
+        const mediaEl     = document.getElementById('spStatMedia');
+        if (audienceEl) audienceEl.setAttribute('data-count', settings.audienceReach ?? 250000);
+        if (mediaEl)     mediaEl.setAttribute('data-count', settings.mediaMentions ?? 40);
       } catch {}
     }
 
